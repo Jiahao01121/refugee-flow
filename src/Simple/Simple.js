@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import * as THREE from 'three';
 
 class Simple extends React.Component{
@@ -71,7 +71,9 @@ class Simple extends React.Component{
     this.cube.rotation.y += 0.01
 
     this.renderScene()
+
     this.frameId = window.requestAnimationFrame(this.animate)
+
   }
 
   renderScene() {

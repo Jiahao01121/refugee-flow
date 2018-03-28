@@ -3,6 +3,7 @@ import './App.css';
 import * as THREE from 'three';
 
 import Simple from '../Simple/Simple';
+import GlobeVisual from '../GlobeVisual/GlobeVisual';
 
 class App extends React.Component {
   constructor(props){
@@ -18,12 +19,14 @@ class App extends React.Component {
         <div className = 'container' onClick={()=>{ this.setState({
           color: new THREE.Color(0x6BB32E)
         }) }}>
-          <Simple
-            ss={this.state.color}
-          />
+          <Simple ss={this.state.color} />
         </div>
-      </div>
 
+        <div className = 'globe'>
+          <GlobeVisual />
+        </div>
+
+      </div>
     );
   }
 }
