@@ -6,7 +6,7 @@ class Simple extends React.Component{
 
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
     this.animate = this.animate.bind(this)
@@ -48,7 +48,7 @@ class Simple extends React.Component{
   }
 
   componentWillReceiveProps(e) {
-    console.log(e);
+    // console.log(e);
 
     this.cube.material = new THREE.MeshBasicMaterial({ color: e.ss });
 
@@ -58,6 +58,7 @@ class Simple extends React.Component{
     if (!this.frameId) {
 
       this.frameId = requestAnimationFrame(this.animate)
+
     }
   }
 

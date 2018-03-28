@@ -112,8 +112,8 @@ var Globe = function(container, opts) {
 
   function init() {
 
-    container.style.color = '#A62BB3';
-    container.style.font = '13px/20px Arial, sans-serif';
+
+
 
 
     var shader, uniforms, material;
@@ -177,7 +177,6 @@ var Globe = function(container, opts) {
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(w, h);
 
-    renderer.domElement.style.position = 'absolute';
 
     container.appendChild(renderer.domElement);
 
