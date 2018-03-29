@@ -201,7 +201,7 @@ var Globe = function(container, opts) {
     scene.add(_in);
     container.addEventListener('mousemove',(e) =>{
       e.preventDefault();
-      // // raycasting
+      // // raycasting``
       raycaster_mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
       raycaster_mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
     }, false)
