@@ -34,14 +34,22 @@ const fs = require('fs')
 //     })
 // })
 
-const data = JSON.parse(
+const data_2015 = JSON.parse(
   fs.readFileSync('/Users/will_su/Documents/THESIS/dataAnalysis/ACLED-final/global_2015.json','utf8')
+)
+
+const data_2010 = JSON.parse(
+  fs.readFileSync('/Users/will_su/Documents/THESIS/dataAnalysis/ACLED-final/global_2010.json','utf8')
 )
 
 router.get('/2010', function(req, res, next) {
 
-  res.json(data)
+  res.json(data_2010)
 });
 
+router.get('/2015', function(req, res, next) {
+
+  res.json(data_2015)
+});
 
 module.exports = router;
