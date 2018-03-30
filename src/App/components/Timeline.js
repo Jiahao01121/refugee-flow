@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import * as d3 from 'd3';
 
 
-class GlobeController extends React.Component {
+class Timeline extends React.Component {
 
   constructor(props){
     super(props);
@@ -37,4 +37,4 @@ class GlobeController extends React.Component {
   }
 }
 
-export default GlobeController;
+export default Timeline;

@@ -2,7 +2,7 @@ import React from 'react';
 // import './Globe.css';
 
 import GlobeVisual from './GlobeVisual';
-import GlobeController from './GlobeController';
+import Timeline from './Timeline';
 
 import * as THREE from 'three';
 import * as d3 from 'd3';
@@ -77,7 +77,7 @@ class Globe extends React.Component {
 
   renderGlobeController(){
     return (
-      <GlobeController
+      <Timeline
           onClickFn = {() => this.controllerClicked()}
       />
     )
