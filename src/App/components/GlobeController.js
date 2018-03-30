@@ -1,7 +1,7 @@
 import React from 'react';
-import './GlobeController.css';
+import '../stylesheets/GlobeController.css';
 
-import GlobeVisual from '../GlobeVisual/GlobeVisual';
+import GlobeVisual from './GlobeVisual';
 
 import * as THREE from 'three';
 import * as d3 from 'd3';

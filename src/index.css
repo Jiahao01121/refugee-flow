@@ -3,3 +3,24 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.container {
+  position: relative;
+  max-width: 1000px;
+  min-width: 280px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.navbar {
+  font-size: 12;
+  text-transform: uppercase;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.nav-links a {
+  padding: 0 10px;
+}

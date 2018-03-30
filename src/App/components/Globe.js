@@ -1,14 +1,14 @@
 import React from 'react';
 // import './Globe.css';
 
-import GlobeVisual from '../GlobeVisual/GlobeVisual';
-import GlobeController from '../GlobeController/GlobeController';
+import GlobeVisual from './GlobeVisual';
+import GlobeController from './GlobeController';
 
 import * as THREE from 'three';
 import * as d3 from 'd3';
 
-var data = require('./t');
-var data2 = require('./d');
+var data = require('../data/t');
+var data2 = require('../data/d');
 
 
 class Globe extends React.Component {
@@ -19,7 +19,7 @@ class Globe extends React.Component {
     this.state = {
 
       color: new THREE.Color(0xffffff),
-      imgDir: './globe/',
+      imgDir: '../data/globe/',
       colorFn: (x) => {
         const c = new THREE.Color();
         c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
