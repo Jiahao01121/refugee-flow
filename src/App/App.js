@@ -1,29 +1,23 @@
 import React from 'react';
 import './App.css';
 import * as THREE from 'three';
+import * as d3 from 'd3';
 
-import Simple from '../Simple/Simple';
+import Globe from '../Globe/Globe';
+
+
 
 class App extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      color: new THREE.Color(0xffffff)
-    }
-  }
-  render() {
-    console.log("change state rendered");
-    return (
-      <div>
-        <div className = 'container' onClick={()=>{ this.setState({
-          color: new THREE.Color(0x6BB32E)
-        }) }}>
-          <Simple
-            ss={this.state.color}
-          />
-        </div>
-      </div>
+  // constructor(props){
+    // super(props)
 
+  // }
+
+  render(){
+    console.count("---------- App's render called");
+
+    return (
+            <Globe />
     );
   }
 }
