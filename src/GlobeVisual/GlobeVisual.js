@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './GlobeVisual.css'
+// import style from './GlobeVisual.css'
 import * as d3 from 'd3';
 import * as THREE from 'three';
 
@@ -191,9 +191,9 @@ class GlobeVisual extends React.Component{
       this.raycasterMouse.x = ( e.clientX / parseInt(this.mount.style.width) ) * 2 - 1;
       this.raycasterMouse.y = - ( e.clientY / parseInt(this.mount.style.height) ) * 2 + 1;
 
-      console.log(e.clientX , e.clientY);
-      console.log(this.raycasterMouse.x , this.raycasterMouse.y);
-      console.log("---------------");
+      // console.log(e.clientX , e.clientY);
+      // console.log(this.raycasterMouse.x , this.raycasterMouse.y);
+      // console.log("---------------");
 
     })
 
@@ -470,9 +470,9 @@ class GlobeVisual extends React.Component{
 
       const dataIndex = Math.floor(intersect.faceIndex / 12);
 
-      console.log("Faceindex: " + intersect.faceIndex);
-      console.log("dataIndex: " + dataIndex);
-      console.log("-------");
+      // console.log("Faceindex: " + intersect.faceIndex);
+      // console.log("dataIndex: " + dataIndex);
+      // console.log("-------");
 
       console.log(
         this.points.userData.userData[0][1] [ (dataIndex*4) + 3]
@@ -497,7 +497,7 @@ class GlobeVisual extends React.Component{
     console.count("---------- GlobeVisual's render called");
 
     return(
-      <div id="globe"
+      <div id="globev"
         style={{ width: window.innerWidth, height: window.innerHeight, backgroundColor: 'red'}}
         ref={(mount) => {return this.mount = mount }}
       />
