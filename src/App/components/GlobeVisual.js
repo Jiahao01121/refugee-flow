@@ -218,12 +218,14 @@ class GlobeVisual extends React.Component{
   }
 
   addData(data, _opts) {
+
     var lat, lng, size, color, step, colorFnWrapper;
 
     this.opts.animated = _opts.animated;
     this.is_animated = _opts.animated;
     this.opts.format = _opts.format || 'magnitude'; // other option is 'legend'
     this.opts.name = _opts.name;
+
 
     if(this.opts.format === 'magnitude'){
       step = 3;
@@ -273,6 +275,7 @@ class GlobeVisual extends React.Component{
     else {
       this._baseGeometry = subgeo;
     }
+
 
   }// addData
 
@@ -426,6 +429,23 @@ class GlobeVisual extends React.Component{
     this.distanceTarget = this.distanceTarget < 450 ? 450 : this.distanceTarget;
   }
 
+  transition(currentIndex){
+
+    const timer = d3.timer((e) => {
+
+      var t = Math.min(1,d3.easeCubicInOut(e/3700));
+      // old data
+      this.points.morphTargetInfluences[this.lastIndex] = 1 -t;
+      // new data
+      // console.log(currentIndex);
+      this.points.morphTargetInfluences[currentIndex] = t;
+
+      if (t == 1) {
+        timer.stop();
+        this.lastIndex = currentIndex;
+      }
+    })
+  }
 
   componentWillReceiveProps(e) {
     // console.log(e);
@@ -448,7 +468,6 @@ class GlobeVisual extends React.Component{
     this.rotation.x += (this.target.x - this.rotation.x) * 0.1;
     this.rotation.y += (this.target.y - this.rotation.y) * 0.1;
     this.distance += (this.distanceTarget - this.distance) * 0.1;
-    // console.log(this.distance);
 
 
     this.camera.position.x = this.distance * Math.sin(this.rotation.x) * Math.cos(this.rotation.y);
@@ -459,6 +478,7 @@ class GlobeVisual extends React.Component{
     this.camera.updateProjectionMatrix();
 
     //raycast
+    // TODO: optimization for raycast (maybe use octree )(laggy when too much data);
     this.raycaster.setFromCamera( this.raycasterMouse, this.camera );
     const intersects = this.raycaster.intersectObject( this.points );
     // console.log(intersects);
@@ -477,10 +497,10 @@ class GlobeVisual extends React.Component{
       console.log(
         this.points.userData.userData[0][1] [ (dataIndex*4) + 3]
       );
+
       this.tootips_mouseoverFeedback.position.x = intersect.point.x;
       this.tootips_mouseoverFeedback.position.y = intersect.point.y;
       this.tootips_mouseoverFeedback.position.z = intersect.point.z;
-
       this.tootips_mouseoverFeedback.lookAt(this.mesh.position);
 
     }
