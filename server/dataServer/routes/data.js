@@ -66,4 +66,16 @@ router.get('/all', function(req, res, next) {
 
 });
 
+router.get('/global_war', function(req, res, next) {
+  console.log("get global_war called");
+  console.time('global_war');
+  WarService.fetch_global({}).then(d =>{
+    console.timeEnd('global_war');
+    res.json(output);
+  })
+
+});
+
+
+
 module.exports = router;
