@@ -1,20 +1,26 @@
 import React from 'react';
 
+// import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+
+// import '../../../node_modules/elemental/less/elemental.less';
+// import '../stylesheets/elementalUI.min.css';
+// import { Button } from 'elemental';
+
+
 import * as THREE from 'three';
 import * as d3 from 'd3';
 import * as _ from 'underscore'
 
+
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './Timeline'; //child component
 
-var data = require('../data/t');
-var data2 = require('../data/d');
 
 class Globe extends React.Component {
 
   constructor(props){
     super(props);
-    
+
     this.timelineClicked = this.timelineClicked.bind(this);
     this.state = {
       color: new THREE.Color(0xffffff),
