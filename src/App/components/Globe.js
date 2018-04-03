@@ -13,9 +13,8 @@ var data2 = require('../data/d');
 class Globe extends React.Component {
 
   constructor(props){
-
     super(props);
-
+    
     this.timelineClicked = this.timelineClicked.bind(this);
     this.state = {
       color: new THREE.Color(0xffffff),
@@ -33,11 +32,16 @@ class Globe extends React.Component {
   componentDidMount(){
 
     console.log("------ Globe mounted");
-    const url = 'http://' + window.location.hostname + ':2700' + '/data/all';
+    // const url = 'http://' + window.location.hostname + ':2700' + '/data/all';
+    const url = 'http://' + window.location.hostname + ':2700' + '/data/global_war';
     this.fetchData(url).then(d =>{
+
+      console.timeEnd("received");
+
       this.setState({
         warData: d
       });
+
       this.drawData([d[0]]); //default view (2010);
       this.gv.lastIndex = 0;
       this.gv.transition(this.gv.lastIndex);
@@ -48,15 +52,33 @@ class Globe extends React.Component {
   }
 
   fetchData(url){
+    console.time("received");
     const request = new Request( url, {method: 'GET', cache: true});
 
     return (
-      fetch(request).then(res => res.json())
+      fetch(request).then(res => res.json()).then(
+        d => d = d.map((d) =>{
+          let casualty = [];
+          // get extreme -> d3.domain().range()
+          for (let i = 0; i < d.value[1].length; i+= 4) {
+            casualty.push(d.value[1][i+2]);
+          }
+          let max = d3.max(casualty);
+          let min = d3.min(casualty);
+          let map = d3.scaleLinear().domain([min,max]).range([0,1]);
+
+          // calculate num
+          for (var i = 0; i < d.value[1].length; i+= 4) {
+            d.value[1][i+2] = map( d.value[1][i+2] );
+          }
+
+          return d.value;
+        })
+      )
     )
   }
 
   drawData(data){
-
     // otherwise won't switch data
     delete this.gv._baseGeometry;
 
@@ -71,6 +93,8 @@ class Globe extends React.Component {
       //addEventListener
       // $('#year'+data[i][0]).mouseover(data_transition(i));
     }
+
+
     this.gv.createPoints(data);
   }
 
@@ -105,13 +129,13 @@ class Globe extends React.Component {
     //update visualization
     this.gv.scene.remove(this.gv.points);
     const data = this.state.warData.slice(); //copy state;
-
-    this.drawData(
-      [_.find(data,(i) => i[0] == year)]
-    );
-    this.gv.transition(this.gv.lastIndex);
-
-
+    data.forEach((d) => {
+      if(d[0] == year ) {
+        console.log(d);
+        this.drawData([ d ]);
+        this.gv.transition(this.gv.lastIndex);
+      }
+    });
   }
 
   render(){
