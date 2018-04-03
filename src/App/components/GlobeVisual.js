@@ -1,12 +1,12 @@
 import React from 'react';
 // import style from './GlobeVisual.css'
 import * as d3 from 'd3';
-import * as THREE from 'three';
+import THREE from '../data/Octree';
 
 class GlobeVisual extends React.Component{
   constructor(props){
     super(props);
-
+    // Octree(THREE);
     // this.init = this.init.bind(this);
     this.animate = this.animate.bind(this);
     this.addPoint = this.addPoint.bind(this);
@@ -22,7 +22,6 @@ class GlobeVisual extends React.Component{
 
   componentDidMount(){
     console.log("------ GlobeVisual mounted");
-
     // opts, also passed in on .adddata() from other component
     this.opts = this.props.opts || {
       imgDir : './globe/',
@@ -183,6 +182,23 @@ class GlobeVisual extends React.Component{
     this.point = new THREE.Mesh(geometry);
 
     // raycasting
+
+    this.octree = new THREE.Octree( {
+      // uncomment below to see the octree (may kill the fps)
+      //scene: scene,
+      // when undeferred = true, objects are inserted immediately
+      // instead of being deferred until next octree.update() call
+      // this may decrease performance as it forces a matrix update
+      undeferred: false,
+      // set the max depth of tree
+      depthMax: Infinity,
+      // max number of objects before nodes split or merge
+      objectsThreshold: 8,
+      // percent between 0 and 1 that nodes will overlap each other
+      // helps insert objects that lie over more than one node
+      overlapPct: 0.15
+    } );
+
     this.scene.add(this.tootips_mouseoverFeedback);
 
     this.mount.addEventListener('mousemove', e =>{
@@ -321,12 +337,12 @@ class GlobeVisual extends React.Component{
         //     }));
       } else {
         if (this._baseGeometry.morphTargets.length < 8) {
-          console.log('t l',this._baseGeometry.morphTargets.length);
+          // console.log('t l',this._baseGeometry.morphTargets.length);
 
           var padding = 8-this._baseGeometry.morphTargets.length;
-          console.log('padding', padding);
+          // console.log('padding', padding);
           for(var i=0; i<=padding; i++) {
-            console.log('padding',i);
+            // console.log('padding',i);
             // don't know the reason for padding
             // this._baseGeometry.morphTargets.push({'name': 'morphPadding'+i, vertices: this._baseGeometry.vertices});
           }
@@ -342,7 +358,11 @@ class GlobeVisual extends React.Component{
             }));
 
 
-        this.points.userData =  {'userData': userData}
+        this.points.userData =  {'userData': userData};
+
+        this.octree.add(this.points,{ useFaces: false })
+        // console.log(this.octree);
+
       }
 
       // _points = this.points
@@ -478,6 +498,9 @@ class GlobeVisual extends React.Component{
     this.camera.updateProjectionMatrix();
 
     //raycast
+
+    // this.octree.update();
+
     // TODO: optimization for raycast (maybe use octree )(laggy when too much data);
     this.raycaster.setFromCamera( this.raycasterMouse, this.camera );
     const intersects = this.raycaster.intersectObject( this.points );
@@ -512,7 +535,7 @@ class GlobeVisual extends React.Component{
 
 
   render() {
-
+    // console.log({...this.props});
     // render is execute ahead of componentDidMount
     console.count("---------- GlobeVisual's render called");
 
