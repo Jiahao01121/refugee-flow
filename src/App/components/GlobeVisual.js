@@ -203,7 +203,7 @@ class GlobeVisual extends React.Component{
 
     this.mount.addEventListener('mousemove', e =>{
       e.preventDefault();
-
+        // TODO: raycast mouse offset
       this.raycasterMouse.x = ( e.clientX / parseInt(this.mount.style.width) ) * 2 - 1;
       this.raycasterMouse.y = - ( e.clientY / parseInt(this.mount.style.height) ) * 2 + 1;
 
@@ -541,7 +541,7 @@ class GlobeVisual extends React.Component{
 
     return(
       <div id="globev"
-        style={{ width: window.innerWidth, height: window.innerHeight, backgroundColor: 'red'}}
+        style={{ width: window.innerWidth, height: window.innerHeight - 60, backgroundColor: 'red'}}
         ref={(mount) => {return this.mount = mount }}
       />
     )
