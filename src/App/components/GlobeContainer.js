@@ -1,11 +1,5 @@
 import React from 'react';
 
-// import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-
-// import '../../../node_modules/elemental/less/elemental.less';
-// import '../stylesheets/elementalUI.min.css';
-// import { Button } from 'elemental';
-
 
 import * as THREE from 'three';
 import * as d3 from 'd3';
@@ -16,7 +10,7 @@ import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './Timeline'; //child component
 
 
-class Globe extends React.Component {
+class GlobeContainer extends React.Component {
 
   constructor(props){
     super(props);
@@ -154,4 +148,4 @@ class Globe extends React.Component {
   }
 }
 
-export default Globe;
+export default GlobeContainer;
