@@ -157,6 +157,7 @@ class GlobeVisual extends React.Component{
 
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.rotation.y = Math.PI;
+    this.mesh.name = 'earth'
     this.scene.add(this.mesh);
 
     // switch to "atomosphere"
@@ -173,6 +174,7 @@ class GlobeVisual extends React.Component{
 
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.scale.set( 1.1, 1.1, 1.1 );
+    this.mesh.name = 'atmosphere'
     this.scene.add(this.mesh);
 
     //switch to "data points"
@@ -248,7 +250,7 @@ class GlobeVisual extends React.Component{
       colorFnWrapper = (data,i) => this.opts.colorFn(data[i+2])
     } else if ( this.opts.format === 'legend') {
       step = 4;
-      colorFnWrapper = (data, i) => this.opts.colorFn(data[i+2]);
+      colorFnWrapper = (data, i) => this.opts.colorFn(data[i+3].fat);
     } else {
       throw('error: format not supported: '+ this.opts.format);
     }
@@ -315,6 +317,10 @@ class GlobeVisual extends React.Component{
     for (var i = 0; i < this.point.geometry.faces.length; i++) {
       // color for every faces
       this.point.geometry.faces[i].color = color;
+
+      //give top tip a gray color
+      if (i == 10) this.point.geometry.faces[i].color = new THREE.Color().setStyle('rgb(90,90,90)')
+      if (i == 11) this.point.geometry.faces[i].color = new THREE.Color().setStyle('rgb(90,90,90)')
     }
     if(this.point.matrixAutoUpdate){
       this.point.updateMatrix();
@@ -449,11 +455,11 @@ class GlobeVisual extends React.Component{
     this.distanceTarget = this.distanceTarget < 450 ? 450 : this.distanceTarget;
   }
 
-  transition(currentIndex){
+  transition(currentIndex,cb){
 
     const timer = d3.timer((e) => {
 
-      var t = Math.min(1,d3.easeCubicInOut(e/3700));
+      var t = Math.min(1,d3.easeCubicInOut(e/700));
       // old data
       this.points.morphTargetInfluences[this.lastIndex] = 1 -t;
       // new data
@@ -463,6 +469,7 @@ class GlobeVisual extends React.Component{
       if (t == 1) {
         timer.stop();
         this.lastIndex = currentIndex;
+        cb && cb();
       }
     })
   }
@@ -541,7 +548,7 @@ class GlobeVisual extends React.Component{
 
     return(
       <div id="globev"
-        style={{ width: window.innerWidth, height: window.innerHeight - 60, backgroundColor: 'red'}}
+        style={{ width: '75%', height: window.innerHeight - 60, backgroundColor: 'red'}}
         ref={(mount) => {return this.mount = mount }}
       />
     )

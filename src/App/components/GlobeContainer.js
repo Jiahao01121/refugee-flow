@@ -15,7 +15,9 @@ class GlobeContainer extends React.Component {
   constructor(props){
     super(props);
 
-    this.timelineClicked = this.timelineClicked.bind(this);
+    this.timlineYearClicked = this.timlineYearClicked.bind(this);
+    this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
+
     this.state = {
       color: new THREE.Color(0xffffff),
       imgDir: '../globe/',
@@ -25,55 +27,148 @@ class GlobeContainer extends React.Component {
         // console.log(c);
         return c;
       },
+      currentYear: '2010',
+
     }
 
   }
 
   componentDidMount(){
-
     console.log("------ Globe mounted");
-    // const url = 'http://' + window.location.hostname + ':2700' + '/data/all';
-    const url = 'http://' + window.location.hostname + ':2700' + '/data/global_war';
-    this.fetchData(url).then(d =>{
 
-      console.timeEnd("received");
+    const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
+    this.fetchData(url).then(d =>{ console.timeEnd("received & processed data");
 
       this.setState({
         warData: d
       });
 
-      this.drawData([d[0]]); //default view (2010);
-      this.gv.lastIndex = 0;
-      this.gv.transition(this.gv.lastIndex);
+      this.drawData(d[0].value); // Default view : 2010;
+      this.gv.lastIndex = 0; // For animation purpose;
+      this.gv.transition(this.gv.lastIndex); // Animate interface;
       this.gv.animate();
-
     });
 
   }
 
   fetchData(url){
-    console.time("received");
-    const request = new Request( url, {method: 'GET', cache: true});
 
+    console.time("received & processed data");
+    const request = new Request( url, {method: 'GET', cache: true});
     return (
       fetch(request).then(res => res.json()).then(
-        d => d = d.map((d) =>{
-          let casualty = [];
-          // get extreme -> d3.domain().range()
-          for (let i = 0; i < d.value[1].length; i+= 4) {
-            casualty.push(d.value[1][i+2]);
-          }
-          let max = d3.max(casualty);
-          let min = d3.min(casualty);
-          let map = d3.scaleLinear().domain([min,max]).range([0,1]);
 
-          // calculate num
-          for (var i = 0; i < d.value[1].length; i+= 4) {
-            d.value[1][i+2] = map( d.value[1][i+2] );
+        d => d = d.map(data =>{
+
+          const data_year = data.Year;
+          const data_value = data.value;
+          const minMax = (()=>{
+            if(Object.keys(data_value).length == 4){
+              const arr = data_value[ Object.keys(data_value)[0] ].concat(
+                data_value[ Object.keys(data_value)[1] ],
+                data_value[ Object.keys(data_value)[2] ],
+                data_value[ Object.keys(data_value)[3] ],
+              )
+
+
+
+              let max = d3.max(arr,d => d.fat )
+              let min = d3.min(arr,d => d.fat )
+              return [min,max];
+            }else{
+              console.log("err at compute max/min");
+            }
+          })();
+          const scaler = d3.scaleLinear().domain(minMax).range([0,1]);
+          const out = [];
+          const all = [];
+          const noHeight = [];
+
+          for (var quater in data_value) {
+
+            let output = [];
+            data_value[quater].forEach(d =>{
+              all.push(
+                d.lat,
+                d.lng,
+                scaler(d.fat),
+                {
+                  'fat' : scaler(d.fat),
+                  'id': d.id,
+                  'int': d.int,
+                  'cot': d.cot,
+                  'evt': d.evt,
+                }
+              )
+
+              noHeight.push(
+                d.lat,
+                d.lng,
+                0,
+                {
+                  'id': d.id,
+                  'int': d.int,
+                  'cot': d.cot,
+                  'evt': d.evt,
+                }
+              )
+            })
+
+            for (var _q in data_value) {
+
+              // console.log(quater);
+              // console.log(_q);
+              // console.log(data[_q]);
+
+              if(_q === quater){
+
+                data_value[_q].forEach(d =>{
+                  output.push(
+                    d.lat,
+                    d.lng,
+                    scaler(d.fat),
+                    {
+                      'fat' : scaler(d.fat),
+                      'id': d.id,
+                      'int': d.int,
+                      'cot': d.cot,
+                      'evt': d.evt,
+                    }
+                  )
+                })
+              }
+              else {
+
+                data_value[_q].forEach(d =>{
+                  output.push(
+                    d.lat,
+                    d.lng,
+                    0, // height
+                    {
+                      'fat' : scaler(d.fat), // color
+                      'id': d.id,
+                      'int': d.int,
+                      'cot': d.cot,
+                      'evt': d.evt,
+                    }
+                  )
+                })
+              }
+
+            }// for in
+
+            out.push([quater,output]);
+
           }
 
-          return d.value;
+          return {
+              year : data_year,
+              value : [ ['all',all] ].concat(out,[ ['noHeight',noHeight] ]),
+          }
+
+
         })
+
       )
     )
   }
@@ -90,10 +185,7 @@ class GlobeContainer extends React.Component {
       // data add here
       this.gv.addData(data[i][1], {format: 'legend', name: data[i][0], animated: true} );
       // TODO interactive between data
-      //addEventListener
-      // $('#year'+data[i][0]).mouseover(data_transition(i));
     }
-
 
     this.gv.createPoints(data);
   }
@@ -116,32 +208,52 @@ class GlobeContainer extends React.Component {
     )
   }
 
-  renderGlobeController(){
+  renderGlobeTimeline(){
     return (
       <Timeline
-          onClickFn = {this.timelineClicked}
+          onClickYear = {this.timlineYearClicked}
+          onClickQuater = {this.timlineQuaterClicked}
+          currentYear = {this.state.currentYear}
       />
     )
   }
 
-  timelineClicked(year){
+  timlineYearClicked(year){
 
-    //update visualization
-    this.gv.scene.remove(this.gv.points);
-    const data = this.state.warData.slice(); //copy state;
-    data.forEach((d) => {
-      if(d[0] == year ) {
-        console.log(d);
-        this.drawData([ d ]);
-        this.gv.transition(this.gv.lastIndex);
-      }
-    });
+    if(year == this.state.currentYear){
+      // Animate to all records within the currentYear;
+      this.gv.transition(0);
+    }
+    else {
+      //update visualization
+      this.setState({
+        currentYear: year,
+      })
+
+      this.gv.transition(5,() => {
+
+        this.gv.scene.remove(this.gv.points);
+        const data = this.state.warData.slice(); //copy state;
+        data.forEach((d) => {
+          if(d.year == year ) {
+            this.drawData( d.value );
+            this.gv.transition(0);
+          }
+        });
+      });
+    }
+
   }
+
+  timlineQuaterClicked(quater){
+    this.gv.transition(quater); // Animate to selected quater;
+  }
+
 
   render(){
     return(
       <div className = 'globe'>
-          {this.renderGlobeController()}
+          {this.renderGlobeTimeline()}
           {this.renderGlobeVisual()}
       </div>
     )

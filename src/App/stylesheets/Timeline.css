@@ -1,0 +1,94 @@
+.selected{
+  color: #D7E6FF !important
+}
+.quaters{
+  font-family: 'Roboto';
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: white;
+  border: 0;
+  background: transparent;
+  width: 50px;
+  left: 15px;
+  bottom: 8px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+.quaters:hover{
+  font-size: 13px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.years{
+  font-family: 'Roboto';
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  border: 0;
+  background: transparent;
+  width: 50px;
+  left: 35px;
+  bottom: 8px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.years:hover{
+  font-size: 13px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+.Wrapper{
+  width: 35px;
+  padding: 0px;
+  margin-bottom: 200px;
+  height: 1px;
+  background: white;
+  cursor: pointer;
+}
+.Wrapper:first-child{
+    margin-top: 5px;
+  }
+
+.TimelineWrapper{
+  position:absolute;
+  /* height: ${() => window.innerHeight- 60 - 320 + 'px'}; */
+  height: 300px;
+  width: 100px;
+  margin-top: 320px;
+  overflow-y: scroll;
+  left: 10px;
+}
+.TimelineWrapper::-webkit-scrollbar{
+  width:0.5em;
+}
+.TimelineWrapper::-webkit-scrollbar-thumb {
+  background-color: #15151C;
+  -webkit-border-radius: 4px;
+}
+
+.TimelineWrapper::before{
+  content: "Timeline";
+  position: relative;
+  font-family: 'Roboto';
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  top: -2px;
+  margin-left: 10px;
+}
+
+.individualWrapper{
+width: 35px;
+padding: 0px;
+margin-bottom: 200px;
+height: 1px;
+background: white;
+cursor: pointer;
+}
+.individualWrapper :first-child{
+  margin-top: 5px;
+}

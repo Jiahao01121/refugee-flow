@@ -8,7 +8,7 @@ var path = require('path');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var data = require('./routes/data');
+var dataRoutes = require('./routes/dataRoute');
 
 var app = express();
 
@@ -28,7 +28,7 @@ app.use(function(req, res, next) {
   next();
 });
 app.use('/', index);
-app.use('/data',data)
+app.use('/data',dataRoutes)
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
