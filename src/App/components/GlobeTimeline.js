@@ -7,10 +7,13 @@ import * as d3 from 'd3';
 
 import * as warDict from '../data/warDictionary';
 
-// import styled, { css } from 'styled-components';
-// import styles from '../stylesheets/globeTimeline.css'
+// import 'semantic-ui-css/semantic.min.css';
+// import { Button } from 'semantic-ui-react';
 
-class GlobeTimeline extends React.Component {
+// import styled, { css } from 'styled-components';
+import styles from '../stylesheets/GlobeTimeline.css'
+
+class Timeline extends React.Component {
 
   constructor(props){
     super(props);
@@ -84,4 +87,4 @@ class GlobeTimeline extends React.Component {
   }
 }
 
-export default GlobeTimeline;
+export default Timeline;
