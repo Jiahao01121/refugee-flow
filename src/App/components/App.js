@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Navbar from './Navbar'
 import GlobeContainer from './GlobeContainer'
+import GlobeRightSection from './GlobeRightSection'
 import Summary from './Summary'
 import War from './War'
 import RefugeeRoute from './RefugeeRoute'
@@ -37,6 +38,7 @@ class App extends React.Component {
                   <Route path='/route' component={RefugeeRoute} />
                 </Switch>
                 <GlobeContainer />
+                <GlobeRightSection />
               </div>
             </Router>
 
