@@ -1,7 +1,11 @@
 //mongoose 操作interface
-const WarModel = require('../model/warmodel');
-const NoteModel = require('../model/notemodel');
-const globalWarModel = require('../model/global_warmodel');
+
+// const WarModel = require('../model/warmodel');
+// const NoteModel = require('../model/notemodel');
+// const globalWarModel = require('../model/global_warmodel');
+
+const fs = require('fs');
+const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json') );
 
 const findWar = function(query){
   return new Promise((resolve, reject) => {
@@ -34,7 +38,12 @@ const fetch_global = function(query){
 
 }
 
+const war_all = function (){
+  return war_all_data;
+}
+
 module.exports = {
   findWar,
   fetch_global,
+  war_all,
 }
