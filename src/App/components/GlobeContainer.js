@@ -7,7 +7,7 @@ import * as _ from 'underscore'
 
 
 import GlobeVisual from './GlobeVisual'; //child component
-import Timeline from './Timeline'; //child component
+import Timeline from './GlobeTimeline'; //child component
 
 
 class GlobeContainer extends React.Component {
