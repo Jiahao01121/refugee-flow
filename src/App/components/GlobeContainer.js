@@ -37,13 +37,20 @@ class GlobeContainer extends React.Component {
     console.log("------ Globe mounted");
 
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
-    this.fetchData(url).then(d =>{ console.timeEnd("received & processed data");
+    this.fetchData(url).then(d =>{
+      console.timeEnd("received & processed data");
 
       this.setState({
         warData: d
       });
 
-      this.drawData(d[0].value); // Default view : 2010;
+
+      this.drawData(d[0].value); // Default view : 2010
+      this.gv.scaler = d[0].scaler; // Default scaler : 2010's
+
+      // this.gv.setTarget([40.226460, 17.442115], 250)
+
+      // 4.71238898038469,0.5235987755982988
       this.gv.lastIndex = 0; // For animation purpose;
       this.gv.transition(this.gv.lastIndex); // Animate interface;
       this.gv.animate();
@@ -105,12 +112,7 @@ class GlobeContainer extends React.Component {
                 d.lat,
                 d.lng,
                 0,
-                {
-                  'id': d.id,
-                  'int': d.int,
-                  'cot': d.cot,
-                  'evt': d.evt,
-                }
+                {}
               )
             })
 
@@ -143,7 +145,7 @@ class GlobeContainer extends React.Component {
                   output.push(
                     d.lat,
                     d.lng,
-                    0, // height
+                    -1, // height
                     {
                       'fat' : scaler(d.fat), // color
                       'id': d.id,
@@ -164,6 +166,7 @@ class GlobeContainer extends React.Component {
           return {
               year : data_year,
               value : [ ['all',all] ].concat(out,[ ['noHeight',noHeight] ]),
+              scaler: scaler,
           }
 
 
@@ -232,6 +235,12 @@ class GlobeContainer extends React.Component {
 
       this.gv.transition(5,() => {
 
+        //remove octree obj
+        console.time('octree remove takes:')
+        console.time('remove all remove takes:')
+
+        this.gv.octree.remove(this.gv.points);
+        console.timeEnd('octree remove takes:')
         this.gv.scene.remove(this.gv.points);
         const data = this.state.warData.slice(); //copy state;
         data.forEach((d) => {
@@ -240,6 +249,7 @@ class GlobeContainer extends React.Component {
             this.gv.transition(0);
           }
         });
+        console.timeEnd('remove all remove takes:')
       });
     }
 

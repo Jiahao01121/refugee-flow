@@ -1,13 +1,14 @@
 import React from 'react';
 // import style from './GlobeVisual.css'
 import * as d3 from 'd3';
-import THREE from '../data/Octree';
+import THREE from '../THREEJSScript/Octree';
 
 class GlobeVisual extends React.Component{
   constructor(props){
     super(props);
     // Octree(THREE);
     // this.init = this.init.bind(this);
+    this.raycast_listener = this.raycast_listener.bind(this);
     this.animate = this.animate.bind(this);
     this.addPoint = this.addPoint.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -18,6 +19,8 @@ class GlobeVisual extends React.Component{
     this.onDocumentKeyDown = this.onDocumentKeyDown.bind(this);
     this.onWindowResize = this.onWindowResize.bind(this);
     this.zoom = this.zoom.bind(this);
+    this.rotateGlobe = this.rotateGlobe.bind(this);
+
   }
 
   componentDidMount(){
@@ -90,12 +93,6 @@ class GlobeVisual extends React.Component{
         }
       };
 
-    // raycaster & tootips_mouseoverFeedback
-    this.raycaster = new THREE.Raycaster();
-    this.raycasterMouse = new THREE.Vector2();
-    this.tootips_mouseoverFeedback = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 1), new THREE.MeshBasicMaterial({color: 0xffffff}) );
-    this.tootips_mouseoverFeedback.name = 'raycast-mouseover';
-
     //
     this.curZoomSpeed = 0;
     this.zoomSpeed = 50;
@@ -113,9 +110,10 @@ class GlobeVisual extends React.Component{
     this.padding = 40;
 
     //
-    const PI_HALF = Math.PI / 2;
-    this.PI_HALF = PI_HALF;
+    this.PI_HALF = Math.PI / 2;;
 
+    //
+    this.scaler = undefined;
     //
     this.init()
 
@@ -184,56 +182,65 @@ class GlobeVisual extends React.Component{
     this.point = new THREE.Mesh(geometry);
 
     // raycasting
+    this.raycaster = new THREE.Raycaster();
+    this.raycasterMouse = new THREE.Vector2();
+    this.interscted = undefined;
 
+    const tooltips_mouseoverFeedback_geo = new THREE.BoxGeometry(1.5, 1.5, 1);
+    tooltips_mouseoverFeedback_geo.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,-0.5));
+    const tooltips_mouseoverFeedback_mat = new THREE.ShaderMaterial({
+          uniforms: {},
+          vertexShader: [
+            'varying vec3 vNormal;',
+            'void main() {',
+              'vNormal = normalize( normalMatrix * normal );',
+              'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
+            '}'
+          ].join('\n'),
+          fragmentShader: [
+            'varying vec3 vNormal;',
+            'void main() {',
+              //  0.75 provide the best shading (maybe)
+              // LAST value 缩小光晕
+              'float intensity = pow( 2.75 - dot( vNormal, vec3( 0, 0, 1.0 ) ), 54.0 );',
+              // vec4 is the color
+              'gl_FragColor = vec4( 0.254, 0.929, 1., 1.0 ) * intensity;',
+
+            '}'
+          ].join('\n'),
+          side: THREE.BackSide,
+          blending: THREE.AdditiveBlending,
+          transparent: true
+        })
+    this.tooltips_mouseoverFeedback = new THREE.Mesh(tooltips_mouseoverFeedback_geo,tooltips_mouseoverFeedback_mat);
+
+    this.tooltips_mouseoverFeedback.name = 'raycast-mouseover';
     this.octree = new THREE.Octree( {
-      // uncomment below to see the octree (may kill the fps)
-      //scene: scene,
-      // when undeferred = true, objects are inserted immediately
-      // instead of being deferred until next octree.update() call
-      // this may decrease performance as it forces a matrix update
+      // scene: this.scene,
       undeferred: false,
-      // set the max depth of tree
       depthMax: Infinity,
-      // max number of objects before nodes split or merge
       objectsThreshold: 8,
-      // percent between 0 and 1 that nodes will overlap each other
-      // helps insert objects that lie over more than one node
       overlapPct: 0.15
     } );
+    this.scene.add(this.tooltips_mouseoverFeedback);
+    this.mount.addEventListener('mousemove', this.raycast_listener,false);
 
-    this.scene.add(this.tootips_mouseoverFeedback);
-
-    this.mount.addEventListener('mousemove', e =>{
-      e.preventDefault();
-        // TODO: raycast mouse offset
-      this.raycasterMouse.x = ( e.clientX / parseInt(this.mount.style.width) ) * 2 - 1;
-      this.raycasterMouse.y = - ( e.clientY / parseInt(this.mount.style.height) ) * 2 + 1;
-
-      // console.log(e.clientX , e.clientY);
-      // console.log(this.raycasterMouse.x , this.raycasterMouse.y);
-      // console.log("---------------");
-
-    })
-
+    //
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize(w, h);
     this.mount.appendChild(this.renderer.domElement);
 
+    //
     this.mount.addEventListener('mousedown', this.onMouseDown, false);
     this.mount.addEventListener('mousewheel', this.onMouseWheel, false);
-
     this.mount.addEventListener('keydown', this.onDocumentKeyDown, false);
-
     this.mount.addEventListener('mouseover', () => {
       this.overRenderer = true;
     }, false);
-
     this.mount.addEventListener('mouseout', ()=> {
       this.overRenderer = false;
     }, false);
-
-
-  }
+  } // init
 
   addData(data, _opts) {
 
@@ -286,7 +293,7 @@ class GlobeVisual extends React.Component{
 
     if (this.opts.animated) {
       // morphTargets use to do animation
-      // target to the data contains height value
+      // morphTarget to the data contains height value
       // (第一步的addPoint是没高度数据的，第二步的subgeo是有高度数据的)
       this._baseGeometry.morphTargets.push({'name': this.opts.name, vertices: subgeo.vertices});
     }
@@ -312,7 +319,7 @@ class GlobeVisual extends React.Component{
 
     this.point.scale.z = Math.max( size, 0.1 ); // avoid non-invertible matrix
 
-    // point.updateMatrix();
+    this.point.updateMatrix();
 
     for (var i = 0; i < this.point.geometry.faces.length; i++) {
       // color for every faces
@@ -334,26 +341,7 @@ class GlobeVisual extends React.Component{
   createPoints(userData) {
     // _baseGeometry is then transform to 'points' to do visualization
     if (this._baseGeometry !== undefined) {
-      if (this.is_animated === false) {
-        //
-        // this.points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
-        //       color: 0xffffff,
-        //       vertexColors: THREE.FaceColors,
-        //       morphTargets: false
-        //     }));
-      } else {
-        if (this._baseGeometry.morphTargets.length < 8) {
-          // console.log('t l',this._baseGeometry.morphTargets.length);
-
-          var padding = 8-this._baseGeometry.morphTargets.length;
-          // console.log('padding', padding);
-          for(var i=0; i<=padding; i++) {
-            // console.log('padding',i);
-            // don't know the reason for padding
-            // this._baseGeometry.morphTargets.push({'name': 'morphPadding'+i, vertices: this._baseGeometry.vertices});
-          }
-
-        }else{ console.log( "maybe too many data?" ); }
+        if (this._baseGeometry.morphTargets.length >= 8) console.log("maybe too many data?");
 
         // points is the ultimate thing used to do visualization
         this.points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
@@ -362,20 +350,77 @@ class GlobeVisual extends React.Component{
               // animation
               morphTargets: true,
             }));
-
-
+        //add userData to the points in order to raycast
         this.points.userData =  {'userData': userData};
+        //add to octree
+        // use vertices will be more easy to mouseover, but performance not as good.
 
-        this.octree.add(this.points,{ useFaces: false })
-        // console.log(this.octree);
+        userData[0][1].length > 80000 ? this.octree.add(this.points,{ useFaces: true,useVertices: false }) : this.octree.add(this.points,{ useFaces: false,useVertices: true });
+        this.octree.add(this.points,{ useFaces: true,useVertices: false });
 
       }
 
-      // _points = this.points
       this.scene.add(this.points);
-    }
+
   }
 
+
+
+  raycast_listener(event) {
+    event.preventDefault();
+    //normalize mouse pos
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.raycasterMouse.x =   ( ( event.clientX - rect.left ) / ( rect.width - rect.left ) ) * 2 - 1;
+    this.raycasterMouse.y = - ( ( event.clientY -rect.top   ) / ( rect.bottom - rect.top ) ) * 2 + 1;
+
+    this.raycaster.setFromCamera( this.raycasterMouse, this.camera );
+
+    const octreeObjects = this.octree.search( this.raycaster.ray.origin, this.raycaster.ray.far, true, this.raycaster.ray.direction );
+    const intersections = this.raycaster.intersectOctreeObjects( octreeObjects );
+    if ( intersections.length > 0 ) {
+
+      this.intersected = intersections[ 0 ];
+
+      // octree search that useVertices
+      // const dataIndex = Math.floor(this.intersected.faceIndex / 12);
+
+      //octree search that useFaces
+      const dataIndex = Math.floor(this.intersected.face.a / 8);
+      console.log(this.intersected);
+
+      const displayData =  this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 3];
+      console.log( this.scaler.invert(displayData.fat) );
+      console.log(displayData);
+
+      // check height( height = -1 is data not in the current selection)
+      if(this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] >= 0){
+
+        const phi = (90 -
+          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0]
+        ) * Math.PI / 180;
+
+        const theta = (180 -
+          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1]
+        ) * Math.PI / 180;
+
+        this.tooltips_mouseoverFeedback.position.x = 200 * Math.sin(phi) * Math.cos(theta);
+        this.tooltips_mouseoverFeedback.position.y = 200 * Math.cos(phi);
+        this.tooltips_mouseoverFeedback.position.z = 200 * Math.sin(phi) * Math.sin(theta);
+        this.tooltips_mouseoverFeedback.lookAt(this.mesh.position);
+        this.tooltips_mouseoverFeedback.scale.z = Math.max(
+          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2]
+          *200, 0.1 ); // avoid non-invertible matrix
+
+      }
+
+    }else if(this.intersected){
+      // hide tooltips
+      this.tooltips_mouseoverFeedback.position.x = 0;
+      this.tooltips_mouseoverFeedback.position.y = 0;
+      this.tooltips_mouseoverFeedback.position.z = 0;
+    }
+
+  }
 
   onMouseDown(event) {
     event.preventDefault();
@@ -389,7 +434,6 @@ class GlobeVisual extends React.Component{
 
     this.targetOnDown.x = this.target.x;
     this.targetOnDown.y = this.target.y;
-
     this.mount.style.cursor = 'move';
   }
 
@@ -406,6 +450,10 @@ class GlobeVisual extends React.Component{
     // console.log(this.target.x + '| '+this.target.y);
     this.target.y = this.target.y > this.PI_HALF ? this.PI_HALF : this.target.y;
     this.target.y = this.target.y < - this.PI_HALF ? - this.PI_HALF : this.target.y;
+
+    // this.target.x = this.target.x > Math.PI*3/2 ? Math.PI*3/2 : this.target.x;
+    // this.target.x = this.target.x < - this.PI_HALF ? - this.PI_HALF : this.target.x;
+
 
   }
 
@@ -451,12 +499,12 @@ class GlobeVisual extends React.Component{
 
   zoom(delta) {
     this.distanceTarget -= delta;
-    this.distanceTarget = this.distanceTarget > 1000 ? 1000 : this.distanceTarget;
-    this.distanceTarget = this.distanceTarget < 450 ? 450 : this.distanceTarget;
+    this.distanceTarget = this.distanceTarget > 1100 ? 1100 : this.distanceTarget;
+    this.distanceTarget = this.distanceTarget < 250 ? 250 : this.distanceTarget;
   }
 
-  transition(currentIndex,cb){
-
+  transition(currentIndex,cb) {
+    this.currentSelectedTimeFrame = currentIndex;
     const timer = d3.timer((e) => {
 
       var t = Math.min(1,d3.easeCubicInOut(e/700));
@@ -475,15 +523,41 @@ class GlobeVisual extends React.Component{
   }
 
   componentWillReceiveProps(e) {
-    // console.log(e);
+    console.log('globeVisual received new prop!')
+    console.log(e);
     //
     // this.cube.material = new THREE.MeshBasicMaterial({ color: e.ss });
 
   }
 
+  setTarget(rot, distance) {
+    // -1.5707963267948966
 
+    const convert = (n, start1, stop1, start2, stop2, withinBounds) =>{
+      var newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+        return newval;
+    }
+
+    this.target.x = rot[1] > 0 ? convert(rot[1],0,180,-Math.PI*1/2, Math.PI*1/2) : convert(rot[1],-180,0,Math.PI*1/2,Math.PI*3/2);
+
+    this.target.y = convert(rot[0],-85,85,-1.5707963267948966,1.5707963267948966); //Latitude
+
+    this.distanceTarget = distance;
+  }
+
+  rotateGlobe(deltaSeconds) {
+    // TODO: rotate toogle in UI
+    // if (self.rotationSpeed != 0) {
+    if (deltaSeconds > 0 && deltaSeconds < 1) {
+      this.target.x += 1 * deltaSeconds / -20;
+      this.target.y += 1 * deltaSeconds / -100;
+    }
+    // }
+  }
 
   animate() {
+    // this.rotateGlobe(8/1000);
+
     // get frameID, frameID is for cancelling when unmount
     this.frameId = window.requestAnimationFrame(this.animate)
 
@@ -495,49 +569,19 @@ class GlobeVisual extends React.Component{
     this.rotation.x += (this.target.x - this.rotation.x) * 0.1;
     this.rotation.y += (this.target.y - this.rotation.y) * 0.1;
     this.distance += (this.distanceTarget - this.distance) * 0.1;
-
-
+    //camera coord
     this.camera.position.x = this.distance * Math.sin(this.rotation.x) * Math.cos(this.rotation.y);
     this.camera.position.y = this.distance * Math.sin(this.rotation.y);
     this.camera.position.z = this.distance * Math.cos(this.rotation.x) * Math.cos(this.rotation.y);
-
     this.camera.lookAt(this.mesh.position);
     this.camera.updateProjectionMatrix();
 
-    //raycast
-
-    // this.octree.update();
-
-    // TODO: optimization for raycast (maybe use octree )(laggy when too much data);
-    this.raycaster.setFromCamera( this.raycasterMouse, this.camera );
-    const intersects = this.raycaster.intersectObject( this.points );
-    // console.log(intersects);
-    if ( intersects.length > 0 ) {
-      // if()
-      const intersect = intersects[ 0 ];
-
-      const face = intersect.face;
-
-      const dataIndex = Math.floor(intersect.faceIndex / 12);
-
-      // console.log("Faceindex: " + intersect.faceIndex);
-      // console.log("dataIndex: " + dataIndex);
-      // console.log("-------");
-
-      console.log(
-        this.points.userData.userData[0][1] [ (dataIndex*4) + 3]
-      );
-
-      this.tootips_mouseoverFeedback.position.x = intersect.point.x;
-      this.tootips_mouseoverFeedback.position.y = intersect.point.y;
-      this.tootips_mouseoverFeedback.position.z = intersect.point.z;
-      this.tootips_mouseoverFeedback.lookAt(this.mesh.position);
-
-    }
-
     this.renderer.render(this.scene, this.camera);
 
-  }
+    //update octree after render to make sure the matrix is updated
+    this.octree.update();
+
+  } //threeJS animate
 
 
 
