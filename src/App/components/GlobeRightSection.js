@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
 
+import GlobeRSChart from './GlobeRSChart'
 
 class GlobeRightSection extends React.Component {
   constructor(props){
@@ -32,6 +33,7 @@ class GlobeRightSection extends React.Component {
     `
     return(
       <Background>
+        <GlobeRSChart />
       </Background>
     )
 
