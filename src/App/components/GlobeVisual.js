@@ -3,10 +3,11 @@ import React from 'react';
 import * as d3 from 'd3';
 import THREE from '../THREEJSScript/Octree';
 
+
 class GlobeVisual extends React.Component{
   constructor(props){
     super(props);
-    // Octree(THREE);
+
     // this.init = this.init.bind(this);
     this.raycast_listener = this.raycast_listener.bind(this);
     this.animate = this.animate.bind(this);
@@ -24,6 +25,7 @@ class GlobeVisual extends React.Component{
   }
 
   componentDidMount(){
+
     console.log("------ GlobeVisual mounted");
     // opts, also passed in on .adddata() from other component
     this.opts = this.props.opts || {
@@ -352,9 +354,9 @@ class GlobeVisual extends React.Component{
             }));
         //add userData to the points in order to raycast
         this.points.userData =  {'userData': userData};
+        
         //add to octree
         // use vertices will be more easy to mouseover, but performance not as good.
-
         userData[0][1].length > 80000 ? this.octree.add(this.points,{ useFaces: true,useVertices: false }) : this.octree.add(this.points,{ useFaces: false,useVertices: true });
         this.octree.add(this.points,{ useFaces: true,useVertices: false });
 
