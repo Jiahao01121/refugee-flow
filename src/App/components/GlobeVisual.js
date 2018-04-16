@@ -2,6 +2,7 @@ import React from 'react';
 // import style from './GlobeVisual.css'
 import * as d3 from 'd3';
 import THREE from '../THREEJSScript/Octree';
+import OctreeWorker from '../workers/Octree.worker.js';
 
 
 class GlobeVisual extends React.Component{
@@ -116,6 +117,10 @@ class GlobeVisual extends React.Component{
 
     //
     this.scaler = undefined;
+
+    //register octree worker
+    this.OctreeWorker = new OctreeWorker();
+
     //
     this.init()
 
@@ -354,11 +359,21 @@ class GlobeVisual extends React.Component{
             }));
         //add userData to the points in order to raycast
         this.points.userData =  {'userData': userData};
-        
+
         //add to octree
         // use vertices will be more easy to mouseover, but performance not as good.
         userData[0][1].length > 80000 ? this.octree.add(this.points,{ useFaces: true,useVertices: false }) : this.octree.add(this.points,{ useFaces: false,useVertices: true });
-        this.octree.add(this.points,{ useFaces: true,useVertices: false });
+
+
+        console.log(this.octree);
+        this.OctreeWorker.postMessage({
+          'a':1
+        });
+
+        this.OctreeWorker.onmessage = event => {
+          // console.log(event);
+        }
+
 
       }
 
