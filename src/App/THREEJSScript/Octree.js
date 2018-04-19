@@ -273,7 +273,6 @@ import * as THREE from 'three';
 		},
 
 		remove: function ( object ) {
-
 			var i, l,
 				objectData = object,
 				index,
@@ -291,6 +290,7 @@ import * as THREE from 'three';
 
 			if ( this.objectsMap[ object.uuid ] ) {
 
+
 				this.objectsMap[ object.uuid ] = undefined;
 
 				// check and remove from objects, nodes, and data lists
@@ -298,28 +298,32 @@ import * as THREE from 'three';
 				index = indexOfValue( this.objects, object );
 
 				if ( index !== - 1 ) {
-
 					this.objects.splice( index, 1 );
 
 					// remove from nodes
-
 					objectsDataRemoved = this.root.removeObject( objectData );
-
 					// remove from objects data list
-
-					for ( i = 0, l = objectsDataRemoved.length; i < l; i ++ ) {
-
-						objectData = objectsDataRemoved[ i ];
-
-						index = indexOfValue( this.objectsData, objectData );
-
-						if ( index !== - 1 ) {
-
-							this.objectsData.splice( index, 1 );
-
-						}
-
-					}
+console.time('octree remove inside loop');
+/************************************
+Got rid of loop, we only need remove
+to remove all the objects, no need to went through
+all the data
+************************************/ 
+					// for ( i = 0, l = objectsDataRemoved.length; i < l; i ++ ) {
+          //
+					// 	objectData = objectsDataRemoved[ i ];
+          //
+					// 	index = indexOfValue( this.objectsData, objectData );
+          //
+					// 	if ( index !== - 1 ) {
+          //
+					// 		this.objectsData.splice( index, 1 );
+          //
+					// 	}
+          //
+					// }
+          this.objectsData = []
+console.timeEnd('octree remove inside loop');
 
 				}
 
@@ -335,7 +339,7 @@ import * as THREE from 'three';
 
 				}
 
-			}
+			} // else if
 
 		},
 

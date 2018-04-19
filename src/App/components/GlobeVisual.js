@@ -27,6 +27,8 @@ class GlobeVisual extends React.Component{
 
   componentDidMount(){
 
+    this.vkthread = window.vkthread;
+
     console.log("------ GlobeVisual mounted");
     // opts, also passed in on .adddata() from other component
     this.opts = this.props.opts || {
@@ -119,7 +121,7 @@ class GlobeVisual extends React.Component{
     this.scaler = undefined;
 
     //register octree worker
-    this.OctreeWorker = new OctreeWorker();
+    // this.OctreeWorker = new OctreeWorker();
 
     //
     this.init()
@@ -223,7 +225,7 @@ class GlobeVisual extends React.Component{
 
     this.tooltips_mouseoverFeedback.name = 'raycast-mouseover';
     this.octree = new THREE.Octree( {
-      // scene: this.scene,
+      scene: this.scene,
       undeferred: false,
       depthMax: Infinity,
       objectsThreshold: 8,
@@ -362,23 +364,26 @@ class GlobeVisual extends React.Component{
 
         //add to octree
         // use vertices will be more easy to mouseover, but performance not as good.
-        userData[0][1].length > 80000 ? this.octree.add(this.points,{ useFaces: true,useVertices: false }) : this.octree.add(this.points,{ useFaces: false,useVertices: true });
 
-
-        console.log(this.octree);
-        this.OctreeWorker.postMessage({
-          'a':1
-        });
-
-        this.OctreeWorker.onmessage = event => {
-          // console.log(event);
+        if(userData[0][1].length > 70000){
+          this.octree.add(this.points,{ useFaces: true,useVertices: false });
+        } else {
+          this.octree.add(this.points,{ useFaces: false,useVertices: true });
         }
 
 
+
+        // this.OctreeWorker.postMessage({
+        //   'a':1
+        // });
+        //
+        // this.OctreeWorker.onmessage = event => {
+        //   // console.log(event);
+        // }
+
+
       }
-
       this.scene.add(this.points);
-
   }
 
 
@@ -573,6 +578,7 @@ class GlobeVisual extends React.Component{
   }
 
   animate() {
+    console.time('animate takes');
     // this.rotateGlobe(8/1000);
 
     // get frameID, frameID is for cancelling when unmount
@@ -596,8 +602,8 @@ class GlobeVisual extends React.Component{
     this.renderer.render(this.scene, this.camera);
 
     //update octree after render to make sure the matrix is updated
-    this.octree.update();
-
+    // this.octree.update();
+    console.timeEnd('animate takes');
   } //threeJS animate
 
 
