@@ -182,15 +182,21 @@ class GlobeContainer extends React.Component {
 
     let data_dict = data.map( (d) =>d[0] );
 
+    console.time('********************add data takes');
+    // this loop takes a quite bit time
     for (let i=0;i<data.length;i++) {
-
-      // TODO: data (fetched from API)
       // data add here
       this.gv.addData(data[i][1], {format: 'legend', name: data[i][0], animated: true} );
-      // TODO interactive between data
     }
+    console.timeEnd('********************add data takes');
 
+    console.time('********************create points takes');
     this.gv.createPoints(data);
+    console.timeEnd('********************create points takes');
+    console.time('********************octree update takes');
+    this.gv.octree.update(); // this takes a long time
+    this.gv.renderer.render(this.gv.scene, this.gv.camera); // this takes quite a bit time
+    console.timeEnd('********************octree update takes');
   }
 
   renderGlobeVisual(){
@@ -235,21 +241,22 @@ class GlobeContainer extends React.Component {
 
       this.gv.transition(5,() => {
 
-        //remove octree obj
-        console.time('octree remove takes:')
-        console.time('remove all remove takes:')
-
+        //remove octree obj (now octree remove takes shorter)
+        console.time('octree remove takes')
         this.gv.octree.remove(this.gv.points);
-        console.timeEnd('octree remove takes:')
+        console.timeEnd('octree remove takes')
+        // takes around 10ms
         this.gv.scene.remove(this.gv.points);
-        const data = this.state.warData.slice(); //copy state;
+
+        const data = this.state.warData.slice(); //get a shallow copy of state;
         data.forEach((d) => {
           if(d.year == year ) {
+            // here only happens once.
             this.drawData( d.value );
             this.gv.transition(0);
           }
         });
-        console.timeEnd('remove all remove takes:')
+
       });
     }
 
