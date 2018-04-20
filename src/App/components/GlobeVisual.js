@@ -23,6 +23,9 @@ class GlobeVisual extends React.Component{
     this.zoom = this.zoom.bind(this);
     this.rotateGlobe = this.rotateGlobe.bind(this);
 
+    this.state = {
+      rotatePause: this.props.rotatePause,
+    }
   }
 
   componentDidMount(){
@@ -129,8 +132,6 @@ class GlobeVisual extends React.Component{
   }
 
 
-
-
   componentWillUnmount() {
     // TODO: delete stuff after unmount
   }
@@ -225,7 +226,7 @@ class GlobeVisual extends React.Component{
 
     this.tooltips_mouseoverFeedback.name = 'raycast-mouseover';
     this.octree = new THREE.Octree( {
-      scene: this.scene,
+      // scene: this.scene,
       undeferred: false,
       depthMax: Infinity,
       objectsThreshold: 8,
@@ -386,8 +387,6 @@ class GlobeVisual extends React.Component{
       this.scene.add(this.points);
   }
 
-
-
   raycast_listener(event) {
     event.preventDefault();
     //normalize mouse pos
@@ -544,11 +543,13 @@ class GlobeVisual extends React.Component{
     })
   }
 
-  componentWillReceiveProps(e) {
+  componentWillReceiveProps(nextProps) {
     console.log('globeVisual received new prop!')
-    console.log(e);
-    //
-    // this.cube.material = new THREE.MeshBasicMaterial({ color: e.ss });
+    console.log(nextProps);
+
+    this.setState({
+      rotatePause: nextProps.rotatePause
+    })
 
   }
 
@@ -567,19 +568,24 @@ class GlobeVisual extends React.Component{
     this.distanceTarget = distance;
   }
 
-  rotateGlobe(deltaSeconds) {
+  rotateGlobe(deltaSeconds,cancel) {
     // TODO: rotate toogle in UI
     // if (self.rotationSpeed != 0) {
-    if (deltaSeconds > 0 && deltaSeconds < 1) {
+    if (deltaSeconds > 0 && deltaSeconds < 1 && cancel == false) {
       this.target.x += 1 * deltaSeconds / -20;
       this.target.y += 1 * deltaSeconds / -100;
+    }
+
+    if(cancel){
+      this.target.x = this.target.x;
+      this.target.y = this.target.y;
     }
     // }
   }
 
   animate() {
-    console.time('animate takes');
-    // this.rotateGlobe(8/1000);
+    // console.time('animate takes');
+    this.rotateGlobe(4/1000,this.state.rotatePause);
 
     // get frameID, frameID is for cancelling when unmount
     this.frameId = window.requestAnimationFrame(this.animate)
@@ -601,9 +607,8 @@ class GlobeVisual extends React.Component{
 
     this.renderer.render(this.scene, this.camera);
 
-    //update octree after render to make sure the matrix is updated
     // this.octree.update();
-    console.timeEnd('animate takes');
+    // console.timeEnd('animate takes');
   } //threeJS animate
 
 
@@ -615,7 +620,7 @@ class GlobeVisual extends React.Component{
 
     return(
       <div id="globev"
-        style={{ width: '75%', height: window.innerHeight - 60, backgroundColor: 'red'}}
+        style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}
         ref={(mount) => {return this.mount = mount }}
       />
     )
