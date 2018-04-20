@@ -227,25 +227,21 @@ import * as THREE from 'three';
 				}
 
 				if ( useVertices === true ) {
-
+          console.log('raycast used vertices!');
 					geometry = object.geometry;
 					vertices = geometry.vertices;
 
 					for ( i = 0, l = vertices.length; i < l; i ++ ) {
-
-						this.addObjectData( object, vertices[ i ] );
-
+            this.root.addObject( new THREE.OctreeObjectData( object, vertices[ i ] ) );
 					}
 
 				} else if ( useFaces === true ) {
-
+          console.log('raycast used faces!');
 					geometry = object.geometry;
 					faces = geometry.faces;
-
 					for ( i = 0, l = faces.length; i < l; i ++ ) {
-
-						this.addObjectData( object, faces[ i ] );
-
+						// this.addObjectData( object, faces[ i ] );
+            this.root.addObject( new THREE.OctreeObjectData( object, faces[ i ] ) );
 					}
 
 				} else {
@@ -264,7 +260,7 @@ import * as THREE from 'three';
 
 			// add to tree objects data list
 
-			this.objectsData.push( objectData );
+			// this.objectsData.push( objectData );
 
 			// add to nodes
 
@@ -308,7 +304,7 @@ console.time('octree remove inside loop');
 Got rid of loop, we only need remove
 to remove all the objects, no need to went through
 all the data
-************************************/ 
+************************************/
 					// for ( i = 0, l = objectsDataRemoved.length; i < l; i ++ ) {
           //
 					// 	objectData = objectsDataRemoved[ i ];
