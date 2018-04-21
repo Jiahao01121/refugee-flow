@@ -9,6 +9,8 @@ import * as _ from 'underscore'
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
 
+import { ScaleLoader } from 'react-spinners';
+import styled, {css} from 'styled-components';
 
 class GlobeContainer extends React.Component {
 
@@ -29,32 +31,54 @@ class GlobeContainer extends React.Component {
       },
       currentYear: '2010',
 
+      rotatePause: false,
+
+      loadingStatus : true,
+      loadingText   : 'Fetching data from the server...',
+
     }
+    this.vkthread = window.vkthread;
 
   }
 
   componentDidMount(){
+
     console.log("------ Globe mounted");
 
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
+
     this.fetchData(url).then(d =>{
+
       console.timeEnd("received & processed data");
 
+      return ({
+        'warData' : d,
+        'loadingStatus': true,
+        loadingText : 'WebGL Initialization...'
+      })
+
+    }).then((loadingState) =>{
+      console.log("Loading bar - second stage")
       this.setState({
-        warData: d
-      });
+        loadingStatus: loadingState.loadingStatus,
+        loadingText: loadingState.loadingText,
+        warData: loadingState.warData
+      })
+      return;
 
+    }).then(() =>{
 
-      this.drawData(d[0].value); // Default view : 2010
-      this.gv.scaler = d[0].scaler; // Default scaler : 2010's
+      setTimeout(() => {
+        this.drawData(this.state.warData[0].value); // Default view : 2010
+        this.gv.scaler = this.state.warData[0].scaler; // Default scaler : 2010's
+        // this.gv.setTarget([40.226460, 17.442115], 250)
+        this.gv.lastIndex = 0; // For animation purpose;
+        this.gv.transition(this.gv.lastIndex); // Animate interface;
+        this.gv.octree.update( () => this.setState({loadingStatus: false}) ); // this takes a long time
+        this.gv.animate();
+      },10)
 
-      // this.gv.setTarget([40.226460, 17.442115], 250)
-
-      // 4.71238898038469,0.5235987755982988
-      this.gv.lastIndex = 0; // For animation purpose;
-      this.gv.transition(this.gv.lastIndex); // Animate interface;
-      this.gv.animate();
-    });
+    })
 
   }
 
@@ -177,37 +201,65 @@ class GlobeContainer extends React.Component {
   }
 
   drawData(data){
+
     // otherwise won't switch data
     delete this.gv._baseGeometry;
 
-    let data_dict = data.map( (d) =>d[0] );
+    // let data_dict = data.map( (d) =>d[0] );
 
-    for (let i=0;i<data.length;i++) {
+    console.time('********************add data takes');
+    data.forEach(d => this.gv.addData(d[1], {format: 'legend', name: d[0], animated: true} ) ) // this loop takes a quite bit time
+    console.timeEnd('********************add data takes');
 
-      // TODO: data (fetched from API)
-      // data add here
-      this.gv.addData(data[i][1], {format: 'legend', name: data[i][0], animated: true} );
-      // TODO interactive between data
-    }
+    this.gv.createPoints(data); // doesn't take time
 
-    this.gv.createPoints(data);
+    console.time('********************octree update takes');
+    this.gv.renderer.render(this.gv.scene, this.gv.camera); // this takes quite a bit time
+
+    console.timeEnd('********************octree update takes');
   }
 
   renderGlobeVisual(){
     console.count("---------- Globe's render called");
 
+    const LoadingDivWrapper = styled.div`
+      position: absolute;
+      top: 50%;
+      left: 37.5%;
+      display: block;
+      transform: translate(-50%,-50%);
+      ${props => !props.loading && css`
+        display: none;
+      `}
+    `
+    const LoaderGraphWrapper = styled.div`
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,-50%);
+    `
+    const LoadingIndicator = styled.p`
+      font-family: 'Roboto';
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      margin-top: 25px;
+    `
+
     return(
-      <GlobeVisual
-        opts = {{
-          imgDir : this.state.imgDir,
-          colorFn : this.state.colorFn,
-        }}
-        // using ref to accsss method from GlobeVisual
-        ref = {(gv) => {
-          console.log("------ Globe Got reference for GlobeVisual");
-          return this.gv = gv;
-        }}
-      />
+      <div style={{width: '75%' }}>
+        <LoadingDivWrapper loading={this.state.loadingStatus}>
+          <LoaderGraphWrapper>
+            <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
+          </LoaderGraphWrapper>
+          <LoadingIndicator>{this.state.loadingText}</LoadingIndicator>
+          </LoadingDivWrapper>
+
+        <GlobeVisual
+          opts = {{ imgDir : this.state.imgDir, colorFn : this.state.colorFn }}
+          rotatePause = {this.state.rotatePause}
+          ref = {gv => this.gv = gv}
+        />
+      </div>
     )
   }
 
@@ -224,34 +276,49 @@ class GlobeContainer extends React.Component {
   timlineYearClicked(year){
 
     if(year == this.state.currentYear){
+
       // Animate to all records within the currentYear;
       this.gv.transition(0);
-    }
-    else {
-      //update visualization
+    } else {
+      //switch data
       this.setState({
-        currentYear: year,
+        loadingStatus : true,
+        loadingText   : 'Switching data to '+ year,
       })
-
       this.gv.transition(5,() => {
 
-        //remove octree obj
-        console.time('octree remove takes:')
-        console.time('remove all remove takes:')
+        //update visualization
+        this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+        this.gv.scene.remove(this.gv.points); //takes ~ 10ms
 
-        this.gv.octree.remove(this.gv.points);
-        console.timeEnd('octree remove takes:')
-        this.gv.scene.remove(this.gv.points);
-        const data = this.state.warData.slice(); //copy state;
-        data.forEach((d) => {
+        this.state.warData.slice().forEach((d) => {
           if(d.year == year ) {
+            // here only happens once.
             this.drawData( d.value );
-            this.gv.transition(0);
-          }
+
+              this.setState({
+                rotatePause: true,
+                currentYear: year,
+                loadingStatus : true,
+                loadingText   : 'Optimizing Octree...',
+              });
+
+              this.gv.transition(0,() => {
+                this.gv.octree.update(() =>{
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
+                });
+              });
+
+
+          } //
         });
-        console.timeEnd('remove all remove takes:')
       });
-    }
+
+    } //else
 
   }
 
