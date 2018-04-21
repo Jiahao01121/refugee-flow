@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as _ from 'underscore'
-import styled, {css} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import * as warDict from '../data/warDictionary';
 
 class GlobeTooltips extends React.Component {
@@ -20,6 +20,7 @@ class GlobeTooltips extends React.Component {
 
     this.tooltips_clicked = this.props.tooltips_clicked;
     this.tooltips_expendInfo = this.props.tooltips_expendInfo;
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,6 +46,11 @@ class GlobeTooltips extends React.Component {
 
 
   render(){
+    const expend_tooltips_animation = keyframes`
+      100% {
+        height: 300px;
+      }
+    `
     const Tooltip_warpper = styled.div`
       position: absolute;
       background: #15151c;
@@ -53,19 +59,24 @@ class GlobeTooltips extends React.Component {
       height: 100px;
       color: white;
       overflow: hidden;
-      ${'' /* transition: all 300ms ease-in-out; */}
+      transition: all 300ms ease-in-out;
+
+      ${'' /* hide tooltips when mouseleave */}
       ${props => !props.showornot && css`
         display: none;
       `}
 
+      ${'' /* tooltips position*/}
       ${props => props.mv_position && css`
 
         left: ${ props.mv_position[0] - (350/2) + 'px'};
         top:  ${ props.mv_position[1] + 20  + 'px'};
       `}
 
+      ${'' /* expend tooltips*/}
       ${props => props.expendornot && css`
-        background: blue;
+        animation: ${expend_tooltips_animation} .4s;
+        animation-fill-mode: forwards;
       `}
 
     `
@@ -141,6 +152,42 @@ class GlobeTooltips extends React.Component {
       }
     `
 
+    const Expend_notes = styled.p`
+      ${'' /* display: none; */}
+      font-family: 'Roboto';
+      font-size: 12px;
+      font-weight: 100;
+      left: 25px;
+      position: relative;
+      top: 62px;
+      width: 88%;
+      ${'' /* ${props =>{
+        console.log("aaa "+props);
+        }} */}
+    `
+
+    const Expend_source = styled.p`
+      font-family: 'Roboto';
+      font-size: 12px;
+      font-weight: 800;
+      position: absolute;
+      bottom: 0;
+      right: 10px;
+      ${props => !props.hideText && css`
+          display: none;
+      `}
+    `
+    var expend_source_text;
+
+    if(this.tooltips_expendInfo[0] != undefined){
+      var temp = this.tooltips_expendInfo[0].notes.toString().length
+      if(temp>570){
+        expend_source_text = this.tooltips_expendInfo[0].notes.slice(0,570) + '...';
+      }else{
+        expend_source_text = this.tooltips_expendInfo[0].notes;
+      }
+    }
+
     return(
       <Tooltip_warpper
         showornot = {this.mv_show}
@@ -151,7 +198,8 @@ class GlobeTooltips extends React.Component {
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>
         <Event> {this.toUpper(warDict.event_dict[this.evt])} </Event>
-        {/* <p> {this.int} </p> */}
+        <Expend_notes> {expend_source_text} </Expend_notes>
+        <Expend_source hideText = {this.tooltips_clicked}>{this.tooltips_expendInfo[0] != undefined && "Source: " + this.tooltips_expendInfo[0].source}</Expend_source>
       </Tooltip_warpper>
     )
   }
