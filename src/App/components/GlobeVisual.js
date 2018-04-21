@@ -28,6 +28,8 @@ class GlobeVisual extends React.Component{
     this.state = {
       mv_show: false,
       mv_tooltips: Array(5).fill(0),
+      tooltips_clicked: false,
+      tooltips_expendInfo:[]
     }
   }
 
@@ -190,7 +192,7 @@ class GlobeVisual extends React.Component{
 
     //switch to "data points"
     geometry = new THREE.BoxGeometry(0.75, 0.75, 1);
-    // 为了让数据条不往里纵深， 因为boxGeometry在基平面两侧延伸？
+    // 为了让数据条不往里纵深,因为boxGeometry在基平面两侧延伸？
     geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,-0.5));
     this.point = new THREE.Mesh(geometry);
 
@@ -373,6 +375,7 @@ class GlobeVisual extends React.Component{
           this.octree.add(this.points,{ useFaces: true,useVertices: false });
         } else {
           this.octree.add(this.points,{ useFaces: false,useVertices: true });
+          // this.octree.add(this.points,{ useFaces: true,useVertices: false });
         }
 
 
@@ -419,6 +422,8 @@ class GlobeVisual extends React.Component{
         mv_position:[event.clientX,event.clientY]
       })
 
+      this.WarID = displayData.id;
+
       this.rotatePause = true;
       // console.log(this.intersected);
       // console.log( this.scaler.invert(displayData.fat) );
@@ -450,6 +455,9 @@ class GlobeVisual extends React.Component{
       // hide tooltips component
       this.state.mv_show && this.setState({mv_show : false});
       this.rotatePause = false;
+      this.setState({
+        'tooltips_clicked': false,
+      })
 
       // hide tooltips white bar
       this.tooltips_mouseoverFeedback.position.x = 0;
@@ -460,6 +468,7 @@ class GlobeVisual extends React.Component{
   }
 
   onMouseDown(event) {
+
     event.preventDefault();
 
     this.mount.addEventListener('mousemove', this.onMouseMove, false);
@@ -472,6 +481,21 @@ class GlobeVisual extends React.Component{
     this.targetOnDown.x = this.target.x;
     this.targetOnDown.y = this.target.y;
     this.mount.style.cursor = 'move';
+
+    // fetchDataFromServer
+    if(this.state.mv_show) {
+      let url = 'http://' + window.location.hostname + ':2700' + '/data/note/'+ this.WarID;
+      fetch(new Request( url, {method: 'GET', cache: true})).then(res => res.json()).then(d =>{
+
+        this.setState({
+          'tooltips_clicked': true,
+          'tooltips_expendInfo': d
+        })
+
+      })
+
+    }
+
   }
 
   onMouseMove(event) {
@@ -633,7 +657,13 @@ class GlobeVisual extends React.Component{
 
     return(
       <div>
-        <GlobeTooltips mv_tooltips = {this.state.mv_tooltips} mv_show = {this.state.mv_show} mv_position = {this.state.mv_position}/>
+        <GlobeTooltips
+          mv_tooltips = {this.state.mv_tooltips}
+          mv_show = {this.state.mv_show}
+          mv_position = {this.state.mv_position}
+          tooltips_clicked = {this.state.tooltips_clicked}
+          tooltips_expendInfo = {this.state.tooltips_expendInfo}
+        />
         <div id="globev"
           style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}
           ref={(mount) => {return this.mount = mount }} />
