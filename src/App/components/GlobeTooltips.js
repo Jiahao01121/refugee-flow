@@ -17,6 +17,9 @@ class GlobeTooltips extends React.Component {
     this.mv_show = this.props.mv_show;
 
     this.mv_position = this.props.mv_position;
+
+    this.tooltips_clicked = this.props.tooltips_clicked;
+    this.tooltips_expendInfo = this.props.tooltips_expendInfo;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,6 +32,9 @@ class GlobeTooltips extends React.Component {
     this.mv_show = nextProps.mv_show;
 
     this.mv_position = nextProps.mv_position;
+
+    this.tooltips_clicked = nextProps.tooltips_clicked;
+    this.tooltips_expendInfo = nextProps.tooltips_expendInfo;
   }
 
   toUpper(str) {
@@ -57,6 +63,11 @@ class GlobeTooltips extends React.Component {
         left: ${ props.mv_position[0] - (350/2) + 'px'};
         top:  ${ props.mv_position[1] + 20  + 'px'};
       `}
+
+      ${props => props.expendornot && css`
+        background: blue;
+      `}
+
     `
     const Fatality = styled.p`
       font-family: 'Roboto';
@@ -134,6 +145,8 @@ class GlobeTooltips extends React.Component {
       <Tooltip_warpper
         showornot = {this.mv_show}
         mv_position = {this.mv_position}
+        expendornot = {this.tooltips_clicked}
+        // expenededInfo = {this.tooltips_expendInfo}
       >
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>
