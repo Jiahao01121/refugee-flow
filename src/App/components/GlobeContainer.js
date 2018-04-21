@@ -48,39 +48,36 @@ class GlobeContainer extends React.Component {
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
 
     this.fetchData(url).then(d =>{
+
       console.timeEnd("received & processed data");
-      this.setState({ warData: d })
 
-      return { 'loadingStatus': true, loadingText : 'WebGL Initialization...'}
-    })
+      return ({
+        'warData' : d,
+        'loadingStatus': true,
+        loadingText : 'WebGL Initialization...'
+      })
 
-    .then((loadingState) =>{
-
+    }).then((loadingState) =>{
+      console.log("Loading bar - second stage")
       this.setState({
         loadingStatus: loadingState.loadingStatus,
-        loadingText: loadingState.loadingText
+        loadingText: loadingState.loadingText,
+        warData: loadingState.warData
       })
-    })
+      return;
 
-    .then(() =>{
-      console.log("second stage");
+    }).then(() =>{
+
       setTimeout(() => {
-              this.drawData(this.state.warData[0].value); // Default view : 2010
-              this.gv.scaler = this.state.warData[0].scaler; // Default scaler : 2010's
-
-              // this.gv.setTarget([40.226460, 17.442115], 250)
-
-              // 4.71238898038469,0.5235987755982988
-              this.gv.lastIndex = 0; // For animation purpose;
-              this.gv.transition(this.gv.lastIndex); // Animate interface;
-              this.gv.octree.update(); // this takes a long time
-              this.gv.animate();
-
-              this.setState({
-                loadingStatus: false,
-                loadingText: ''
-              })
+        this.drawData(this.state.warData[0].value); // Default view : 2010
+        this.gv.scaler = this.state.warData[0].scaler; // Default scaler : 2010's
+        // this.gv.setTarget([40.226460, 17.442115], 250)
+        this.gv.lastIndex = 0; // For animation purpose;
+        this.gv.transition(this.gv.lastIndex); // Animate interface;
+        this.gv.octree.update( () => this.setState({loadingStatus: false}) ); // this takes a long time
+        this.gv.animate();
       },10)
+
     })
 
   }
@@ -283,19 +280,14 @@ class GlobeContainer extends React.Component {
       // Animate to all records within the currentYear;
       this.gv.transition(0);
     } else {
-
+      //switch data
       this.setState({
         loadingStatus : true,
         loadingText   : 'Switching data to '+ year,
       })
-
       this.gv.transition(5,() => {
 
         //update visualization
-        this.setState({
-          currentYear: year,
-        });
-
         this.gv.octree.remove(this.gv.points); //takes ~ 10ms
         this.gv.scene.remove(this.gv.points); //takes ~ 10ms
 
@@ -303,12 +295,26 @@ class GlobeContainer extends React.Component {
           if(d.year == year ) {
             // here only happens once.
             this.drawData( d.value );
-            this.setState({ rotatePause: true });
-            this.gv.transition(0,() => {
-              this.gv.octree.update();
-              this.setState({ rotatePause: false });
-            });
-          }
+
+              this.setState({
+                rotatePause: true,
+                currentYear: year,
+                loadingStatus : true,
+                loadingText   : 'Optimizing Octree...',
+              });
+
+              this.gv.transition(0,() => {
+                this.gv.octree.update(() =>{
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
+                });
+              });
+
+
+          } //
         });
       });
 
