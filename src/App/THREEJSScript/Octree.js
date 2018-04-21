@@ -144,7 +144,7 @@ import * as THREE from 'three';
 
 	THREE.Octree.prototype = {
 
-		update: function () {
+		update: function (cb) {
 
 			// add any deferred objects that were waiting for render cycle
 
@@ -159,7 +159,7 @@ import * as THREE from 'three';
 				}
 
 				this.objectsDeferred.length = 0;
-
+        cb && cb();
 			}
 
 		},
