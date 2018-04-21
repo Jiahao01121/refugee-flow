@@ -28,8 +28,9 @@ class GlobeVisual extends React.Component{
     this.state = {
       mv_show: false,
       mv_tooltips: Array(5).fill(0),
+      tooltips_clicked_id : 0,
       tooltips_clicked: false,
-      tooltips_expendInfo:[]
+      tooltips_expendInfo:[],
     }
   }
 
@@ -135,7 +136,6 @@ class GlobeVisual extends React.Component{
     this.init()
 
   }
-
 
   componentWillUnmount() {
     // TODO: delete stuff after unmount
@@ -409,54 +409,52 @@ class GlobeVisual extends React.Component{
       const dataIndex = Math.floor(this.intersected.face.a / 8);
       const displayData =  this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 3];
 
-      this.setState({
-        mv_show : true,
-        mv_tooltips : [
-          displayData.id,
-          displayData.cot,
-          Math.round(this.scaler.invert(displayData.fat)),
-          displayData.evt,
-          displayData.int,
-        ],
-        mv_position:[event.clientX,event.clientY]
-      })
-
-      this.WarID = displayData.id;
-
-      this.rotatePause = true;
-      // console.log(this.intersected);
-      // console.log( this.scaler.invert(displayData.fat) );
-      // console.log(displayData);
+      //check if interscetions changed
+      if(this.WarID != displayData.id){
+        this.setState({
+          tooltips_clicked: false,
+          mv_position:[event.clientX,event.clientY],
+          mv_show : true,
+          mv_tooltips : [
+            displayData.id,
+            displayData.cot,
+            Math.round(this.scaler.invert(displayData.fat)),
+            displayData.evt,
+            displayData.int,
+          ],
+        })
+        this.WarID = displayData.id;
+        this.rotatePause = true;
+      }
 
       // check height( if height = -1 then data is not in the current selection)
       if(this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] >= 0){
 
-        const phi = (90 -
-          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0]
-        ) * Math.PI / 180;
-
-        const theta = (180 -
-          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1]
-        ) * Math.PI / 180;
+        const phi = (90 - this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0] ) * Math.PI / 180;
+        const theta = (180 - this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1] ) * Math.PI / 180;
 
         this.tooltips_mouseoverFeedback.position.x = 200 * Math.sin(phi) * Math.cos(theta);
         this.tooltips_mouseoverFeedback.position.y = 200 * Math.cos(phi);
         this.tooltips_mouseoverFeedback.position.z = 200 * Math.sin(phi) * Math.sin(theta);
         this.tooltips_mouseoverFeedback.lookAt(this.mesh.position);
-        this.tooltips_mouseoverFeedback.scale.z = Math.max(
-          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2]
-          *200, 0.1 ); // avoid non-invertible matrix
+        this.tooltips_mouseoverFeedback.scale.z = Math.max( this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] *200, 0.1 ); // avoid non-invertible matrix
 
       }
 
     }else if(this.intersected){
 
       // hide tooltips component
-      this.state.mv_show && this.setState({mv_show : false});
+      this.state.mv_show && this.setState({
+        mv_show : false,
+        mv_position :[0,0]
+      });
       this.rotatePause = false;
       this.setState({
-        'tooltips_clicked': false,
+        tooltips_clicked : false,
+        tooltips_clicked_id : Math.random() // reset clicked id
       })
+
+      this.WarID = Math.random(); // reset warid
 
       // hide tooltips white bar
       this.tooltips_mouseoverFeedback.position.x = 0;
@@ -482,13 +480,16 @@ class GlobeVisual extends React.Component{
     this.mount.style.cursor = 'move';
 
     // fetchDataFromServer
-    if(this.state.mv_show) {
+    console.log(this.WarID);
+    console.log(this.state.tooltips_clicked_id);
+    if(this.state.mv_show && this.state.tooltips_clicked_id != this.WarID) {
       let url = 'http://' + window.location.hostname + ':2700' + '/data/note/'+ this.WarID;
       fetch(new Request( url, {method: 'GET', cache: true})).then(res => res.json()).then(d =>{
-
+        console.log('fetching');
         this.setState({
-          'tooltips_clicked': true,
-          'tooltips_expendInfo': d
+          tooltips_clicked : true,
+          tooltips_expendInfo : d,
+          tooltips_clicked_id : d[0].id
         })
 
       })
@@ -621,7 +622,7 @@ class GlobeVisual extends React.Component{
 
   animate() {
     // console.time('animate takes');
-    this.rotateGlobe(4/1000,this.rotatePause);
+    this.rotateGlobe(2/1000,this.rotatePause);
 
     // get frameID, frameID is for cancelling when unmount
     this.frameId = window.requestAnimationFrame(this.animate)

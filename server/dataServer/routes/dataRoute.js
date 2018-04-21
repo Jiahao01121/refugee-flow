@@ -98,7 +98,6 @@ const d3 = require('d3');
 // })
 router.get('/note/:id',function(req,res){
   let noteID = +req.params.id;
-  console.log(noteID);
   WarService.findNote(noteID).then(d =>{
     res.json(d);
   });

@@ -6,7 +6,7 @@ const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json') );
 
 mongoose.connect('mongodb://will:will@ds145118.mlab.com:45118/refugee-flow');
 const db = mongoose.connection;
-db.on('error', console.error.bind(console,'connectinon eerroor') );
+db.on('error', console.log.bind(console,'connectinon eerroor') );
 
 const Model = mongoose.model(
   'war_all_note',
