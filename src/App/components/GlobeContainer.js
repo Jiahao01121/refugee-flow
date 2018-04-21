@@ -21,20 +21,21 @@ class GlobeContainer extends React.Component {
     this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
 
     this.state = {
-      color: new THREE.Color(0xffffff),
-      imgDir: '../globe/',
-      colorFn: (x) => {
+      color   : new THREE.Color(0xffffff),
+      imgDir  : '../globe/',
+      colorFn : (x) => {
         const c = new THREE.Color();
         c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
         // console.log(c);
         return c;
       },
-      currentYear: '2010',
-
-      rotatePause: false,
-
+      currentYear : '2010',
+      //globevisual's props
+      rotatePause : false,
+      //loading state
       loadingStatus : true,
       loadingText   : 'Fetching data from the server...',
+
 
     }
     this.vkthread = window.vkthread;
@@ -325,7 +326,6 @@ class GlobeContainer extends React.Component {
   timlineQuaterClicked(quater){
     this.gv.transition(quater); // Animate to selected quater;
   }
-
 
   render(){
     return(

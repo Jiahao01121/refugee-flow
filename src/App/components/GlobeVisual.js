@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import THREE from '../THREEJSScript/Octree';
 import OctreeWorker from '../workers/Octree.worker.js';
 
+import GlobeTooltips from './GlobeTooltips'; //child component
 
 class GlobeVisual extends React.Component{
   constructor(props){
@@ -23,8 +24,10 @@ class GlobeVisual extends React.Component{
     this.zoom = this.zoom.bind(this);
     this.rotateGlobe = this.rotateGlobe.bind(this);
 
+    this.rotatePause = this.props.rotatePause;
     this.state = {
-      rotatePause: this.props.rotatePause,
+      mv_show: false,
+      mv_tooltips: Array(5).fill(0),
     }
   }
 
@@ -401,19 +404,27 @@ class GlobeVisual extends React.Component{
     if ( intersections.length > 0 ) {
 
       this.intersected = intersections[ 0 ];
-
-      // octree search that useVertices
-      // const dataIndex = Math.floor(this.intersected.faceIndex / 12);
-
-      //octree search that useFaces
       const dataIndex = Math.floor(this.intersected.face.a / 8);
-      console.log(this.intersected);
-
       const displayData =  this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 3];
-      console.log( this.scaler.invert(displayData.fat) );
-      console.log(displayData);
 
-      // check height( height = -1 is data not in the current selection)
+      this.setState({
+        mv_show : true,
+        mv_tooltips : [
+          displayData.id,
+          displayData.cot,
+          Math.round(this.scaler.invert(displayData.fat)),
+          displayData.evt,
+          displayData.int,
+        ],
+        mv_position:[event.clientX,event.clientY]
+      })
+
+      this.rotatePause = true;
+      // console.log(this.intersected);
+      // console.log( this.scaler.invert(displayData.fat) );
+      // console.log(displayData);
+
+      // check height( if height = -1 then data is not in the current selection)
       if(this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] >= 0){
 
         const phi = (90 -
@@ -435,7 +446,12 @@ class GlobeVisual extends React.Component{
       }
 
     }else if(this.intersected){
-      // hide tooltips
+
+      // hide tooltips component
+      this.state.mv_show && this.setState({mv_show : false});
+      this.rotatePause = false;
+
+      // hide tooltips white bar
       this.tooltips_mouseoverFeedback.position.x = 0;
       this.tooltips_mouseoverFeedback.position.y = 0;
       this.tooltips_mouseoverFeedback.position.z = 0;
@@ -545,11 +561,8 @@ class GlobeVisual extends React.Component{
 
   componentWillReceiveProps(nextProps) {
     console.log('globeVisual received new prop!')
-    console.log(nextProps);
 
-    this.setState({
-      rotatePause: nextProps.rotatePause
-    })
+    this.rotatePause = nextProps.rotatePause;
 
   }
 
@@ -585,7 +598,7 @@ class GlobeVisual extends React.Component{
 
   animate() {
     // console.time('animate takes');
-    this.rotateGlobe(4/1000,this.state.rotatePause);
+    this.rotateGlobe(4/1000,this.rotatePause);
 
     // get frameID, frameID is for cancelling when unmount
     this.frameId = window.requestAnimationFrame(this.animate)
@@ -619,10 +632,12 @@ class GlobeVisual extends React.Component{
     console.count("---------- GlobeVisual's render called");
 
     return(
-      <div id="globev"
-        style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}
-        ref={(mount) => {return this.mount = mount }}
-      />
+      <div>
+        <GlobeTooltips mv_tooltips = {this.state.mv_tooltips} mv_show = {this.state.mv_show} mv_position = {this.state.mv_position}/>
+        <div id="globev"
+          style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}
+          ref={(mount) => {return this.mount = mount }} />
+      </div>
     )
 
   }
