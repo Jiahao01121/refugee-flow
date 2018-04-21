@@ -375,7 +375,6 @@ class GlobeVisual extends React.Component{
           this.octree.add(this.points,{ useFaces: true,useVertices: false });
         } else {
           this.octree.add(this.points,{ useFaces: false,useVertices: true });
-          // this.octree.add(this.points,{ useFaces: true,useVertices: false });
         }
 
 
