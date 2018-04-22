@@ -193,7 +193,6 @@ class GlobeTooltips extends React.Component {
         showornot = {this.mv_show}
         mv_position = {this.mv_position}
         expendornot = {this.tooltips_clicked}
-        // expenededInfo = {this.tooltips_expendInfo}
       >
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>

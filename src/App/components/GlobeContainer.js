@@ -36,7 +36,7 @@ class GlobeContainer extends React.Component {
       loadingStatus : true,
       loadingText   : 'Fetching data from the server...',
 
-
+      titleText : 'Global'
     }
     this.vkthread = window.vkthread;
 
@@ -328,8 +328,123 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
+
+    const TitleContainer = styled.div`
+      position: absolute;
+      ${'' /* background: #0000ff61; */}
+      width: ${window.innerWidth - 30 - (0.25 * window.innerWidth) + 'px'};
+      left: 30px;
+      top: 110px;
+    `
+
+    const TitleText = styled.p`
+      font-family: 'Roboto';
+      font-size: 25px;
+      font-weight: 300;
+      color: white;
+      margin-top: 0;
+
+      &:after{
+        background-image: url(./title_icon.png);
+        background-size: 14px 14px;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        content: "";
+        bottom: 10px;
+        right: 0px;
+        position: relative;
+      }
+
+      &:before{
+        content: 'select regions & filter downbelow to switch country/matrix...';
+        font-weight: 400;
+        color: white;
+        font-size: 12px;
+        position: absolute;
+        width: 320px;
+        bottom: -17px;
+      }
+    `
+
+    const SwitchCountryButton = styled.button`
+      cursor: pointer;
+      text-decoration: underline;
+      color: white;
+      font-family: 'Roboto';
+      font-size: 15px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      position: absolute;
+      top: 110px;
+      left: 20px;
+
+      &:after{
+        content: '>';
+        font-weight: 900;
+        color: white;
+        font-size: 15px;
+        position: absolute;
+        right: -8px;
+      }
+
+      &:before{
+        background-image: url(./location_icon.png);
+        background-size: 50%;
+        background-repeat: no-repeat;
+        display: inline-block;
+        width: 33px;
+        height: 27px;
+        content: "";
+        bottom: 0px;
+        right: 58px;
+        position: absolute;
+      }
+    `
+
+    const GlobeControllerButton = styled.button`
+      cursor: pointer;
+      font-family: 'Roboto';
+      font-weight: 600;
+      font-size: 15px;
+      color: #ffffff66;
+      left: 30px;
+      position: absolute;
+      background: none;
+      border: none;
+      top: 160px;
+      margin: 0px;
+
+      &:before{
+        background-image: url(./globe_icon.png);
+        background-size: 50%;
+        width: 60px;
+        height: 40px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        content: "";
+        bottom: -16px;
+        right: 12px;
+        position: absolute;
+        margin-right: 10px;
+      }
+    `
+
     return(
       <div className = 'globe'>
+        <TitleContainer>
+          <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
+
+          <SwitchCountryButton>GLOBAL</SwitchCountryButton>
+          <GlobeControllerButton>MAP</GlobeControllerButton>
+
+          {/* <GlobeControllerItems>
+            <AllConflict>Show All Armed Conflict</AllConflict>
+            <Conflict_Civilians>Show Only Conflict Against Civilians</Conflict_Civilians>
+
+          </GlobeControllerItems> */}
+        </TitleContainer>
           {this.renderGlobeTimeline()}
           {this.renderGlobeVisual()}
       </div>
