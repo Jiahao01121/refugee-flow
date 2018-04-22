@@ -8,6 +8,7 @@ import * as _ from 'underscore'
 
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
+import ModalButton from './ModalButton';
 
 import { ScaleLoader } from 'react-spinners';
 import styled, {css} from 'styled-components';
@@ -403,33 +404,33 @@ class GlobeContainer extends React.Component {
       }
     `
 
-    const GlobeControllerButton = styled.button`
-      cursor: pointer;
-      font-family: 'Roboto';
-      font-weight: 600;
-      font-size: 15px;
-      color: #ffffff66;
-      left: 30px;
-      position: absolute;
-      background: none;
-      border: none;
-      top: 160px;
-      margin: 0px;
-
-      &:before{
-        background-image: url(./globe_icon.png);
-        background-size: 50%;
-        width: 60px;
-        height: 40px;
-        background-repeat: no-repeat;
-        display: inline-block;
-        content: "";
-        bottom: -16px;
-        right: 12px;
-        position: absolute;
-        margin-right: 10px;
-      }
-    `
+    // const GlobeControllerButton = styled.button`
+    //   cursor: pointer;
+    //   font-family: 'Roboto';
+    //   font-weight: 600;
+    //   font-size: 15px;
+    //   color: #ffffff66;
+    //   left: 30px;
+    //   position: absolute;
+    //   background: none;
+    //   border: none;
+    //   top: 160px;
+    //   margin: 0px;
+    // 
+    //   &:before{
+    //     background-image: url(./globe_icon.png);
+    //     background-size: 50%;
+    //     width: 60px;
+    //     height: 40px;
+    //     background-repeat: no-repeat;
+    //     display: inline-block;
+    //     content: "";
+    //     bottom: -16px;
+    //     right: 12px;
+    //     position: absolute;
+    //     margin-right: 10px;
+    //   }
+    // `
 
     return(
       <div className = 'globe'>
@@ -437,7 +438,7 @@ class GlobeContainer extends React.Component {
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
 
           <SwitchCountryButton>GLOBAL</SwitchCountryButton>
-          <GlobeControllerButton>MAP</GlobeControllerButton>
+          <ModalButton />MAP
 
           {/* <GlobeControllerItems>
             <AllConflict>Show All Armed Conflict</AllConflict>
