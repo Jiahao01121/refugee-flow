@@ -15,5 +15,6 @@ const event_dict = [ 'violence against civilians',
 
 module.exports = {
   year: year,
-  countryList: countryList
+  countryList: countryList,
+  event_dict: event_dict
 };

@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import THREE from '../THREEJSScript/Octree';
 import OctreeWorker from '../workers/Octree.worker.js';
 
+import GlobeTooltips from './GlobeTooltips'; //child component
 
 class GlobeVisual extends React.Component{
   constructor(props){
@@ -23,8 +24,13 @@ class GlobeVisual extends React.Component{
     this.zoom = this.zoom.bind(this);
     this.rotateGlobe = this.rotateGlobe.bind(this);
 
+    this.rotatePause = this.props.rotatePause;
     this.state = {
-      rotatePause: this.props.rotatePause,
+      mv_show: false,
+      mv_tooltips: Array(5).fill(0),
+      tooltips_clicked_id : 0,
+      tooltips_clicked: false,
+      tooltips_expendInfo:[],
     }
   }
 
@@ -131,7 +137,6 @@ class GlobeVisual extends React.Component{
 
   }
 
-
   componentWillUnmount() {
     // TODO: delete stuff after unmount
   }
@@ -187,7 +192,7 @@ class GlobeVisual extends React.Component{
 
     //switch to "data points"
     geometry = new THREE.BoxGeometry(0.75, 0.75, 1);
-    // 为了让数据条不往里纵深， 因为boxGeometry在基平面两侧延伸？
+    // 为了让数据条不往里纵深,因为boxGeometry在基平面两侧延伸？
     geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,-0.5));
     this.point = new THREE.Mesh(geometry);
 
@@ -401,41 +406,57 @@ class GlobeVisual extends React.Component{
     if ( intersections.length > 0 ) {
 
       this.intersected = intersections[ 0 ];
-
-      // octree search that useVertices
-      // const dataIndex = Math.floor(this.intersected.faceIndex / 12);
-
-      //octree search that useFaces
       const dataIndex = Math.floor(this.intersected.face.a / 8);
-      console.log(this.intersected);
-
       const displayData =  this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 3];
-      console.log( this.scaler.invert(displayData.fat) );
-      console.log(displayData);
 
-      // check height( height = -1 is data not in the current selection)
+      //check if interscetions changed
+      if(this.WarID != displayData.id){
+        this.setState({
+          tooltips_clicked: false,
+          mv_position:[event.clientX,event.clientY],
+          mv_show : true,
+          mv_tooltips : [
+            displayData.id,
+            displayData.cot,
+            Math.round(this.scaler.invert(displayData.fat)),
+            displayData.evt,
+            displayData.int,
+          ],
+        })
+        this.WarID = displayData.id;
+        this.rotatePause = true;
+      }
+
+      // check height( if height = -1 then data is not in the current selection)
       if(this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] >= 0){
 
-        const phi = (90 -
-          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0]
-        ) * Math.PI / 180;
-
-        const theta = (180 -
-          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1]
-        ) * Math.PI / 180;
+        const phi = (90 - this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0] ) * Math.PI / 180;
+        const theta = (180 - this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1] ) * Math.PI / 180;
 
         this.tooltips_mouseoverFeedback.position.x = 200 * Math.sin(phi) * Math.cos(theta);
         this.tooltips_mouseoverFeedback.position.y = 200 * Math.cos(phi);
         this.tooltips_mouseoverFeedback.position.z = 200 * Math.sin(phi) * Math.sin(theta);
         this.tooltips_mouseoverFeedback.lookAt(this.mesh.position);
-        this.tooltips_mouseoverFeedback.scale.z = Math.max(
-          this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2]
-          *200, 0.1 ); // avoid non-invertible matrix
+        this.tooltips_mouseoverFeedback.scale.z = Math.max( this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] *200, 0.1 ); // avoid non-invertible matrix
 
       }
 
     }else if(this.intersected){
-      // hide tooltips
+
+      // hide tooltips component
+      this.state.mv_show && this.setState({
+        mv_show : false,
+        mv_position :[0,0]
+      });
+      this.rotatePause = false;
+      this.setState({
+        tooltips_clicked : false,
+        tooltips_clicked_id : Math.random() // reset clicked id
+      })
+
+      this.WarID = Math.random(); // reset warid
+
+      // hide tooltips white bar
       this.tooltips_mouseoverFeedback.position.x = 0;
       this.tooltips_mouseoverFeedback.position.y = 0;
       this.tooltips_mouseoverFeedback.position.z = 0;
@@ -444,6 +465,7 @@ class GlobeVisual extends React.Component{
   }
 
   onMouseDown(event) {
+
     event.preventDefault();
 
     this.mount.addEventListener('mousemove', this.onMouseMove, false);
@@ -456,6 +478,24 @@ class GlobeVisual extends React.Component{
     this.targetOnDown.x = this.target.x;
     this.targetOnDown.y = this.target.y;
     this.mount.style.cursor = 'move';
+
+    // fetchDataFromServer
+    console.log(this.WarID);
+    console.log(this.state.tooltips_clicked_id);
+    if(this.state.mv_show && this.state.tooltips_clicked_id != this.WarID) {
+      let url = 'http://' + window.location.hostname + ':2700' + '/data/note/'+ this.WarID;
+      fetch(new Request( url, {method: 'GET', cache: true})).then(res => res.json()).then(d =>{
+        console.log('fetching');
+        this.setState({
+          tooltips_clicked : true,
+          tooltips_expendInfo : d,
+          tooltips_clicked_id : d[0].id
+        })
+
+      })
+
+    }
+
   }
 
   onMouseMove(event) {
@@ -545,11 +585,8 @@ class GlobeVisual extends React.Component{
 
   componentWillReceiveProps(nextProps) {
     console.log('globeVisual received new prop!')
-    console.log(nextProps);
 
-    this.setState({
-      rotatePause: nextProps.rotatePause
-    })
+    this.rotatePause = nextProps.rotatePause;
 
   }
 
@@ -585,7 +622,7 @@ class GlobeVisual extends React.Component{
 
   animate() {
     // console.time('animate takes');
-    this.rotateGlobe(4/1000,this.state.rotatePause);
+    this.rotateGlobe(2/1000,this.rotatePause);
 
     // get frameID, frameID is for cancelling when unmount
     this.frameId = window.requestAnimationFrame(this.animate)
@@ -619,10 +656,18 @@ class GlobeVisual extends React.Component{
     console.count("---------- GlobeVisual's render called");
 
     return(
-      <div id="globev"
-        style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}
-        ref={(mount) => {return this.mount = mount }}
-      />
+      <div>
+        <GlobeTooltips
+          mv_tooltips = {this.state.mv_tooltips}
+          mv_show = {this.state.mv_show}
+          mv_position = {this.state.mv_position}
+          tooltips_clicked = {this.state.tooltips_clicked}
+          tooltips_expendInfo = {this.state.tooltips_expendInfo}
+        />
+        <div id="globev"
+          style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}
+          ref={(mount) => {return this.mount = mount }} />
+      </div>
     )
 
   }

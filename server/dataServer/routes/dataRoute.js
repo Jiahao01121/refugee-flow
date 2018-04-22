@@ -96,7 +96,12 @@ const d3 = require('d3');
 //
 //   })
 // })
-
+router.get('/note/:id',function(req,res){
+  let noteID = +req.params.id;
+  WarService.findNote(noteID).then(d =>{
+    res.json(d);
+  });
+})
 router.get('/war_all',(req,res,next) =>{
   res.json(WarService.war_all())
 })

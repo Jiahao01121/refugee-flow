@@ -16,13 +16,30 @@ class Navbar extends React.Component {
       box-shadow: 0px 5px 90px -1px rgba(0,0,0,1);
 
       > a{
-        font-family: 'Roboto';
-        font-size: 0.75rem;
-        font-weight: 700;
+        font-family: 'Miller-DisplaySC';
+        font-size: 20px;
         color: white;
         text-decoration: none;
         padding-left: 30px;
+        position: relative;
+        top: -10px;
       }
+
+      > a:first-child:before{
+        content: 'A Comparitive Study on Wars and Refugee Flow';
+        font-family: 'Roboto';
+        font-weight: 400;
+        color: white;
+        opacity: .5;
+        font-size: 10px;
+        position: absolute;
+        left: 30px;
+        bottom: -38px;
+        /* letter-spacing: 1.1px; */
+        width: 900%;
+        word-spacing: 3px;
+      }
+
     `
 
     const Nav = styled.nav`
@@ -41,7 +58,7 @@ class Navbar extends React.Component {
 
     return (
       <NavbarContainer>
-          <Link to='/'>Refugee Flow</Link>
+          <Link to='/'>refugee flow</Link>
           <Nav>
             <Link to='/war'>War</Link>
             <Link to='/route'>Route</Link>
