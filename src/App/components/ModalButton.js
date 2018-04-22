@@ -2,16 +2,34 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
 
-const Button = styled.div`
-  padding: 0.7rem, 1.8rem;
-  background-color: #568db2;
-  border: 0;
-  border-radius: 0.3rem;
-  font-size: 1rem;
-  color: #fff;
+const GlobeControllerButton = styled.button`
   cursor: pointer;
-  margin-bottom: 0.8rem;
-`;
+  font-family: 'Roboto';
+  font-weight: 600;
+  font-size: 15px;
+  color: #ffffff66;
+  left: 30px;
+  position: absolute;
+  background: none;
+  border: none;
+  top: 160px;
+  margin: 0px;
+
+  &:before{
+    background-image: url(./globe_icon.png);
+    background-size: 50%;
+    width: 60px;
+    height: 40px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    content: "";
+    bottom: -16px;
+    right: 12px;
+    position: absolute;
+    margin-right: 10px;
+  }
+`
+
 
 class ModalButton extends Component {
   constructor(props) {
@@ -29,21 +47,19 @@ class ModalButton extends Component {
     const { showModal } = this.state;
 
     return (
-      <Button>
-        <button
-          type="button"
-          onClick={() => this.handleToggleModal()}
-        >
-          Open Countries
-        </button>
-        {showModal &&
+      <GlobeControllerButton
+        type="button"
+        onClick={() => this.handleToggleModal()}
+        >MAP
+        {showModal && 
           <Modal onCloseRequest={() => this.handleToggleModal()}>
             <img src="https://placeimg.com/900/650/nature" alt="Nature" />
           </Modal>
         }
-      </Button>
+      </GlobeControllerButton>
+
     );
   }
 }
 
-export default ModalButton;
+export default ModalButton

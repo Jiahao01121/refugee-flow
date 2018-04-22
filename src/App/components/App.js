@@ -38,7 +38,6 @@ class App extends React.Component {
                   <Route path='/war' component={War} />
                   <Route path='/route' component={RefugeeRoute} />
                 </Switch>
-                <ModalButton />
                 <GlobeContainer />
                 <GlobeRightSection />
               </div>

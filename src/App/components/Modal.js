@@ -44,7 +44,7 @@ const ModalItem = styled.div`
   }
 `;
 
-const CloseButton = styled.button`
+const CloseButton = styled.div`
   position: fixed;
   top: 0;
   right: 0;
@@ -56,13 +56,13 @@ const CloseButton = styled.button`
   outline: 0;
   box-shadow: 0,0,0.625rem, rgba(0,0,0,0.2);
 
-  &:before: {
+  &:before{
     transform: rotate(45deg);
   }
-  &:after: {
+  &:after{
     transform: rotate(-45deg);
   }
-  &:hover:before, &:hover:after: {
+  &:hover:before, &:hover:after {
     background-color: #444;
   }
 `;
