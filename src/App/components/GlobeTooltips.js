@@ -175,14 +175,26 @@ class GlobeTooltips extends React.Component {
           display: none;
       `}
     `
-    var expend_source_text;
-    var limitation = 459
+    var expend_note_text;
+    var limitation_note = 459
     if(this.tooltips_expendInfo[0] != undefined){
       var temp = this.tooltips_expendInfo[0].notes.toString().length
-      if(temp>limitation){
-        expend_source_text = this.tooltips_expendInfo[0].notes.slice(0,limitation) + '...';
+      if(temp>limitation_note){
+        expend_note_text = this.tooltips_expendInfo[0].notes.slice(0,limitation_note) + '...';
       }else{
-        expend_source_text = this.tooltips_expendInfo[0].notes;
+        expend_note_text = this.tooltips_expendInfo[0].notes;
+      }
+    }
+
+    var expend_source_text;
+    var limitation_source = 50;
+    if(this.tooltips_expendInfo[0] != undefined){
+      var t = this.tooltips_expendInfo[0].source.replace(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi,'').replace(/;/g,'');
+      var temp = t.toString().length;
+      if(temp>limitation_source){
+        expend_source_text = "Source: " + t.slice(0,limitation_note);
+      }else{
+        expend_source_text = "Source: " + t;
       }
     }
 
@@ -195,8 +207,8 @@ class GlobeTooltips extends React.Component {
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>
         <Event> {this.toUpper(warDict.event_dict[this.evt])} </Event>
-        <Expend_notes> {expend_source_text} </Expend_notes>
-        <Expend_source hideText = {this.tooltips_clicked}>{this.tooltips_expendInfo[0] != undefined && "Source: " + this.tooltips_expendInfo[0].source}</Expend_source>
+        <Expend_notes> {expend_note_text} </Expend_notes>
+        <Expend_source hideText = {this.tooltips_clicked}>{expend_source_text}</Expend_source>
       </Tooltip_warpper>
     )
   }
