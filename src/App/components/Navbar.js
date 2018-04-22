@@ -22,20 +22,22 @@ class Navbar extends React.Component {
         text-decoration: none;
         padding-left: 30px;
         position: relative;
-        top: -4px;
+        top: -10px;
       }
 
       > a:first-child:before{
-        content: 'A comparitive study on wars and refugee flow';
+        content: 'A Comparitive Study on Wars and Refugee Flow';
         font-family: 'Roboto';
-        font-weight: 500;
+        font-weight: 400;
         color: white;
         opacity: .5;
-        font-size: 12px;
+        font-size: 10px;
         position: absolute;
         left: 30px;
-        width: 190%;
         bottom: -38px;
+        /* letter-spacing: 1.1px; */
+        width: 900%;
+        word-spacing: 3px;
       }
 
     `

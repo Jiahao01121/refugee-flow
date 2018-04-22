@@ -139,6 +139,7 @@ class GlobeTooltips extends React.Component {
       top: 55px;
       position: relative;
       left: 27px;
+      width: 95%;
 
       &:after{
         content: 'Click for more..';
@@ -153,7 +154,6 @@ class GlobeTooltips extends React.Component {
     `
 
     const Expend_notes = styled.p`
-      ${'' /* display: none; */}
       font-family: 'Roboto';
       font-size: 12px;
       font-weight: 100;
@@ -161,9 +161,7 @@ class GlobeTooltips extends React.Component {
       position: relative;
       top: 62px;
       width: 88%;
-      ${'' /* ${props =>{
-        console.log("aaa "+props);
-        }} */}
+      line-height: 1.8;
     `
 
     const Expend_source = styled.p`
@@ -178,11 +176,11 @@ class GlobeTooltips extends React.Component {
       `}
     `
     var expend_source_text;
-
+    var limitation = 459
     if(this.tooltips_expendInfo[0] != undefined){
       var temp = this.tooltips_expendInfo[0].notes.toString().length
-      if(temp>570){
-        expend_source_text = this.tooltips_expendInfo[0].notes.slice(0,570) + '...';
+      if(temp>limitation){
+        expend_source_text = this.tooltips_expendInfo[0].notes.slice(0,limitation) + '...';
       }else{
         expend_source_text = this.tooltips_expendInfo[0].notes;
       }
