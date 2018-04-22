@@ -1,94 +1,104 @@
-.selected{
-  color: #D7E6FF !important
-}
 .quaters{
   font-family: 'Roboto';
-  font-size: 0.75rem;
+  font-size: 10px;
+  font-weight: 200;
+  color: white;
+  border: 0;
+  background: transparent;
+  width: 50px;
+  left: 20px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 9px;
+}
+.quaters::after{
+  content: '';
+  width: 10px;
+  position: absolute;
+  height: 1px;
+  border-radius: 20px;
+  background-color: #fff;
+  top: 6px;
+  left: -20px;
+}
+.quater_currentYear:hover{
+  opacity: 0.7;
+  color: #41edb8;
+  transition: all 0.3s ease;
+}
+.quater_selected{
+  color: #41edb8;
+  font-weight: 500;
+}
+.quaters_disabled{
+  opacity: .7;
+}
+
+.years{
+  font-family: 'Roboto';
+  font-size: 11px;
   font-weight: 400;
   color: white;
   border: 0;
   background: transparent;
   width: 50px;
-  left: 15px;
-  bottom: 8px;
+  left: 45px;
+  bottom: 9px;
   padding: 0;
   position: relative;
   cursor: pointer;
 }
-.quaters:hover{
-  font-size: 13px;
-  opacity: 0.7;
-  transition: all 0.3s ease;
+.years_selected{
+  color: #41edb8 !important;
+  font-size: 14px !important;
+  bottom: 10px !important;
 }
-
-.years{
-  font-family: 'Roboto';
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: white;
-  border: 0;
-  background: transparent;
-  width: 50px;
-  left: 35px;
-  bottom: 8px;
-  padding: 0;
-  position: relative;
-  cursor: pointer;
-}
-
 .years:hover{
   font-size: 13px;
   opacity: 0.7;
   transition: all 0.3s ease;
 }
-.Wrapper{
-  width: 35px;
-  padding: 0px;
-  margin-bottom: 200px;
-  height: 1px;
-  background: white;
-  cursor: pointer;
-}
-.Wrapper:first-child{
-    margin-top: 5px;
-  }
 
 .TimelineWrapper{
   position:absolute;
-  /* height: ${() => window.innerHeight- 60 - 320 + 'px'}; */
+
   height: 300px;
   width: 100px;
-  margin-top: 320px;
+  bottom:0;
   overflow-y: scroll;
-  left: 10px;
+  left: 30px;
+  box-shadow: 25px 69px 126px -11px rgba(0,0,0,0.75);
+
+
+
 }
 .TimelineWrapper::-webkit-scrollbar{
-  width:0.5em;
+  width: 1px;
 }
 .TimelineWrapper::-webkit-scrollbar-thumb {
-  background-color: #15151C;
+  background-color: #5a5a61;
   -webkit-border-radius: 4px;
 }
-
 .TimelineWrapper::before{
   content: "Timeline";
-  position: relative;
+  position: fixed;
   font-family: 'Roboto';
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 300;
   color: white;
-  top: -2px;
-  margin-left: 10px;
+  margin-top: -30px;
 }
 
 .individualWrapper{
-width: 35px;
-padding: 0px;
-margin-bottom: 200px;
-height: 1px;
-background: white;
-cursor: pointer;
+  width: 40px;
+  padding: 0px;
+  height: 1px;
+  background: white;
+  cursor: pointer;
+  margin-bottom: 150px;
 }
-.individualWrapper :first-child{
-  margin-top: 5px;
+.individualWrapper:first-child{
+  margin-top: 20px;
 }
