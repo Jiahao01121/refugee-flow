@@ -11,13 +11,24 @@ export default class War extends React.Component {
     this.state = {
       currentYear: 0
     }
+
+    this.changeYearManager = this.changeYearManager.bind(this);
+  }
+
+  changeYearManager(year){
+    console.log(this);
+    this.setState({
+      currentYear: year
+    })
   }
 
   render() {
+    console.log("rendered!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(this.state);
     return(
       <div>
-        <GlobeContainer />
-        <GlobeRightSection />
+        <GlobeContainer changeYearManager = {this.changeYearManager}/>
+        <GlobeRightSection currentYear = {this.state.currentYear} />
       </div>
     )
   }

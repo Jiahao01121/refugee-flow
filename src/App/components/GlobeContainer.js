@@ -8,6 +8,7 @@ import * as _ from 'underscore'
 
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBarWrapper';
 import ModalButton from './ModalButton';
 
 import { ScaleLoader } from 'react-spinners';
@@ -45,8 +46,6 @@ class GlobeContainer extends React.Component {
 
   componentDidMount(){
 
-    console.log("------ Globe mounted");
-
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
 
     this.fetchData(url).then(d =>{
@@ -60,7 +59,6 @@ class GlobeContainer extends React.Component {
       })
 
     }).then((loadingState) =>{
-      console.log("Loading bar - second stage")
       this.setState({
         loadingStatus: loadingState.loadingStatus,
         loadingText: loadingState.loadingText,
@@ -224,32 +222,9 @@ class GlobeContainer extends React.Component {
   renderGlobeVisual(){
     console.count("---------- Globe's render called");
 
-    const LoadingDivWrapper = styled.div`
-      position: absolute;
-      top: 50%;
-      left: 37.5%;
-      display: block;
-      transform: translate(-50%,-50%);
-      ${props => !props.loading && css`
-        display: none;
-      `}
-    `
-    const LoaderGraphWrapper = styled.div`
-      position: absolute;
-      left:50%;
-      transform: translate(-50%,-50%);
-    `
-    const LoadingIndicator = styled.p`
-      font-family: 'Roboto';
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: white;
-      margin-top: 25px;
-    `
-
     return(
       <div style={{width: '75%' }}>
-        <LoadingDivWrapper loading={this.state.loadingStatus}>
+        <LoadingDivWrapper loading={this.state.loadingStatus} leftPercentage='37.5%'>
           <LoaderGraphWrapper>
             <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
           </LoaderGraphWrapper>
@@ -282,6 +257,7 @@ class GlobeContainer extends React.Component {
       // Animate to all records within the currentYear;
       this.gv.transition(0);
     } else {
+
       //switch data
       this.setState({
         loadingStatus : true,
@@ -293,8 +269,14 @@ class GlobeContainer extends React.Component {
         this.gv.octree.remove(this.gv.points); //takes ~ 10ms
         this.gv.scene.remove(this.gv.points); //takes ~ 10ms
 
-        this.state.warData.slice().forEach((d) => {
+        this.state.warData.slice().forEach((d,i) => {
           if(d.year == year ) {
+
+            // inform parent component of changed current year;
+            (() => {
+              this.props.changeYearManager(i);
+            })();
+
             // here only happens once.
             this.drawData( d.value );
             this.gv.scaler = d.scaler;
@@ -365,7 +347,7 @@ class GlobeContainer extends React.Component {
         font-size: 12px;
         position: absolute;
         width: 320px;
-        bottom: -17px;
+        bottom: -7px;
       }
     `
 

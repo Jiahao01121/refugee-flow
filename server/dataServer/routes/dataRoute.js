@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const WarService = require("../service/dataService");
-const _ = require('underscore');
-const d3 = require('d3');
+const DataService = require("../service/dataService");
 
 // var year = [2010,2011,2012,2013,2014,2015,2016,2017,2018];
 //   [
@@ -87,7 +85,7 @@ const d3 = require('d3');
 //
 //         console.log(d[1].toLowerCase().replace(/ /g,'')+"/"+d[0].toLowerCase().replace(/ /g,''));
 //
-//         WarService.findWar({country:d}).then( _d=>{
+//         DataService.findWar({country:d}).then( _d=>{
 //           // console.timeEnd('D '+ d);
 //           console.log("fetched");
 //           console.log(_d.length);
@@ -97,20 +95,22 @@ const d3 = require('d3');
 //   })
 // })
 router.get('/note/:id',function(req,res){
-  let noteID = +req.params.id;
-  WarService.findNote(noteID).then(d =>{
-    res.json(d);
-  });
+  DataService.find_war_note( +req.params.id ).then(d => res.json(d) );
 })
 router.get('/war_all',(req,res,next) =>{
-  res.json(WarService.war_all())
+  DataService.find_war_all().then(d => res.json(d) );
 })
+
+router.get('/asy_application_all',(req,res,next) =>{
+  DataService.find_asy_application_all().then(d => res.json(d) );
+})
+
 // abendoned
 // router.get('/all', function(req, res, next) {
 //
 //   console.log("get all called");
 //
-//   WarService.findWar({}).then(d =>{
+//   DataService.findWar({}).then(d =>{
 //
 //
 //     // operation take around 24000 ms
@@ -153,7 +153,7 @@ router.get('/war_all',(req,res,next) =>{
 // router.get('/global_war', function(req, res, next) {
 //   console.log("get global_war called");
 //   console.time('global_war');
-//   WarService.fetch_global({}).then(d =>{
+//   DataService.fetch_global({}).then(d =>{
 //     console.timeEnd('global_war');
 //     res.json(d);
 //   })

@@ -7,35 +7,66 @@ import * as THREE from 'three';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
 
+import $ from "jquery";
 
 class GlobeRSChart extends React.Component {
   constructor(props){
     super(props);
 
+    this.data = this.props.data;
+    this.margin = {top: 20, right: 20, bottom: 30, left: 50}
+    // this.processData = this.processData.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("as");
+    this.data = this.props.data;
   }
 
   componentDidMount(){
-    console.log("------ Globe mounted");
-
-    const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
-    // this.fetchData(url).then(d =>{ console.timeEnd("received & processed data");
-    //   this.setState({
-    //     warData: d
-    //   });
-    //
-    //   this.drawData(d[0].value); // Default view : 2010;
-    //   this.gv.lastIndex = 0; // For animation purpose;
-    //   this.gv.transition(this.gv.lastIndex); // Animate interface;
-    //   this.gv.animate();
-    // });
-
+    // this.processData(this.data);
+    // console.log(this.yExtent);
   }
 
+  // processData(data){
+  //
+  //   this.width = $(this.mount).width() - this.margin.left - this.margin.right;
+  //   this.height = $(this.mount).height() - this.margin.top - this.margin.bottom;
+  //   this.svg = d3.select(this.mount);
+  //   this.g = this.svg.append("g").attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
+  //
+  //
+  //   const _data = data.slice();
+  //   _data.forEach(d =>{
+  //     for (var quater in d.value) {
+  //       d.value[quater] = d.value[quater].reduce((a, c) => {
+  //         return {
+  //           Value:a.Value + c.Value
+  //         }
+  //       }, {Value: 0})
+  //     }
+  //   })
+  //
+  //   if(_data.length > 0){
+  //     let extentY = [];
+  //     for (var quater in _data[0].value) {
+  //       extentY.push(_data[0].value[quater].Value)
+  //     }
+  //     extentY = d3.extent(extentY);
+  //     console.log(Object.keys(_data[0].value));
+  //     // const x = d3.scaleOrdinal().domain().range([0,this.width])
+  //     const y = d3.scaleLinear().domain(extentY).range([this.height,0])
+  //   }
+  //
+  //
+  //   return _data;
+  //
+  // }
 
 
 
   render(){
-
+    console.log(this.data);
     const Chart = styled.div`
         width: 90%;
         left: 5%;
@@ -46,7 +77,9 @@ class GlobeRSChart extends React.Component {
     `
     return(
       <Chart>
+        <svg width='100%' height='100%' ref={(mount) => {return this.mount = mount }}>
 
+        </svg>
       </Chart>
     )
 
