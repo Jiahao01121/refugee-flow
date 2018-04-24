@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
 import Modal from './Modal';
 
 const GlobeControllerButton = styled.button`
@@ -30,7 +32,6 @@ const GlobeControllerButton = styled.button`
   }
 `
 
-
 class ModalButton extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +40,7 @@ class ModalButton extends Component {
     };
   }
 
-  handleToggleModal() {
+  handleToggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   }
 
@@ -47,19 +48,26 @@ class ModalButton extends Component {
     const { showModal } = this.state;
 
     return (
-      <GlobeControllerButton
-        type="button"
-        onClick={() => this.handleToggleModal()}
-        >MAP
-        {showModal && 
-          <Modal onCloseRequest={() => this.handleToggleModal()}>
+      <div>
+        <GlobeControllerButton
+          type="button"
+          onClick={this.handleToggleModal}>
+          MAP
+        </GlobeControllerButton>
+         
+          <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
             <img src="https://placeimg.com/900/650/nature" alt="Nature" />
           </Modal>
-        }
-      </GlobeControllerButton>
-
+      </div>
     );
   }
 }
+
+ModalButton.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
 
 export default ModalButton
