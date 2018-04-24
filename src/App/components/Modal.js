@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import isNil from 'lodash/fp/isNil';
 import styled, { keyframes } from 'styled-components';
-import DocumentService from '../services/DocumentService';
+// import DocumentService from '../services/DocumentService';
 // import styles from '../stylesheets/ModelContent.css';
 import ModalCreator from 'react-modal';
 
@@ -29,14 +29,14 @@ const customStyles = {
 //     opacity: 1;
 //   }
 // `;
-// 
+//
 
 class Modal extends Component {
 
   constructor(props) {
     super(props);
   }
-  
+
   render() {
     return (
       <div>
@@ -53,7 +53,7 @@ class Modal extends Component {
         </ModalCreator>
       </div>
     );
-  
+
   }
 }
 

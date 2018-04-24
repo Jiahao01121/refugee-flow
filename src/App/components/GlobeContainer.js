@@ -112,7 +112,7 @@ class GlobeContainer extends React.Component {
               console.log("err at compute max/min");
             }
           })();
-          const scaler = d3.scaleLinear().domain(minMax).range([0,1]);
+          let scaler = d3.scaleLinear().domain(minMax).range([0,1]);
           const out = [];
           const all = [];
           const noHeight = [];
@@ -297,6 +297,7 @@ class GlobeContainer extends React.Component {
           if(d.year == year ) {
             // here only happens once.
             this.drawData( d.value );
+            this.gv.scaler = d.scaler;
 
               this.setState({
                 rotatePause: true,
@@ -416,7 +417,7 @@ class GlobeContainer extends React.Component {
     //   border: none;
     //   top: 160px;
     //   margin: 0px;
-    // 
+    //
     //   &:before{
     //     background-image: url(./globe_icon.png);
     //     background-size: 50%;

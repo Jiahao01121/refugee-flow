@@ -1,11 +1,23 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Route, Link } from 'react-router-dom'
 
-export default class War extends Component {
+import GlobeContainer from './GlobeContainer'
+import GlobeRightSection from './GlobeRightSection'
+
+export default class War extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      currentYear: 0
+    }
+  }
+
   render() {
     return(
       <div>
-        <h3>WAR</h3>
+        <GlobeContainer />
+        <GlobeRightSection />
       </div>
     )
   }
