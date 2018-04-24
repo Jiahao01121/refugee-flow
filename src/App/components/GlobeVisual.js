@@ -36,9 +36,6 @@ class GlobeVisual extends React.Component{
 
   componentDidMount(){
 
-    this.vkthread = window.vkthread;
-
-    console.log("------ GlobeVisual mounted");
     // opts, also passed in on .adddata() from other component
     this.opts = this.props.opts || {
       imgDir : './globe/',
@@ -584,7 +581,7 @@ class GlobeVisual extends React.Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('globeVisual received new prop!')
+
 
     this.rotatePause = nextProps.rotatePause;
 
