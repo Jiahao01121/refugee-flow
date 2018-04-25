@@ -351,77 +351,43 @@ class GlobeContainer extends React.Component {
       }
     `
 
-    const SwitchCountryButton = styled.button`
+    const GlobeControllerButton = styled.button`
       cursor: pointer;
-      text-decoration: underline;
-      color: white;
       font-family: 'Roboto';
+      font-weight: 600;
       font-size: 15px;
-      font-weight: 500;
+      color: #ffffff66;
+      left: 30px;
+      position: absolute;
       background: none;
       border: none;
-      position: absolute;
-      top: 110px;
-      left: 20px;
-
-      &:after{
-        content: '>';
-        font-weight: 900;
-        color: white;
-        font-size: 15px;
-        position: absolute;
-        right: -8px;
-      }
+      top: 160px;
+      margin: 0px;
 
       &:before{
-        background-image: url(./location_icon.png);
+        background-image: url(./globe_icon.png);
         background-size: 50%;
+        width: 60px;
+        height: 40px;
         background-repeat: no-repeat;
         display: inline-block;
-        width: 33px;
-        height: 27px;
         content: "";
-        bottom: 0px;
-        right: 58px;
+        bottom: -16px;
+        right: 12px;
         position: absolute;
+        margin-right: 10px;
       }
     `
-
-    // const GlobeControllerButton = styled.button`
-    //   cursor: pointer;
-    //   font-family: 'Roboto';
-    //   font-weight: 600;
-    //   font-size: 15px;
-    //   color: #ffffff66;
-    //   left: 30px;
-    //   position: absolute;
-    //   background: none;
-    //   border: none;
-    //   top: 160px;
-    //   margin: 0px;
-    //
-    //   &:before{
-    //     background-image: url(./globe_icon.png);
-    //     background-size: 50%;
-    //     width: 60px;
-    //     height: 40px;
-    //     background-repeat: no-repeat;
-    //     display: inline-block;
-    //     content: "";
-    //     bottom: -16px;
-    //     right: 12px;
-    //     position: absolute;
-    //     margin-right: 10px;
-    //   }
-    // `
 
     return(
       <div className = 'globe'>
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
 
-          <SwitchCountryButton>GLOBAL</SwitchCountryButton>
-          <ModalButton />
+
+          <ModalButton />GLOBAL
+          <GlobeControllerButton>MAP</GlobeControllerButton>
+
 
           {/* <GlobeControllerItems>
             <AllConflict>Show All Armed Conflict</AllConflict>

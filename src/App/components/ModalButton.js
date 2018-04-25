@@ -4,33 +4,42 @@ import PropTypes from 'prop-types';
 
 import Modal from './Modal';
 
-const GlobeControllerButton = styled.button`
+const SwitchCountryButton = styled.button`
   cursor: pointer;
+  text-decoration: underline;
+  color: white;
   font-family: 'Roboto';
-  font-weight: 600;
   font-size: 15px;
-  color: #ffffff66;
-  left: 30px;
-  position: absolute;
+  font-weight: 500;
   background: none;
   border: none;
-  top: 160px;
-  margin: 0px;
+  position: absolute;
+  top: 110px;
+  left: 20px;
+
+  &:after{
+    content: '>';
+    font-weight: 900;
+    color: white;
+    font-size: 15px;
+    position: absolute;
+    right: -8px;
+  }
 
   &:before{
-    background-image: url(./globe_icon.png);
+    background-image: url(./location_icon.png);
     background-size: 50%;
-    width: 60px;
-    height: 40px;
     background-repeat: no-repeat;
     display: inline-block;
+    width: 33px;
+    height: 27px;
     content: "";
-    bottom: -16px;
-    right: 12px;
+    bottom: 0px;
+    right: 58px;
     position: absolute;
-    margin-right: 10px;
   }
 `
+
 
 class ModalButton extends Component {
   constructor(props) {
@@ -49,12 +58,12 @@ class ModalButton extends Component {
 
     return (
       <div>
-        <GlobeControllerButton
+        <SwitchCountryButton
           type="button"
           onClick={this.handleToggleModal}>
-          MAP
-        </GlobeControllerButton>
-         
+          GLOBAL
+        </SwitchCountryButton>
+
           <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
             <img src="https://placeimg.com/900/650/nature" alt="Nature" />
           </Modal>
