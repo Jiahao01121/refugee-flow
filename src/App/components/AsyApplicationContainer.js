@@ -19,6 +19,8 @@ class AsyApplicationContainer extends React.Component {
     }
     this.data = [];
     this.currentYear = this.props.currentYear;
+
+    this.renderAsyAppContainer = this.renderAsyAppContainer.bind(this);
   }
 
   componentDidMount(){
@@ -48,6 +50,15 @@ class AsyApplicationContainer extends React.Component {
     )
   }
 
+  renderAsyAppContainer(){
+    if( this.data.length > 0 ){
+
+      return (
+        <AsyApplicationChartContainer currentYear={ this.currentYear } data={this.data}/>
+      )
+    }
+  }
+
   render(){
     const Background = styled.div`
       width: 25%;
@@ -61,7 +72,7 @@ class AsyApplicationContainer extends React.Component {
     const Title = styled.p`
       position: relative;
       font-family: 'Roboto';
-      font-size: 25px;
+      font-size: 20px;
       font-weight: 100;
       color: white;
       margin-top: 0;
@@ -87,7 +98,7 @@ class AsyApplicationContainer extends React.Component {
         font-size: 12px;
         position: absolute;
         width: 320px;
-        top: 50px;
+        top: 35px;
       }
     `
     return(
@@ -100,7 +111,7 @@ class AsyApplicationContainer extends React.Component {
           <LoadingIndicator>{this.state.loadingText}</LoadingIndicator>
           </LoadingDivWrapper>
 
-        <AsyApplicationChartContainer currentYear={ this.currentYear } data={this.data}/>
+        {this.renderAsyAppContainer()}
       </Background>
     )
 
