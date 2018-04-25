@@ -65,7 +65,7 @@ class ModalButton extends Component {
         </SwitchCountryButton>
 
           <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
-            <img src="https://placeimg.com/900/650/nature" alt="Nature" />
+            //PUT COMPONENTS HERE
           </Modal>
       </div>
     );

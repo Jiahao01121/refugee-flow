@@ -3,40 +3,7 @@ import isNil from 'lodash/fp/isNil';
 import styled, { keyframes } from 'styled-components';
 
 import ModalCreator from 'react-modal';
-
-const customStyles = {
-  content : {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'rgba(0, 0, 0, 0.8)'
-  }
-};
-
-// const show = keyframes`
-//   0% {
-//     display: none;
-//     opacity: 0;
-//   }
-//   1% {
-//     display: flex;
-//     opacity: 0;
-//   }
-//   100% {
-//     opacity: 1;
-//   }
-// `;
-//
+import GlobalModal from '../stylesheets/GlobalModal.css'
 
 class Modal extends Component {
 
@@ -50,10 +17,15 @@ class Modal extends Component {
         <ModalCreator
           isOpen={this.props.showModal}
           onRequestClose={this.props.onCloseRequest}
-          style={customStyles}
+          className="GlobeModal"
+          overlayClassName="Overlay"
         >
           <div>
-            <button onClick={this.props.onCloseRequest} stlye={{float: 'right'}}>X</button>
+            <span
+              onClick={this.props.onCloseRequest}
+              className="CloseButton">
+              &times;
+            </span>
           </div>
           {this.props.children}
         </ModalCreator>

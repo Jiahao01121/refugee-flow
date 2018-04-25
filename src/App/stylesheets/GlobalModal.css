@@ -1,0 +1,47 @@
+.ReactModal__Content {
+  opacity: 0;
+}
+
+.ReactModal__Content--after-open {
+  opacity: 1;
+  transition: opacity 5000ms;
+}
+
+.ReactModal__Content--before-close {
+  opacity: 0;
+}
+
+.GlobeModal {
+  display: flex;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background-color: rgb(0,0,0);
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* The Close Button */
+.CloseButton {
+    color: rgba(255,255,255, 0.8);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    clear: both;
+}
+
+.CloseButton:hover,
+.CloseButton:focus {
+    color: rgba(255,255,255, 1);
+    text-decoration: none;
+    cursor: pointer;
+}
