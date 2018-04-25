@@ -5,23 +5,20 @@ import * as warDict from '../data/warDictionary';
 
 import * as _ from 'underscore';
 import { ScaleLoader } from 'react-spinners';
-import GlobeRSChart from './GlobeRSChart'
+import AsyApplicationChartContainer from './AsyApplicationChartContainer'
 
 import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBarWrapper';
 
-class GlobeRightSection extends React.Component {
+class AsyApplicationContainer extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
-      currentSelection: [],
       loadingStatus: true,
       loadingText   : 'Fetching data from the server...',
-
     }
-
-    this.currentYear = this.props.currentYear;
     this.data = [];
+    this.currentYear = this.props.currentYear;
   }
 
   componentDidMount(){
@@ -31,7 +28,6 @@ class GlobeRightSection extends React.Component {
     this.fetchData(url).then(d =>{
       this.data = d;
       this.setState({
-        currentSelection: [ this.data[this.currentYear] ],
         loadingStatus: false
       })
     })
@@ -40,7 +36,6 @@ class GlobeRightSection extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.currentYear = nextProps.currentYear;
-    this.setState({currentSelection: [ this.data[this.currentYear] ] });
   }
 
 
@@ -61,24 +56,55 @@ class GlobeRightSection extends React.Component {
       position: absolute;
       right: 0;
       top: 60px;
-      box-shadow: 5px 0px 78px -6px rgba(0,0,0,0.62);
+      box-shadow: 5px 0px 78px -6px rgba(0,0,0,0.62);`
+
+    const Title = styled.p`
+      position: relative;
+      font-family: 'Roboto';
+      font-size: 25px;
+      font-weight: 100;
+      color: white;
+      margin-top: 0;
+      left: 5%;
+      top: 15px;
+
+      &:after{
+        background-image: url(./title_icon.png);
+        background-size: 14px 14px;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        content: "";
+        bottom: 10px;
+        right: 0px;
+        position: relative;
+      }
+
+      &:before{
+        content: 'description: Lorem ipsum dolor sit amet, consectetuer Lorem ipsum dolor sit amet, consectetue.';
+        font-weight: 300;
+        color: white;
+        font-size: 12px;
+        position: absolute;
+        width: 320px;
+        top: 50px;
+      }
     `
-    console.log('rendee asdas das das');
-    console.log(LoadingDivWrapper);
     return(
       <Background>
-        <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%'>
+        <Title>Total Asylum Application</Title>
+        <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%' marginTop = '-60'>
           <LoaderGraphWrapper>
             <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
           </LoaderGraphWrapper>
           <LoadingIndicator>{this.state.loadingText}</LoadingIndicator>
           </LoadingDivWrapper>
 
-        <GlobeRSChart data={ this.state.currentSelection }/>
+        <AsyApplicationChartContainer currentYear={ this.currentYear } data={this.data}/>
       </Background>
     )
 
   }
 }
 
-export default GlobeRightSection;
+export default AsyApplicationContainer;

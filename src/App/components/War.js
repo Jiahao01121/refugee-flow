@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Link } from 'react-router-dom'
 
 import GlobeContainer from './GlobeContainer'
-import GlobeRightSection from './GlobeRightSection'
+import AsyApplicationContainer from './AsyApplicationContainer'
 
 export default class War extends React.Component {
 
@@ -16,19 +16,16 @@ export default class War extends React.Component {
   }
 
   changeYearManager(year){
-    console.log(this);
     this.setState({
       currentYear: year
     })
   }
 
   render() {
-    console.log("rendered!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    console.log(this.state);
     return(
       <div>
         <GlobeContainer changeYearManager = {this.changeYearManager}/>
-        <GlobeRightSection currentYear = {this.state.currentYear} />
+        <AsyApplicationContainer currentYear = {this.state.currentYear} />
       </div>
     )
   }
