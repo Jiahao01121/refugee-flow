@@ -11,7 +11,7 @@ class AsyApplicationChartContainer extends React.Component {
     super(props);
 
     this.state = {
-      margin: {top: 20, right: 20, bottom: 30, left: 30},
+      margin: {top: 20, right: 10, bottom: 30, left: 30},
       data : this.props.data,
       currentYear : this.props.currentYear,
       width : 0,
@@ -20,6 +20,7 @@ class AsyApplicationChartContainer extends React.Component {
     }
 
     this.processData = this.processData.bind(this);
+    this.renderChart = this.renderChart.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,12 +83,15 @@ class AsyApplicationChartContainer extends React.Component {
 
   }
 
-
-
+  renderChart(){
+    if(this.state.data.length != 0 && this.state.chartData.length != 0){
+      return(<AsyApplicationChart {...this.state}/>)
+    }
+  }
 
 
   render(){
-
+    
     const Chart = styled.div`
         width: 90%;
         left: 5%;
@@ -100,7 +104,7 @@ class AsyApplicationChartContainer extends React.Component {
     return(
       <Chart>
         <svg width='100%' height='100%' ref={(mount) => {return this.mount = mount }}>
-            <AsyApplicationChart {...this.state}/>
+          {this.renderChart()}
         </svg>
       </Chart>
     )
