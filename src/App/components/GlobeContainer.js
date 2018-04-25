@@ -324,7 +324,7 @@ class GlobeContainer extends React.Component {
     const TitleText = styled.p`
       font-family: 'Roboto';
       font-size: 25px;
-      font-weight: 300;
+      font-weight: 100;
       color: white;
       margin-top: 0;
 
@@ -342,11 +342,11 @@ class GlobeContainer extends React.Component {
 
       &:before{
         content: 'select regions & filter downbelow to switch country/matrix...';
-        font-weight: 400;
+        font-weight: 300;
         color: white;
         font-size: 12px;
         position: absolute;
-        width: 320px;
+        width: 300px;
         bottom: -7px;
       }
     `

@@ -50,6 +50,11 @@ const find_asy_application_all = function(){
 
   return new Promise((resolve, reject) => {
       resolve([asy_all_data]);
+    /**************
+    *
+    * fetching data from MongoDB hosted on mlab
+    *
+    ****************/
     // asy_application_model.find({}, function(err,data){
     //
     //   if(err) {

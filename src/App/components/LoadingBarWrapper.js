@@ -10,6 +10,10 @@ const LoadingDivWrapper = styled.div`
   ${props => !props.loading && css`
     display: none;
   `}
+
+  ${props => props.marginTop && css`
+    margin-top: ${props.marginTop + 'px'};
+  `}
 `
 
 const LoaderGraphWrapper = styled.div`
@@ -22,10 +26,12 @@ const LoadingIndicator = styled.p`
   font-size: 0.75rem;
   font-weight: 700;
   color: white;
-  margin-top: 25px;
   text-align: center;
+  margin-top: 25px;
 `
 
-export {LoadingDivWrapper,
-LoaderGraphWrapper,
-LoadingIndicator,} ;
+export {
+  LoadingDivWrapper,
+  LoaderGraphWrapper,
+  LoadingIndicator,
+}
