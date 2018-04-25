@@ -421,7 +421,7 @@ class GlobeContainer extends React.Component {
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
 
           <SwitchCountryButton>GLOBAL</SwitchCountryButton>
-          <ModalButton />MAP
+          <ModalButton />
 
           {/* <GlobeControllerItems>
             <AllConflict>Show All Armed Conflict</AllConflict>
