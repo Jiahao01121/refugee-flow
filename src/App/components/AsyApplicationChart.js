@@ -14,8 +14,6 @@ class AsyApplicationChart extends React.Component {
     this.width = this.props.width;
     this.height = this.props.height;
     this.chartData = this.props.chartData;
-    this.x = this.props.x;
-    this.y = this.props.y;
 
     this.drawChart = this.drawChart.bind(this);
   }
@@ -25,24 +23,48 @@ class AsyApplicationChart extends React.Component {
     this.width = nextProps.width;
     this.height = nextProps.height;
     this.chartData = nextProps.chartData;
-    this.x = nextProps.x;
-    this.y = nextProps.y;
+
+  }
+  componentWillUpdate(){
+    this.yAxisGroup.transition().duration(10500).call(this.customYaxis);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // You can access `this.props` and `this.state` here
+    // This function should return a boolean, whether the component should re-render.
+    return false;
   }
 
   componentDidMount(){
-    this.drawChart()
+    this.drawChart();
+
   }
 
   drawChart(){
+      console.log('draw');
+
+      //hard coded quaterList
       this.quaterList = ['q1','q2','q3','q4'];
+
       // setup scaler
-      this.x = d3.scalePoint().domain(this.quaterList).range([0,this.width]);
-      this.y = d3.scaleLinear().domain([0,d3.max(this.chartData)]).range([this.height,0]);
-      // this.y = d3.scalePow().exponent(2).domain([0,d3.max(this.chartData)]).range([this.height,0]);
-      // this.y = d3.scaleLog().domain([1000,d3.max(this.chartData)]).range([this.height,0]).base(2);
+      this.x = d3.scalePoint()
+        .domain(this.quaterList).range([0,this.width]);
+      this.y = d3.scaleLinear()
+        .domain([0,d3.max(this.chartData)]).range([this.height,0])
+        .nice();
+
+      /****************** other options for Y axis scale  ******************
+      * this.y = d3.scalePow().exponent(2)
+        .domain([0,d3.max(this.chartData)]).range([this.height,0]);
+      * this.y = d3.scaleLog()
+        .domain([1000,d3.max(this.chartData)]).range([this.height,0])
+        .base(10);
+      **********************************************************************/
+
       //draw X axis
-      const xAxis = (g) =>{
-        g.call(d3.axisBottom(this.x).tickFormat(function(d) {
+      let xAxis = (g) =>{
+        g.call(d3.axisBottom(this.x)
+          .tickFormat(function(d) {
             return d.toUpperCase();
           })
         );
@@ -65,27 +87,26 @@ class AsyApplicationChart extends React.Component {
         .call(xAxis)
 
       //draw Y axis
-      const yAxis = (g) =>{
+      this.customYaxis = (g) =>{
+        var s = g.selection ? g.selection() : g;
         g.call(
-          d3.axisLeft(this.y)
-            .tickSize(-this.width)
-            .tickFormat(function(d) {
-              var s = d3.format(".2s")(d)
-              return s;
-            })
+          d3.axisRight(this.y)
+            .tickSize(this.width)
+            .tickFormat(d3.format(".2s"))
         );
 
-        g.select(".domain").remove();
+        s.select(".domain").remove();
+        s.select(".domain").attr('stroke','white')
 
-        g.selectAll(".tick line").attr("stroke", "#3b3a3e")
+        s.selectAll(".tick line").attr("stroke", "#3b3a3e")
 
-        g.selectAll(".tick:first-of-type text").remove()
+        s.selectAll(".tick:first-of-type text").remove()
 
-        g.selectAll(".tick:first-of-type line")
+        s.selectAll(".tick:first-of-type line")
           .attr('stroke','#7f7f7f')
           .attr('stroke-width',2);
 
-        g.selectAll(".tick text")
+        s.selectAll(".tick text")
           .attr("x", -8)
           .attr("dy", 4)
           .attr('fill','#7f7f7f')
@@ -93,7 +114,7 @@ class AsyApplicationChart extends React.Component {
           .style('font-weight',700)
           .attr("text-anchor", "end");
 
-        g.selectAll(".tick:last-of-type")
+        s.selectAll(".tick:last-of-type")
           .append("text")
           .attr("fill", "#7f7f7f")
           .style('font-family','Roboto')
@@ -102,12 +123,17 @@ class AsyApplicationChart extends React.Component {
           .attr("text-anchor", "start")
           .text("Application Count (case)");
 
-        g.selectAll(".tick:last-of-type line")
+        s.selectAll(".tick:last-of-type line")
           .attr('x1',120);
+
+
+        // dealing w/ transition
+        if (s !== g) g.selection().selectAll(".tick text").attrTween("x", null).attrTween("dy", null);
+
       }
-      d3.select(this.mount)
+      this.yAxisGroup = d3.select(this.mount)
         .append("g")
-          .call(yAxis)
+          .call(this.customYaxis)
 
       // draw Asylum application line
       d3.select(this.mount).append("path")
@@ -121,7 +147,8 @@ class AsyApplicationChart extends React.Component {
           d3.line()
             .x((d,i) => this.x(this.quaterList[i]) )
             .y( d => this.y(d) )
-            .curve(d3.curveCardinal.tension(0))
+            .curve(d3.curveMonotoneX)
+            // .curve(d3.curveStepAfter)
         );
 
       // draw Asylum application point
@@ -157,8 +184,9 @@ class AsyApplicationChart extends React.Component {
             .attr("y2",this.y(this.chartData.reduce((a,c) => a+c ) / 4));
 
           g.append("text")
-            .attr('x',0)
+            .attr('x',-10)
             .attr("y",this.y(this.chartData.reduce((a,c) => a+c ) / 4))
+            .attr('dy',4)
             .text('Avg')
             .attr("fill",'#41edb8')
             .style('font-family','Roboto')
@@ -167,7 +195,7 @@ class AsyApplicationChart extends React.Component {
             .attr("text-anchor", "end");
 
           g.append("text")
-            .attr('x',0)
+            .attr('x',-10)
             .attr("y",this.y(this.chartData.reduce((a,c) => a+c ) / 4))
             .attr('dy',15)
             .text(
@@ -185,6 +213,7 @@ class AsyApplicationChart extends React.Component {
 
 
   render(){
+    console.log("a");
     return(
       <g
         transform = {"translate(" + this.margin.left + "," + this.margin.top + ")"}

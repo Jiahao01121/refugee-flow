@@ -1,6 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
 
+import {Chart} from './styledComponents/AsyApplicationChartContainer.styled'
 import AsyApplicationChart from './AsyApplicationChart'
 
 import * as d3 from 'd3';
@@ -90,16 +90,9 @@ class AsyApplicationChartContainer extends React.Component {
   }
 
 
+
   render(){
-    
-    const Chart = styled.div`
-        width: 90%;
-        left: 5%;
-        ${'' /* background: blue; */}
-        height: 75%;
-        position: absolute;
-        top: 15%;
-    `
+
 
     return(
       <Chart>

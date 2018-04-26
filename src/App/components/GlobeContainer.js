@@ -74,7 +74,7 @@ class GlobeContainer extends React.Component {
         // this.gv.setTarget([40.226460, 17.442115], 250)
         this.gv.lastIndex = 0; // For animation purpose;
         this.gv.transition(this.gv.lastIndex); // Animate interface;
-        this.gv.octree.update( () => this.setState({loadingStatus: false}) ); // this takes a long time
+        // this.gv.octree.update( () => this.setState({loadingStatus: false}) ); // this takes a long time
         this.gv.animate();
       },10)
 
@@ -289,13 +289,13 @@ class GlobeContainer extends React.Component {
               });
 
               this.gv.transition(0,() => {
-                this.gv.octree.update(() =>{
-                  this.setState({
-                    rotatePause: false,
-                    loadingStatus : false,
-                    loadingText   : '',
-                  });
-                });
+                // this.gv.octree.update(() =>{
+                //   this.setState({
+                //     rotatePause: false,
+                //     loadingStatus : false,
+                //     loadingText   : '',
+                //   });
+                // });
               });
 
 
@@ -385,7 +385,7 @@ class GlobeContainer extends React.Component {
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
 
 
-          <ModalButton />GLOBAL
+          <ModalButton />
           <GlobeControllerButton>MAP</GlobeControllerButton>
 
 
