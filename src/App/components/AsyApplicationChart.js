@@ -158,11 +158,31 @@ class AsyApplicationChart extends React.Component {
 
   drawDataontoChart(chartD){
     // draw Asylum application line
+    let AllDomain = ['2010Q1','2010Q2','2010Q3','2010Q4',
+             '2011Q1','2011Q2','2011Q3','2011Q4',
+             '2012Q1','2012Q2','2012Q3','2012Q4',
+             '2013Q1','2013Q2','2013Q3','2013Q4',
+             '2014Q1','2014Q2','2014Q3','2014Q4',
+             '2015Q1','2015Q2','2015Q3','2015Q4',
+             '2016Q1','2016Q2','2016Q3','2016Q4',
+             '2017Q1','2017Q2','2017Q3','2017Q4',
+             '2018Q1','2018Q2','2018Q3','2018Q4',
+           ];
+    chartD.length > 4
+    ? this.x = d3.scalePoint()
+      .domain( AllDomain ).range([0,this.width])
+    : this.x = d3.scalePoint()
+      .domain(this.quaterList).range([0,this.width]);
+    this.y = d3.scaleLinear()
+      .domain([0,d3.max(chartD)]).range([this.height,0])
+      .nice();
+
+
 
     d3.selectAll('.dataLine')._groups[0].length >0
     ? d3.selectAll('.dataLine')
         .attr("d", d3.line()
-          .x((d,i) => this.x(this.quaterList[i]) )
+          .x((d,i) => chartD.length > 4 ? this.x(AllDomain[i]) : this.x(this.quaterList[i]) )
           .y( d => this.y(d) )
           .curve(d3.curveMonotoneX)(chartD)
         )
@@ -196,30 +216,45 @@ class AsyApplicationChart extends React.Component {
 
 
 
-
       console.log(d3.selectAll('.dataPoint')._groups[0].length);
+
     // draw Asylum application point
-    d3.selectAll('.dataPoint')._groups[0].length >0
-    ? d3.selectAll('.dataPoint')
-        .data(chartD)
-        .transition()
-        .duration(700)
-        .attr('cx',(d,i) => this.x(this.quaterList[i]) )
-        .attr('cy', d => this.y(d) )
-    : d3.select(this.mount)
-        .selectAll('.dataPoint')
-        .data(chartD)
-        .enter()
-        .append("circle")
-        .attr('class','dataPoint')
-        .attr("fill", "#41edb8")
-        .attr("stroke", "#1b1f3a")
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 3)
-        .attr('cx',(d,i) => this.x(this.quaterList[i]) )
-        .attr('cy', d => this.y(d) )
-        .attr('r',5)
+    if(d3.selectAll('.dataPoint')._groups[0].length >0){
+
+
+        d3.selectAll('.dataPoint').remove();
+        d3.select(this.mount)
+          .selectAll('.dataPoint')
+          .data(chartD)
+          .enter()
+          .append('circle')
+          .attr('class','dataPoint')
+          .attr("fill", "#41edb8")
+          .attr("stroke", "#1b1f3a")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-linecap", "round")
+          .attr("stroke-width", 3)
+          .attr('r',5)
+          .attr('cx',(d,i) => chartD.length > 4 ? this.x(AllDomain[i]) : this.x(this.quaterList[i]) )
+          .attr('cy', d => this.y(d) )
+
+
+    } else{
+      d3.select(this.mount)
+          .selectAll('.dataPoint')
+          .data(chartD)
+          .enter()
+          .append("circle")
+          .attr('class','dataPoint')
+          .attr("fill", "#41edb8")
+          .attr("stroke", "#1b1f3a")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-linecap", "round")
+          .attr("stroke-width", 3)
+          .attr('cx',(d,i) => this.x(this.quaterList[i]) )
+          .attr('cy', d => this.y(d) )
+          .attr('r',5)
+    }
 
     // draw Asylum application avg
     d3.selectAll('.asy-stats')._groups[0].length >0
@@ -231,7 +266,7 @@ class AsyApplicationChart extends React.Component {
       .attr("y2",this.y(chartD.reduce((a,c) => a+c ) / 4));
 
       g.selectAll('text:last-of-type').text( d3.format(".2s")( chartD.reduce((a,c) => a+c ) / 4 ) )
-      
+
       g.selectAll('text')
       .transition()
       .duration(1000)
