@@ -9,10 +9,12 @@ export default class War extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      currentYear: 0
+      currentYear: 0,
+      stillLoading: true
     }
 
     this.changeYearManager = this.changeYearManager.bind(this);
+    this.loadingManager = this.loadingManager.bind(this);
   }
 
   changeYearManager(year){
@@ -21,11 +23,23 @@ export default class War extends React.Component {
     })
   }
 
+  loadingManager(boo){
+    console.log('manager called!');
+    console.log(boo);
+    this.setState({
+      stillLoading: boo
+    })
+  }
+
   render() {
     return(
       <div>
-        <GlobeContainer changeYearManager = {this.changeYearManager}/>
-        <AsyApplicationContainer currentYear = {this.state.currentYear} />
+        <GlobeContainer changeYearManager = {this.changeYearManager}
+          loadingManager = { this.loadingManager }
+        />
+        <AsyApplicationContainer currentYear = {this.state.currentYear}
+          loadingManager = { this.state.stillLoading }
+        />
       </div>
     )
   }

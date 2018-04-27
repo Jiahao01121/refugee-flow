@@ -16,28 +16,23 @@ class AsyApplicationChart extends React.Component {
     this.chartData = this.props.chartData;
 
     this.drawChart = this.drawChart.bind(this);
+    this.drawDataontoChart = this.drawDataontoChart.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-
-    this.width = nextProps.width;
-    this.height = nextProps.height;
-    this.chartData = nextProps.chartData;
-
-  }
-  componentWillUpdate(){
-    this.yAxisGroup.transition().duration(10500).call(this.customYaxis);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //
+  //   this.width = nextProps.width;
+  //   this.height = nextProps.height;
+  //   this.chartData = nextProps.chartData;
+  //
+  // }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // You can access `this.props` and `this.state` here
-    // This function should return a boolean, whether the component should re-render.
     return false;
   }
 
   componentDidMount(){
     this.drawChart();
-
   }
 
   drawChart(){
@@ -88,23 +83,17 @@ class AsyApplicationChart extends React.Component {
 
       //draw Y axis
       this.customYaxis = (g) =>{
+
         var s = g.selection ? g.selection() : g;
+
         g.call(
-          d3.axisRight(this.y)
-            .tickSize(this.width)
+          d3.axisLeft(this.y)
+            .tickSize(-this.width)
             .tickFormat(d3.format(".2s"))
         );
 
         s.select(".domain").remove();
-        s.select(".domain").attr('stroke','white')
-
         s.selectAll(".tick line").attr("stroke", "#3b3a3e")
-
-        s.selectAll(".tick:first-of-type text").remove()
-
-        s.selectAll(".tick:first-of-type line")
-          .attr('stroke','#7f7f7f')
-          .attr('stroke-width',2);
 
         s.selectAll(".tick text")
           .attr("x", -8)
@@ -114,49 +103,115 @@ class AsyApplicationChart extends React.Component {
           .style('font-weight',700)
           .attr("text-anchor", "end");
 
-        s.selectAll(".tick:last-of-type")
-          .append("text")
-          .attr("fill", "#7f7f7f")
-          .style('font-family','Roboto')
-          .style('font-weight',700)
-          .attr("dy", 4)
-          .attr("text-anchor", "start")
-          .text("Application Count (case)");
+        if(s == g){
+          // only excute on the initial chart rendering
 
-        s.selectAll(".tick:last-of-type line")
-          .attr('x1',120);
+          s.selectAll(".tick:first-of-type text").remove();
 
+          s.selectAll(".tick:first-of-type line")
+            .attr('stroke','#7f7f7f')
+            .attr('stroke-width',2)
+            .attr('id','asy_app_chart_baseLine');
 
-        // dealing w/ transition
-        if (s !== g) g.selection().selectAll(".tick text").attrTween("x", null).attrTween("dy", null);
+          s.selectAll(".tick:last-of-type")
+            .append("text")
+            .attr('id','asy_app_y_axis_title')
+            .attr("fill", "#7f7f7f")
+            .style('font-family','Roboto')
+            .style('font-weight',700)
+            .attr('x',0)
+            .attr("dy", 4)
+            .attr("text-anchor", "start")
+            .text("Application Count (case)");
 
+          s.selectAll(".tick:last-of-type line")
+            .attr('id','asy_app_y_axis_title_indent')
+            .attr('x1',120);
+
+        }else if(s !== g){
+          // dealing w/ transition
+
+          s.selectAll(".tick:last-of-type")
+            .append("text")
+            .attr('id','asy_app_y_axis_title')
+            .attr("fill", "#7f7f7f")
+            .style('font-family','Roboto')
+            .style('font-weight',700)
+            .attr('x',0)
+            .attr("dy", 4)
+            .attr("text-anchor", "start")
+            .text("Application Count (case)");
+
+          s.selectAll(".tick:last-of-type line")
+          .attr('id','asy_app_y_axis_title_indent')
+          .attr('x1',120)
+
+          g.selectAll(".tick:first-of-type text").remove();
+          g.selectAll(".tick text").attrTween("x", null).attrTween("dy", null)
+        }
       }
+
       this.yAxisGroup = d3.select(this.mount)
         .append("g")
           .call(this.customYaxis)
+  }
 
-      // draw Asylum application line
-      d3.select(this.mount).append("path")
-        .datum(this.chartData)
-        .attr("fill", "none")
-        .attr("stroke", "#41edb8")
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 2)
-        .attr("d",
-          d3.line()
-            .x((d,i) => this.x(this.quaterList[i]) )
-            .y( d => this.y(d) )
-            .curve(d3.curveMonotoneX)
-            // .curve(d3.curveStepAfter)
-        );
+  drawDataontoChart(chartD){
+    // draw Asylum application line
 
-      // draw Asylum application point
-      d3.select(this.mount)
-        .selectAll('.null')
-        .data(this.chartData)
+    d3.selectAll('.dataLine')._groups[0].length >0
+    ? d3.selectAll('.dataLine')
+        .attr("d", d3.line()
+          .x((d,i) => this.x(this.quaterList[i]) )
+          .y( d => this.y(d) )
+          .curve(d3.curveMonotoneX)(chartD)
+        )
+        .attr("stroke-dasharray", function(d){ console.log(this.getTotalLength());return this.getTotalLength() })
+        .attr("stroke-dashoffset", function(d){ return this.getTotalLength() })
+        .transition()
+        .duration(1500)
+        .attr("stroke-dashoffset", 0)
+        // .on('end',function(){d3.select(this).remove()})
+    : d3.select(this.mount).append("path")
+      .datum(chartD)
+      .attr('class','dataLine')
+      .attr("fill", "none")
+      .attr("stroke", "#41edb8")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 2)
+      .attr("d",
+        d3.line()
+          .x((d,i) => this.x(this.quaterList[i]) )
+          .y( d => this.y(d) )
+          .curve(d3.curveMonotoneX)
+          // .curve(d3.curveStepAfter)
+      )
+      .attr("stroke-dasharray", function(d){ return this.getTotalLength() })
+      .attr("stroke-dashoffset", function(d){ return this.getTotalLength() })
+      .transition()
+      .duration(1500)
+      .attr("stroke-dashoffset", 0)
+
+
+
+
+
+      console.log(d3.selectAll('.dataPoint')._groups[0].length);
+    // draw Asylum application point
+    d3.selectAll('.dataPoint')._groups[0].length >0
+    ? d3.selectAll('.dataPoint')
+        .data(chartD)
+        .transition()
+        .duration(700)
+        .attr('cx',(d,i) => this.x(this.quaterList[i]) )
+        .attr('cy', d => this.y(d) )
+    : d3.select(this.mount)
+        .selectAll('.dataPoint')
+        .data(chartD)
         .enter()
         .append("circle")
+        .attr('class','dataPoint')
         .attr("fill", "#41edb8")
         .attr("stroke", "#1b1f3a")
         .attr("stroke-linejoin", "round")
@@ -166,50 +221,64 @@ class AsyApplicationChart extends React.Component {
         .attr('cy', d => this.y(d) )
         .attr('r',5)
 
-      // draw Asylum application avg
-      d3.select(this.mount)
-        .append('g')
-        .attr('class','asy-stats')
-        .call((g) =>{
+    // draw Asylum application avg
+    d3.selectAll('.asy-stats')._groups[0].length >0
+    ? d3.selectAll('.asy-stats').call((g) =>{
+      g.select('line')
+      .transition()
+      .duration(1000)
+      .attr("y1",this.y(chartD.reduce((a,c) => a+c ) / 4))
+      .attr("y2",this.y(chartD.reduce((a,c) => a+c ) / 4));
 
-          // draw avg
-          g.append("line")
-            .attr("stroke", "#41edb8")
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1)
-            .attr("x1", 0)
-            .attr("x2",this.width)
-            .attr("y1",this.y(this.chartData.reduce((a,c) => a+c ) / 4))
-            .attr("y2",this.y(this.chartData.reduce((a,c) => a+c ) / 4));
+      g.selectAll('text:last-of-type').text( d3.format(".2s")( chartD.reduce((a,c) => a+c ) / 4 ) )
+      
+      g.selectAll('text')
+      .transition()
+      .duration(1000)
+      .attr("y",this.y(chartD.reduce((a,c) => a+c ) / 4))
 
-          g.append("text")
-            .attr('x',-10)
-            .attr("y",this.y(this.chartData.reduce((a,c) => a+c ) / 4))
-            .attr('dy',4)
-            .text('Avg')
-            .attr("fill",'#41edb8')
-            .style('font-family','Roboto')
-            .style('font-weight',400)
-            .style('font-size','10px')
-            .attr("text-anchor", "end");
 
-          g.append("text")
-            .attr('x',-10)
-            .attr("y",this.y(this.chartData.reduce((a,c) => a+c ) / 4))
-            .attr('dy',15)
-            .text(
-              d3.format(".2s")( this.chartData.reduce((a,c) => a+c ) / 4 )
-            )
-            .attr("fill",'#41edb8')
-            .style('font-family','Roboto')
-            .style('font-weight',400)
-            .style('font-size','10px')
-            .attr("text-anchor", "end");
-        })
+    })
+    : d3.select(this.mount)
+      .append('g')
+      .attr('class','asy-stats')
+      .call((g) =>{
+
+        // draw avg
+        g.append("line")
+          .attr("stroke", "#41edb8")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-linecap", "round")
+          .attr("stroke-width", 1)
+          .attr("x1", 0)
+          .attr("x2",this.width)
+          .attr("y1",this.y(chartD.reduce((a,c) => a+c ) / 4))
+          .attr("y2",this.y(chartD.reduce((a,c) => a+c ) / 4));
+
+        g.append("text")
+          .attr('x',-10)
+          .attr("y",this.y(chartD.reduce((a,c) => a+c ) / 4))
+          .attr('dy',4)
+          .text('Avg')
+          .attr("fill",'#41edb8')
+          .style('font-family','Roboto')
+          .style('font-weight',400)
+          .style('font-size','10px')
+          .attr("text-anchor", "end");
+
+        g.append("text")
+          .attr('x',-10)
+          .attr("y",this.y(chartD.reduce((a,c) => a+c ) / 4))
+          .attr('dy',15)
+          .text( d3.format(".2s")( chartD.reduce((a,c) => a+c ) / 4 ) )
+          .attr("fill",'#41edb8')
+          .style('font-family','Roboto')
+          .style('font-weight',400)
+          .style('font-size','10px')
+          .attr("text-anchor", "end");
+      })
 
   }
-
 
 
   render(){
