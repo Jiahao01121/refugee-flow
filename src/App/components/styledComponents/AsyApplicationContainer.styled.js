@@ -50,8 +50,41 @@ const Legend = styled.img`
   width: 25%;
 `
 
+const CurrentYearButton = styled.button`
+  cursor: pointer;
+  font-family: 'Tajawal';
+  font-weight: 300;
+  font-size: 13px;
+  color: #ffffff66;
+  left: 20px;
+  position: absolute;
+  background: none;
+  border: none;
+  top: 110px;
+  margin: 0px;
+  text-decoration : ${props => props.selected == 1 ? 'underline' : 'none'}
+  }
+`
+
+const AllYearButton = styled.button`
+  cursor: pointer;
+  font-family: 'Tajawal';
+  font-weight: 300;
+  font-size: 13px;
+  color: #ffffff66;
+  left: 170px;
+  position: absolute;
+  background: none;
+  border: none;
+  top: 110px;
+  margin: 0px;
+  text-decoration : ${props => props.selected == 2 ? 'underline' : 'none'}
+
+`
 export {
   Background,
   Title,
-  Legend
+  Legend,
+  CurrentYearButton,
+  AllYearButton,
   }

@@ -16,10 +16,11 @@ class AsyApplicationChartContainer extends React.Component {
       currentYear : this.props.currentYear,
       width : 0,
       height : 0,
-      chartData : [],
+      chartData : []
     }
 
     this.loadingManager = this.props.loadingManager;
+    this.chartMode = this.props.chartMode,
 
     this.processData = this.processData.bind(this);
     this.renderChart = this.renderChart.bind(this);
@@ -31,8 +32,9 @@ class AsyApplicationChartContainer extends React.Component {
       data: nextProps.data,
       currentYear: nextProps.currentYear,
     })
+    this.chartMode = nextProps.chartMode;
     this.loadingManager = nextProps.loadingManager;
-    this.processData(nextProps.data,nextProps.currentYear);
+    this.processData(nextProps.data,nextProps.currentYear,this.chartMode);
   }
 
   componentDidMount(){
@@ -42,14 +44,14 @@ class AsyApplicationChartContainer extends React.Component {
       height : $(this.mount).height() - this.state.margin.top - this.state.margin.bottom,
     })
 
-    this.processData(this.state.data,this.state.currentYear);
+    this.processData(this.state.data,this.state.currentYear,this.chartMode);
 
   }
 
-  processData(data,currentYear){
+  processData(data,currentYear,mode){
 
     console.log(currentYear);
-    console.count('process chart data called');
+    console.count('process chart data called - current');
     //if receives data is not an empty array
 
     if(data.length >0){
@@ -83,19 +85,37 @@ class AsyApplicationChartContainer extends React.Component {
         }
       })
 
-      // pass data to state
-      const yearList = Object.keys(_data[0]);
-      const currentData = _data[0][yearList[currentYear]];
-      this.setState({
-        chartData : currentData
-      })
+      if(mode === 1){
+        // pass data to state
+        const yearList = Object.keys(_data[0]);
+        const currentData = _data[0][yearList[currentYear]];
+        this.setState({
+          chartData : currentData
+        })
+      }else if (mode ===2) {
+        const allData = []
+        for (var year in _data[0]) {
+          allData.push(
+            _data[0][year][0],
+            _data[0][year][1],
+            _data[0][year][2],
+            _data[0][year][3]
+          )
+        }
+        console.log(allData);
+        console.count('process chart data called - all');
+        this.setState({
+          chartData : allData
+        })
+      }
     }
-
   }
+
+
 
   renderChart(){
     if(this.state.data.length != 0 && this.state.chartData.length != 0){
-      return(<AsyApplicationChart {...this.state} ref = {(gMount) => {return this.gMount = gMount }}/>)
+      return (<AsyApplicationChart {...this.state} ref = {(gMount) => {return this.gMount = gMount }}/>)
     }
   }
 
