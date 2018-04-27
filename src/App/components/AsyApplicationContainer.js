@@ -1,13 +1,14 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+
 
 import * as warDict from '../data/warDictionary';
 
 import * as _ from 'underscore';
 import { ScaleLoader } from 'react-spinners';
-import AsyApplicationChartContainer from './AsyApplicationChartContainer'
+import AsyApplicationChartContainer from './AsyApplicationChartContainer';
+import { Background, Title, Legend, CurrentYearButton, AllYearButton } from './styledComponents/AsyApplicationContainer.styled';
 
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBarWrapper';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 
 class AsyApplicationContainer extends React.Component {
   constructor(props){
@@ -15,31 +16,29 @@ class AsyApplicationContainer extends React.Component {
 
     this.state = {
       loadingStatus: true,
-      loadingText   : 'Fetching data from the server...',
+      loadingText : 'Fetching data from the server...',
+      buttonMode : 1,
     }
     this.data = [];
     this.currentYear = this.props.currentYear;
-
+    this.loadingManager = this.props.loadingManager;
     this.renderAsyAppContainer = this.renderAsyAppContainer.bind(this);
+    this.buttonClick = this.buttonClick.bind(this);
   }
 
   componentDidMount(){
 
     const url = 'http://' + window.location.hostname + ':2700' + '/data/asy_application_all';
-
     this.fetchData(url).then(d =>{
       this.data = d;
-      this.setState({
-        loadingStatus: false
-      })
+      this.setState({ loadingStatus: false })
     })
   }
 
-
   componentWillReceiveProps(nextProps) {
     this.currentYear = nextProps.currentYear;
+    this.loadingManager = nextProps.loadingManager;
   }
-
 
   fetchData(url){
     const request = new Request( url, {method: 'GET', cache: true});
@@ -54,56 +53,33 @@ class AsyApplicationContainer extends React.Component {
     if( this.data.length > 0 ){
 
       return (
-        <AsyApplicationChartContainer currentYear={ this.currentYear } data={this.data}/>
+        <AsyApplicationChartContainer
+          currentYear={ this.currentYear }
+          data={this.data}
+          loadingManager={this.loadingManager}
+          ref={(ChartContainerMount) => {return this.ChartContainerMount = ChartContainerMount }}
+          chartMode = {this.state.buttonMode}
+        />
       )
     }
   }
 
+  buttonClick(i){
+    this.setState({
+      buttonMode: i
+    })
+
+    console.log(this.state.buttonMode);
+  }
+
   render(){
-    const Background = styled.div`
-      width: 25%;
-      background: #15151C;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      top: 60px;
-      box-shadow: 5px 0px 78px -6px rgba(0,0,0,0.62);`
 
-    const Title = styled.p`
-      position: relative;
-      font-family: 'Roboto';
-      font-size: 20px;
-      font-weight: 100;
-      color: white;
-      margin-top: 0;
-      left: 5%;
-      top: 15px;
-
-      &:after{
-        background-image: url(./title_icon.png);
-        background-size: 14px 14px;
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        content: "";
-        bottom: 10px;
-        right: 0px;
-        position: relative;
-      }
-
-      &:before{
-        content: 'description: Lorem ipsum dolor sit amet, consectetuer Lorem ipsum dolor sit amet, consectetue.';
-        font-weight: 300;
-        color: white;
-        font-size: 12px;
-        position: absolute;
-        width: 320px;
-        top: 35px;
-      }
-    `
     return(
       <Background>
         <Title>Total Asylum Application</Title>
+        <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode}>SHOW CURRENT YEAR</CurrentYearButton>
+        <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>
+
         <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%' marginTop = '-60'>
           <LoaderGraphWrapper>
             <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
@@ -112,10 +88,12 @@ class AsyApplicationContainer extends React.Component {
           </LoadingDivWrapper>
 
         {this.renderAsyAppContainer()}
+        <Legend src="./chartLegend_icon.png" alt="Smiley face" />
       </Background>
     )
 
   }
+
 }
 
 export default AsyApplicationContainer;

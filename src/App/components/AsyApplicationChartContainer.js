@@ -1,6 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
 
+import {Chart} from './styledComponents/AsyApplicationChartContainer.styled'
 import AsyApplicationChart from './AsyApplicationChart'
 
 import * as d3 from 'd3';
@@ -19,29 +19,41 @@ class AsyApplicationChartContainer extends React.Component {
       chartData : []
     }
 
+    this.loadingManager = this.props.loadingManager;
+    this.chartMode = this.props.chartMode,
+
     this.processData = this.processData.bind(this);
     this.renderChart = this.renderChart.bind(this);
+    this.callGMountTransition = this.callGMountTransition.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       data: nextProps.data,
-      currentYear: nextProps.currentYear
+      currentYear: nextProps.currentYear,
     })
+    this.chartMode = nextProps.chartMode;
+    this.loadingManager = nextProps.loadingManager;
+    this.processData(nextProps.data,nextProps.currentYear,this.chartMode);
   }
 
   componentDidMount(){
+
     this.setState({
       width : $(this.mount).width() - this.state.margin.left - this.state.margin.right,
       height : $(this.mount).height() - this.state.margin.top - this.state.margin.bottom,
     })
 
-    this.processData(this.state.data,this.state.currentYear);
+    this.processData(this.state.data,this.state.currentYear,this.chartMode);
+
   }
 
-  processData(data,currentYear){
-    console.count('process chart data called');
+  processData(data,currentYear,mode){
+
+    console.log(currentYear);
+    console.count('process chart data called - current');
     //if receives data is not an empty array
+
     if(data.length >0){
 
       //shallow copy
@@ -73,33 +85,82 @@ class AsyApplicationChartContainer extends React.Component {
         }
       })
 
-      // pass data to state
-      const yearList = Object.keys(_data[0]);
-      const currentData = _data[0][yearList[currentYear]];
-      this.setState({
-        chartData : currentData
-      })
+      if(mode === 1){
+        // pass data to state
+        const yearList = Object.keys(_data[0]);
+        const currentData = _data[0][yearList[currentYear]];
+        this.setState({
+          chartData : currentData
+        })
+      }else if (mode ===2) {
+        const allData = []
+        for (var year in _data[0]) {
+          allData.push(
+            _data[0][year][0],
+            _data[0][year][1],
+            _data[0][year][2],
+            _data[0][year][3]
+          )
+        }
+        console.log(allData);
+        console.count('process chart data called - all');
+        this.setState({
+          chartData : allData
+        })
+      }
     }
-
   }
+
+
 
   renderChart(){
     if(this.state.data.length != 0 && this.state.chartData.length != 0){
-      return(<AsyApplicationChart {...this.state}/>)
+      return (<AsyApplicationChart {...this.state} ref = {(gMount) => {return this.gMount = gMount }}/>)
     }
   }
 
+  callGMountTransition(){
+
+      if(this.gMount != undefined){
+        this.gMount.drawDataontoChart(this.state.chartData)
+        this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
+
+        //transition
+        this.gMount.yAxisGroup
+          .transition()
+          .duration(1700)
+          .call((g)=>{
+            this.gMount.customYaxis(g)
+          })
+          .on('start',() =>{
+            d3.select('#asy_app_chart_baseLine')
+            .transition()
+            .duration(400)
+            .attr("stroke", "#3b3a3e")
+            .attr('stroke-width',1)
+
+            d3.select('#asy_app_y_axis_title').remove();
+
+            d3.select('#asy_app_y_axis_title_indent')
+            .transition()
+            .duration(400)
+            .attr('x1',0)
+            .attr('id','');
+          })
+
+          .on('end',function(){
+            d3.select('#asy_app_chart_baseLine')
+              .transition()
+              .duration(1000)
+              .attr('stroke','#7f7f7f')
+              .attr('stroke-width',2)
+          });
+      }
+  }
 
   render(){
-    
-    const Chart = styled.div`
-        width: 90%;
-        left: 5%;
-        ${'' /* background: blue; */}
-        height: 75%;
-        position: absolute;
-        top: 15%;
-    `
+
+    this.callGMountTransition();
 
     return(
       <Chart>
