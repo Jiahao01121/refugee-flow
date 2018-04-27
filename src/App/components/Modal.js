@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import isNil from 'lodash/fp/isNil';
 import styled, { keyframes } from 'styled-components';
 
 import ModalCreator from 'react-modal';
