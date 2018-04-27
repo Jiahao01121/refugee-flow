@@ -51,7 +51,7 @@ class GlobeContainer extends React.Component {
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
 
     this.fetchData(url).then(d =>{
-
+      d.forEach((d,i) => console.log('year: ' + i + ' | ' + d.value[0][1].length))
       console.timeEnd("received & processed data");
 
       return ({
@@ -78,9 +78,11 @@ class GlobeContainer extends React.Component {
         this.gv.transition(this.gv.lastIndex); // Animate interface;
         this.gv.octree.update( () => {
           this.setState({loadingStatus: false});
-          // this.props.loadingManager(false);
+          console.time('animate takes');
+          this.gv.animate();
+          console.timeEnd('animate takes');
+          this.props.loadingManager(false);
         }); // this takes a long time
-        this.gv.animate();
       },10)
 
     })
@@ -299,7 +301,7 @@ class GlobeContainer extends React.Component {
               this.gv.octree.update(
                 () =>{
                 // inform parent component loading status
-                // this.props.loadingManager(false);
+                this.props.loadingManager(false);
 
                 this.setState({
                   rotatePause: false,

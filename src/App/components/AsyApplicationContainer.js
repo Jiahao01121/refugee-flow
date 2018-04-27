@@ -6,7 +6,7 @@ import * as warDict from '../data/warDictionary';
 import * as _ from 'underscore';
 import { ScaleLoader } from 'react-spinners';
 import AsyApplicationChartContainer from './AsyApplicationChartContainer';
-import {Background, Title} from './styledComponents/AsyApplicationContainer.styled';
+import { Background, Title, Legend } from './styledComponents/AsyApplicationContainer.styled';
 
 import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 
@@ -20,7 +20,7 @@ class AsyApplicationContainer extends React.Component {
     }
     this.data = [];
     this.currentYear = this.props.currentYear;
-    // this.loadingManager = this.props.loadingManager;
+    this.loadingManager = this.props.loadingManager;
     this.renderAsyAppContainer = this.renderAsyAppContainer.bind(this);
   }
 
@@ -39,7 +39,7 @@ class AsyApplicationContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.currentYear = nextProps.currentYear;
-    // this.loadingManager = nextProps.loadingManager;
+    this.loadingManager = nextProps.loadingManager;
   }
 
 
@@ -59,7 +59,7 @@ class AsyApplicationContainer extends React.Component {
         <AsyApplicationChartContainer
           currentYear={ this.currentYear }
           data={this.data}
-          // loadingManager={this.loadingManager}
+          loadingManager={this.loadingManager}
         />
       )
     }
@@ -78,6 +78,7 @@ class AsyApplicationContainer extends React.Component {
           </LoadingDivWrapper>
 
         {this.renderAsyAppContainer()}
+        <Legend src="./chartLegend_icon.png" alt="Smiley face" />
       </Background>
     )
 

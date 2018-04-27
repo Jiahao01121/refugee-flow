@@ -42,4 +42,16 @@ const Title = styled.p`
   }
 `
 
-export {Background, Title}
+const Legend = styled.img`
+  position: absolute;
+  bottom: 75px;
+  margin: 0;
+  right: 30px;
+  width: 25%;
+`
+
+export {
+  Background,
+  Title,
+  Legend
+  }

@@ -35,10 +35,10 @@ export default class War extends React.Component {
     return(
       <div>
         <GlobeContainer changeYearManager = {this.changeYearManager}
-          // loadingManager = { this.loadingManager }
+          loadingManager = { this.loadingManager }
         />
         <AsyApplicationContainer currentYear = {this.state.currentYear}
-          // loadingManager = { this.state.stillLoading }
+          loadingManager = { this.state.stillLoading }
         />
       </div>
     )

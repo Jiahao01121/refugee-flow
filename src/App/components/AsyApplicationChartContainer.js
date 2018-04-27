@@ -17,8 +17,9 @@ class AsyApplicationChartContainer extends React.Component {
       width : 0,
       height : 0,
       chartData : [],
-      // loadingManager: this.props.loadingManager
     }
+
+    this.loadingManager = this.props.loadingManager;
 
     this.processData = this.processData.bind(this);
     this.renderChart = this.renderChart.bind(this);
@@ -29,12 +30,13 @@ class AsyApplicationChartContainer extends React.Component {
     this.setState({
       data: nextProps.data,
       currentYear: nextProps.currentYear,
-      // loadingManager: nextProps.loadingManager
     })
+    this.loadingManager = nextProps.loadingManager;
     this.processData(nextProps.data,nextProps.currentYear);
   }
 
   componentDidMount(){
+
     this.setState({
       width : $(this.mount).width() - this.state.margin.left - this.state.margin.right,
       height : $(this.mount).height() - this.state.margin.top - this.state.margin.bottom,
@@ -45,9 +47,11 @@ class AsyApplicationChartContainer extends React.Component {
   }
 
   processData(data,currentYear){
+
     console.log(currentYear);
     console.count('process chart data called');
     //if receives data is not an empty array
+
     if(data.length >0){
 
       //shallow copy
@@ -98,7 +102,7 @@ class AsyApplicationChartContainer extends React.Component {
   callGMountTransition(){
 
       if(this.gMount != undefined){
-
+        this.gMount.drawDataontoChart(this.state.chartData)
         this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
 
         //transition
