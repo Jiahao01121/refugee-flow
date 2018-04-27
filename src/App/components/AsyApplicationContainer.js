@@ -8,7 +8,7 @@ import { ScaleLoader } from 'react-spinners';
 import AsyApplicationChartContainer from './AsyApplicationChartContainer';
 import {Background, Title} from './styledComponents/AsyApplicationContainer.styled';
 
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBarWrapper';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 
 class AsyApplicationContainer extends React.Component {
   constructor(props){
@@ -20,7 +20,7 @@ class AsyApplicationContainer extends React.Component {
     }
     this.data = [];
     this.currentYear = this.props.currentYear;
-
+    // this.loadingManager = this.props.loadingManager;
     this.renderAsyAppContainer = this.renderAsyAppContainer.bind(this);
   }
 
@@ -39,6 +39,7 @@ class AsyApplicationContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.currentYear = nextProps.currentYear;
+    // this.loadingManager = nextProps.loadingManager;
   }
 
 
@@ -55,7 +56,11 @@ class AsyApplicationContainer extends React.Component {
     if( this.data.length > 0 ){
 
       return (
-        <AsyApplicationChartContainer currentYear={ this.currentYear } data={this.data}/>
+        <AsyApplicationChartContainer
+          currentYear={ this.currentYear }
+          data={this.data}
+          // loadingManager={this.loadingManager}
+        />
       )
     }
   }

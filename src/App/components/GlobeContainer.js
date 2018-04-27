@@ -8,11 +8,12 @@ import * as _ from 'underscore'
 
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBarWrapper';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 import ModalButton from './ModalButton';
 
 import { ScaleLoader } from 'react-spinners';
-import styled, {css} from 'styled-components';
+
+import { TitleContainer, TitleText, GlobeControllerButton } from './styledComponents/GlobeContainer.styled'
 
 class GlobeContainer extends React.Component {
 
@@ -40,7 +41,8 @@ class GlobeContainer extends React.Component {
 
       titleText : 'Global'
     }
-    this.vkthread = window.vkthread;
+    // TODO: web worker
+    // this.vkthread = window.vkthread;
 
   }
 
@@ -74,7 +76,10 @@ class GlobeContainer extends React.Component {
         // this.gv.setTarget([40.226460, 17.442115], 250)
         this.gv.lastIndex = 0; // For animation purpose;
         this.gv.transition(this.gv.lastIndex); // Animate interface;
-        // this.gv.octree.update( () => this.setState({loadingStatus: false}) ); // this takes a long time
+        this.gv.octree.update( () => {
+          this.setState({loadingStatus: false});
+          // this.props.loadingManager(false);
+        }); // this takes a long time
         this.gv.animate();
       },10)
 
@@ -258,6 +263,9 @@ class GlobeContainer extends React.Component {
       this.gv.transition(0);
     } else {
 
+      // inform parent component loading status
+      // this.props.loadingManager(true);
+
       //switch data
       this.setState({
         loadingStatus : true,
@@ -280,22 +288,28 @@ class GlobeContainer extends React.Component {
             // here only happens once.
             this.drawData( d.value );
             this.gv.scaler = d.scaler;
+              //
+              // this.setState({
+              //   rotatePause: true,
+              //   currentYear: year,
+              //   loadingStatus : true,
+              //   loadingText   : 'Optimizing Octree...',
+              // });
 
-              this.setState({
-                rotatePause: true,
-                currentYear: year,
-                loadingStatus : true,
-                loadingText   : 'Optimizing Octree...',
-              });
+              this.gv.octree.update(
+                () =>{
+                // inform parent component loading status
+                // this.props.loadingManager(false);
 
+                this.setState({
+                  rotatePause: false,
+                  currentYear: year,
+                  loadingStatus : false,
+                  loadingText   : '',
+                });
+              }
+            );
               this.gv.transition(0,() => {
-                // this.gv.octree.update(() =>{
-                //   this.setState({
-                //     rotatePause: false,
-                //     loadingStatus : false,
-                //     loadingText   : '',
-                //   });
-                // });
               });
 
 
@@ -312,72 +326,6 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
-
-    const TitleContainer = styled.div`
-      position: absolute;
-      ${'' /* background: #0000ff61; */}
-      width: ${window.innerWidth - 30 - (0.25 * window.innerWidth) + 'px'};
-      left: 30px;
-      top: 110px;
-    `
-
-    const TitleText = styled.p`
-      font-family: 'Roboto';
-      font-size: 25px;
-      font-weight: 100;
-      color: white;
-      margin-top: 0;
-
-      &:after{
-        background-image: url(./title_icon.png);
-        background-size: 14px 14px;
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        content: "";
-        bottom: 10px;
-        right: 0px;
-        position: relative;
-      }
-
-      &:before{
-        content: 'select regions & filter downbelow to switch country/matrix...';
-        font-weight: 300;
-        color: white;
-        font-size: 12px;
-        position: absolute;
-        width: 300px;
-        bottom: -7px;
-      }
-    `
-
-    const GlobeControllerButton = styled.button`
-      cursor: pointer;
-      font-family: 'Roboto';
-      font-weight: 600;
-      font-size: 15px;
-      color: #ffffff66;
-      left: 30px;
-      position: absolute;
-      background: none;
-      border: none;
-      top: 160px;
-      margin: 0px;
-
-      &:before{
-        background-image: url(./globe_icon.png);
-        background-size: 50%;
-        width: 60px;
-        height: 40px;
-        background-repeat: no-repeat;
-        display: inline-block;
-        content: "";
-        bottom: -16px;
-        right: 12px;
-        position: absolute;
-        margin-right: 10px;
-      }
-    `
 
     return(
       <div className = 'globe'>

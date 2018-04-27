@@ -16,18 +16,22 @@ class AsyApplicationChartContainer extends React.Component {
       currentYear : this.props.currentYear,
       width : 0,
       height : 0,
-      chartData : []
+      chartData : [],
+      // loadingManager: this.props.loadingManager
     }
 
     this.processData = this.processData.bind(this);
     this.renderChart = this.renderChart.bind(this);
+    this.callGMountTransition = this.callGMountTransition.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       data: nextProps.data,
-      currentYear: nextProps.currentYear
+      currentYear: nextProps.currentYear,
+      // loadingManager: nextProps.loadingManager
     })
+    this.processData(nextProps.data,nextProps.currentYear);
   }
 
   componentDidMount(){
@@ -37,9 +41,11 @@ class AsyApplicationChartContainer extends React.Component {
     })
 
     this.processData(this.state.data,this.state.currentYear);
+
   }
 
   processData(data,currentYear){
+    console.log(currentYear);
     console.count('process chart data called');
     //if receives data is not an empty array
     if(data.length >0){
@@ -85,14 +91,52 @@ class AsyApplicationChartContainer extends React.Component {
 
   renderChart(){
     if(this.state.data.length != 0 && this.state.chartData.length != 0){
-      return(<AsyApplicationChart {...this.state}/>)
+      return(<AsyApplicationChart {...this.state} ref = {(gMount) => {return this.gMount = gMount }}/>)
     }
   }
 
+  callGMountTransition(){
 
+      if(this.gMount != undefined){
+
+        this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
+
+        //transition
+        this.gMount.yAxisGroup
+          .transition()
+          .duration(1700)
+          .call((g)=>{
+            this.gMount.customYaxis(g)
+          })
+          .on('start',() =>{
+            d3.select('#asy_app_chart_baseLine')
+            .transition()
+            .duration(400)
+            .attr("stroke", "#3b3a3e")
+            .attr('stroke-width',1)
+
+            d3.select('#asy_app_y_axis_title').remove();
+
+            d3.select('#asy_app_y_axis_title_indent')
+            .transition()
+            .duration(400)
+            .attr('x1',0)
+            .attr('id','');
+          })
+
+          .on('end',function(){
+            d3.select('#asy_app_chart_baseLine')
+              .transition()
+              .duration(1000)
+              .attr('stroke','#7f7f7f')
+              .attr('stroke-width',2)
+          });
+      }
+  }
 
   render(){
 
+    this.callGMountTransition();
 
     return(
       <Chart>

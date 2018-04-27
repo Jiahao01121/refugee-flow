@@ -18,26 +18,20 @@ class AsyApplicationChart extends React.Component {
     this.drawChart = this.drawChart.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-
-    this.width = nextProps.width;
-    this.height = nextProps.height;
-    this.chartData = nextProps.chartData;
-
-  }
-  componentWillUpdate(){
-    this.yAxisGroup.transition().duration(10500).call(this.customYaxis);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //
+  //   this.width = nextProps.width;
+  //   this.height = nextProps.height;
+  //   this.chartData = nextProps.chartData;
+  //
+  // }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // You can access `this.props` and `this.state` here
-    // This function should return a boolean, whether the component should re-render.
     return false;
   }
 
   componentDidMount(){
     this.drawChart();
-
   }
 
   drawChart(){
@@ -88,23 +82,17 @@ class AsyApplicationChart extends React.Component {
 
       //draw Y axis
       this.customYaxis = (g) =>{
+
         var s = g.selection ? g.selection() : g;
+
         g.call(
-          d3.axisRight(this.y)
-            .tickSize(this.width)
+          d3.axisLeft(this.y)
+            .tickSize(-this.width)
             .tickFormat(d3.format(".2s"))
         );
 
         s.select(".domain").remove();
-        s.select(".domain").attr('stroke','white')
-
         s.selectAll(".tick line").attr("stroke", "#3b3a3e")
-
-        s.selectAll(".tick:first-of-type text").remove()
-
-        s.selectAll(".tick:first-of-type line")
-          .attr('stroke','#7f7f7f')
-          .attr('stroke-width',2);
 
         s.selectAll(".tick text")
           .attr("x", -8)
@@ -114,23 +102,54 @@ class AsyApplicationChart extends React.Component {
           .style('font-weight',700)
           .attr("text-anchor", "end");
 
-        s.selectAll(".tick:last-of-type")
-          .append("text")
-          .attr("fill", "#7f7f7f")
-          .style('font-family','Roboto')
-          .style('font-weight',700)
-          .attr("dy", 4)
-          .attr("text-anchor", "start")
-          .text("Application Count (case)");
+        if(s == g){
+          // only excute on the initial chart rendering
 
-        s.selectAll(".tick:last-of-type line")
-          .attr('x1',120);
+          s.selectAll(".tick:first-of-type text").remove();
 
+          s.selectAll(".tick:first-of-type line")
+            .attr('stroke','#7f7f7f')
+            .attr('stroke-width',2)
+            .attr('id','asy_app_chart_baseLine');
 
-        // dealing w/ transition
-        if (s !== g) g.selection().selectAll(".tick text").attrTween("x", null).attrTween("dy", null);
+          s.selectAll(".tick:last-of-type")
+            .append("text")
+            .attr('id','asy_app_y_axis_title')
+            .attr("fill", "#7f7f7f")
+            .style('font-family','Roboto')
+            .style('font-weight',700)
+            .attr('x',0)
+            .attr("dy", 4)
+            .attr("text-anchor", "start")
+            .text("Application Count (case)");
 
+          s.selectAll(".tick:last-of-type line")
+            .attr('id','asy_app_y_axis_title_indent')
+            .attr('x1',120);
+
+        }else if(s !== g){
+          // dealing w/ transition
+
+          s.selectAll(".tick:last-of-type")
+            .append("text")
+            .attr('id','asy_app_y_axis_title')
+            .attr("fill", "#7f7f7f")
+            .style('font-family','Roboto')
+            .style('font-weight',700)
+            .attr('x',0)
+            .attr("dy", 4)
+            .attr("text-anchor", "start")
+            .text("Application Count (case)");
+
+          s.selectAll(".tick:last-of-type line")
+          .attr('id','asy_app_y_axis_title_indent')
+          .attr('x1',120)
+
+          g.selectAll(".tick:first-of-type text").remove();
+          g.selectAll(".tick text").attrTween("x", null).attrTween("dy", null)
+        }
       }
+
       this.yAxisGroup = d3.select(this.mount)
         .append("g")
           .call(this.customYaxis)
