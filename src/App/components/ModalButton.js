@@ -42,15 +42,6 @@ const SwitchCountryButton = styled.button`
   }
 `
 
-const RegionContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: black;
-`
-
-
 class ModalButton extends Component {
   constructor(props) {
     super(props);
@@ -76,9 +67,7 @@ class ModalButton extends Component {
 
           <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
             <RegionNav />
-            <RegionContainer>
-              <Region />
-            </RegionContainer>
+            <Region />
           </Modal>
       </div>
     );
