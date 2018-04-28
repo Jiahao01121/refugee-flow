@@ -19,7 +19,7 @@ class Modal extends Component {
           className="GlobeModal"
           overlayClassName="Overlay"
         >
-          <div>
+          <div className="CloseButtonPostioning">
             <span
               onClick={this.props.onCloseRequest}
               className="CloseButton">

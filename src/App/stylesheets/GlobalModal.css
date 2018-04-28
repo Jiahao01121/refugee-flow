@@ -18,7 +18,7 @@
   left: 40px;
   right: 40px;
   bottom: 40px;
-  background-color: rgb(0,0,0);
+  background-color: rgb(255,255,255);
 }
 
 .Overlay {
@@ -30,13 +30,20 @@
   background-color: rgba(0,0,0,0.8);
 }
 
+.CloseButtonPostioning {
+  z-index: 1;
+  position: absolute;
+  top: 4px;
+  right: 13px;
+}
+
 /* The Close Button */
 .CloseButton {
     color: rgba(255,255,255, 0.8);
-    float: right;
     font-size: 28px;
     font-weight: bold;
     clear: both;
+    z-index: 1;
 }
 
 .CloseButton:hover,

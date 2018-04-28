@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Modal from './Modal';
-import RegionNav from './RegionNav';
-import Region from './Region';
 
-const SwitchCountryButton = styled.button`
+const GlobeModalButton = styled.button`
   cursor: pointer;
   text-decoration: underline;
   color: white;
@@ -42,16 +40,7 @@ const SwitchCountryButton = styled.button`
   }
 `
 
-const RegionContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: black;
-`
-
-
-class ModalButton extends Component {
+class GlobeModalLauncher extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,28 +57,20 @@ class ModalButton extends Component {
 
     return (
       <div>
-        <SwitchCountryButton
-          type="button"
-          onClick={this.handleToggleModal}>
-          GLOBAL
-        </SwitchCountryButton>
-
           <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
-            <RegionNav />
-            <RegionContainer>
-              <Region />
-            </RegionContainer>
+            <img src="https://placeimg.com/900/650/nature" alt="Nature" />
           </Modal>
       </div>
     );
   }
 }
 
-ModalButton.propTypes = {
+
+GlobeModalLauncher.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
 };
 
-export default ModalButton
+export default GlobeModalLauncher
