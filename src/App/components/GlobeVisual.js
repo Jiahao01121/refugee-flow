@@ -1,9 +1,10 @@
 import React from 'react';
 // import style from './GlobeVisual.css'
 import * as d3 from 'd3';
+import * as _ from 'underscore';
 import THREE from '../THREEJSScript/Octree';
-import OctreeWorker from '../workers/Octree.worker.js';
 
+// import OctreeWorker from '../workers/Octree.worker.js';
 import GlobeTooltips from './GlobeTooltips'; //child component
 
 class GlobeVisual extends React.Component{
@@ -27,7 +28,7 @@ class GlobeVisual extends React.Component{
     this.rotatePause = this.props.rotatePause;
     this.state = {
       mv_show: false,
-      mv_tooltips: Array(5).fill(0),
+      mv_tooltips: Array(7).fill(0),
       tooltips_clicked_id : 0,
       tooltips_clicked: false,
       tooltips_expendInfo:[],
@@ -227,15 +228,18 @@ class GlobeVisual extends React.Component{
     this.tooltips_mouseoverFeedback = new THREE.Mesh(tooltips_mouseoverFeedback_geo,tooltips_mouseoverFeedback_mat);
 
     this.tooltips_mouseoverFeedback.name = 'raycast-mouseover';
-    this.octree = new THREE.Octree( {
+    this.octree = new THREE.Octree({
       // scene: this.scene,
       undeferred: false,
       depthMax: Infinity,
       objectsThreshold: 8,
       overlapPct: 0.15
-    } );
+    });
     this.scene.add(this.tooltips_mouseoverFeedback);
-    this.mount.addEventListener('mousemove', this.raycast_listener,false);
+
+    // debounced interaction listener little bigger than 60fps.
+    const debounced = _.debounce(this.raycast_listener, 1000/65);
+    this.mount.addEventListener('mousemove',debounced,false);
 
     //
     this.renderer = new THREE.WebGLRenderer({antialias: true});
@@ -408,6 +412,7 @@ class GlobeVisual extends React.Component{
 
       //check if interscetions changed
       if(this.WarID != displayData.id){
+
         this.setState({
           tooltips_clicked: false,
           mv_position:[event.clientX,event.clientY],
@@ -418,10 +423,17 @@ class GlobeVisual extends React.Component{
             Math.round(this.scaler.invert(displayData.fat)),
             displayData.evt,
             displayData.int,
+            this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0],
+            this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1],
           ],
         })
         this.WarID = displayData.id;
         this.rotatePause = true;
+
+        console.log("mouse pos");
+        console.log(event.clientX+ ' | ' + event.clientY);
+        console.log("target x");
+        console.log(this.target.x + ' | ' + this.target.y);
       }
 
       // check height( if height = -1 then data is not in the current selection)
@@ -448,12 +460,12 @@ class GlobeVisual extends React.Component{
       this.rotatePause = false;
       this.setState({
         tooltips_clicked : false,
-        tooltips_clicked_id : Math.random() // reset clicked id
+        tooltips_clicked_id : Math.random() // reset clickedID
       })
 
-      this.WarID = Math.random(); // reset warid
+      this.WarID = Math.random(); // reset warID
 
-      // hide tooltips white bar
+      // hide tooltips white bar on the globe
       this.tooltips_mouseoverFeedback.position.x = 0;
       this.tooltips_mouseoverFeedback.position.y = 0;
       this.tooltips_mouseoverFeedback.position.z = 0;
@@ -477,13 +489,15 @@ class GlobeVisual extends React.Component{
     this.mount.style.cursor = 'move';
 
     // fetchDataFromServer
-    console.log(this.WarID);
-    console.log(this.state.tooltips_clicked_id);
+    // console.log(this.WarID);
+    // console.log(this.state.tooltips_clicked_id);
     if(this.state.mv_show && this.state.tooltips_clicked_id != this.WarID) {
       let url = 'http://' + window.location.hostname + ':2700' + '/data/note/'+ this.WarID;
       fetch(new Request( url, {method: 'GET', cache: true})).then(res => res.json()).then(d =>{
-        console.log('fetching');
+
+        this.setTarget([this.state.mv_tooltips[5],this.state.mv_tooltips[6]],700)
         this.setState({
+          mv_position:[ (window.innerWidth * 0.75)/2 + (350/2) + 20 , window.innerHeight/2 - 150/2 -40],
           tooltips_clicked : true,
           tooltips_expendInfo : d,
           tooltips_clicked_id : d[0].id
@@ -599,7 +613,10 @@ class GlobeVisual extends React.Component{
 
     this.target.y = convert(rot[0],-85,85,-1.5707963267948966,1.5707963267948966); //Latitude
 
-    this.distanceTarget = distance;
+    if(distance !== null){
+      this.distanceTarget = distance;
+    }
+
   }
 
   rotateGlobe(deltaSeconds,cancel) {
