@@ -99,6 +99,8 @@ class GlobeVisual extends React.Component{
               'float intensity = pow( 0.75 - dot( vNormal, vec3( 0, 0, 1.0 ) ), 14.0 );',
               // vec4 is the color
               'gl_FragColor = vec4( 0.254, 0.929, 0.721, 1.0 ) * intensity;',
+              // 0.074, 0.996, 0.992 - blueish color
+              // 0.254, 0.929, 0.721 - green-ish color
 
             '}'
           ].join('\n')
@@ -199,7 +201,7 @@ class GlobeVisual extends React.Component{
     this.raycasterMouse = new THREE.Vector2();
     this.interscted = undefined;
 
-    const tooltips_mouseoverFeedback_geo = new THREE.BoxGeometry(1.5, 1.5, 1);
+    const tooltips_mouseoverFeedback_geo = new THREE.BoxGeometry(2.5, 2.5, 1);
     tooltips_mouseoverFeedback_geo.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,-0.5));
     const tooltips_mouseoverFeedback_mat = new THREE.ShaderMaterial({
           uniforms: {},
@@ -221,12 +223,9 @@ class GlobeVisual extends React.Component{
 
             '}'
           ].join('\n'),
-          side: THREE.BackSide,
-          blending: THREE.AdditiveBlending,
-          transparent: true
+          side: THREE.BackSide
         })
     this.tooltips_mouseoverFeedback = new THREE.Mesh(tooltips_mouseoverFeedback_geo,tooltips_mouseoverFeedback_mat);
-
     this.tooltips_mouseoverFeedback.name = 'raycast-mouseover';
     this.octree = new THREE.Octree({
       // scene: this.scene,
@@ -243,7 +242,7 @@ class GlobeVisual extends React.Component{
 
     //
     this.renderer = new THREE.WebGLRenderer({antialias: true});
-    this.renderer.setSize(w, h);
+    this.renderer.setSize(w * 1.5, h* 1.5);
     this.mount.appendChild(this.renderer.domElement);
 
     //
@@ -571,8 +570,8 @@ class GlobeVisual extends React.Component{
 
   zoom(delta) {
     this.distanceTarget -= delta;
-    this.distanceTarget = this.distanceTarget > 1100 ? 1100 : this.distanceTarget;
-    this.distanceTarget = this.distanceTarget < 250 ? 250 : this.distanceTarget;
+    this.distanceTarget = this.distanceTarget > 945 ? 945 : this.distanceTarget;
+    this.distanceTarget = this.distanceTarget < 380 ? 380 : this.distanceTarget;
   }
 
   transition(currentIndex,cb) {
