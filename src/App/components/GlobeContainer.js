@@ -33,11 +33,11 @@ class GlobeContainer extends React.Component {
         const c = new THREE.Color();
         // c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
         c.setHSL(
-          color[0] + 0.5*x
+          color[0] + 0.4*x
           ,
           color[1]
           ,
-          color[2]
+          color[2] 
         );
         return c;
       },
@@ -89,11 +89,7 @@ class GlobeContainer extends React.Component {
           this.setState({loadingStatus: false});
           console.time('animate takes');
           this.gv.animate();
-          this.gv.setTarget([
-            // -8.220944, 36.783594
-            // -4.484641, 37.135156
-            -11.874010, 44.605859
-          ],945)
+          this.gv.setTarget([-11.874010, 44.605859],945) // set initial position
           console.timeEnd('animate takes');
           this.props.loadingManager(false);
         }); // this takes a long time
