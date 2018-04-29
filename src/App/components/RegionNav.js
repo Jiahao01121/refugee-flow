@@ -5,10 +5,10 @@ class RegionNav extends Component {
   render() {
     return (
       <div className="RegionNavBar">
-        <button>Global</button>
-        <button>Africa</button>
-        <button>Asia</button>
-        <button>Mid-East</button>
+        <button>All Regions</button>
+        <button>Africa Region</button>
+        <button>Asia Region</button>
+        <button>Mid-East Region</button>
       </div>
     )
   }
