@@ -15,6 +15,8 @@ import { ScaleLoader } from 'react-spinners';
 
 import { TitleContainer, TitleText, GlobeControllerButton } from './styledComponents/GlobeContainer.styled'
 
+import { rgbToHsl } from '../utils/color-conversion-algorithms'
+
 class GlobeContainer extends React.Component {
 
   constructor(props){
@@ -22,14 +24,21 @@ class GlobeContainer extends React.Component {
 
     this.timlineYearClicked = this.timlineYearClicked.bind(this);
     this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
-
+    // const color = rgbToHsl(19,254,253);
+    const color = rgbToHsl(22,247,123);
     this.state = {
       color   : new THREE.Color(0xffffff),
       imgDir  : '../globe/',
       colorFn : (x) => {
         const c = new THREE.Color();
-        c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
-        // console.log(c);
+        // c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
+        c.setHSL(
+          color[0] + 0.5*x
+          ,
+          color[1]
+          ,
+          color[2]
+        );
         return c;
       },
       currentYear : '2010',
@@ -80,6 +89,11 @@ class GlobeContainer extends React.Component {
           this.setState({loadingStatus: false});
           console.time('animate takes');
           this.gv.animate();
+          this.gv.setTarget([
+            // -8.220944, 36.783594
+            // -4.484641, 37.135156
+            -11.874010, 44.605859
+          ],945)
           console.timeEnd('animate takes');
           this.props.loadingManager(false);
         }); // this takes a long time

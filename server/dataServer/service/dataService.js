@@ -31,7 +31,7 @@ const find_war_note = function(query){
 
     war_note_model.find({'id': query}, function(err,data){
       if(err) {
-        console.err(err);
+        console.log(err);
         reject(err);
       } else {
         resolve(data)
