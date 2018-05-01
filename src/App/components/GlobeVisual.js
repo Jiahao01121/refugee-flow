@@ -6,6 +6,7 @@ import THREE from '../THREEJSScript/Octree';
 
 // import OctreeWorker from '../workers/Octree.worker.js';
 import GlobeTooltips from './GlobeTooltips'; //child component
+const mousetrap = require('mousetrap');
 
 const country_borderLine = require('../data/countries_states.json');
 
@@ -26,8 +27,8 @@ class GlobeVisual extends React.Component{
     this.onWindowResize = this.onWindowResize.bind(this);
     this.zoom = this.zoom.bind(this);
     this.rotateGlobe = this.rotateGlobe.bind(this);
-
     this.drawThreeGeo = this.drawThreeGeo.bind(this);
+    this.tooltips_onexit = this.tooltips_onexit.bind(this);
 
     this.rotatePause = this.props.rotatePause;
     this.state = {
@@ -265,12 +266,11 @@ class GlobeVisual extends React.Component{
     this.mount.addEventListener('mousedown', this.onMouseDown, false);
     this.mount.addEventListener('mousewheel', this.onMouseWheel, false);
     this.mount.addEventListener('keydown', this.onDocumentKeyDown, false);
-    this.mount.addEventListener('mouseover', () => {
-      this.overRenderer = true;
-    }, false);
-    this.mount.addEventListener('mouseout', ()=> {
-      this.overRenderer = false;
-    }, false);
+    this.mount.addEventListener('mouseover', () => { this.overRenderer = true  }, false);
+    this.mount.addEventListener('mouseout', ()=>   { this.overRenderer = false }, false);
+
+    //
+    mousetrap.bind('esc', () => this.state.tooltips_clicked && this.tooltips_onexit(), 'keyup');
   } // init
 
   addData(data, _opts) {
@@ -426,7 +426,7 @@ class GlobeVisual extends React.Component{
       const displayData =  this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 3];
 
       //check if interscetions changed
-      if(this.WarID != displayData.id){
+      if(this.WarID != displayData.id && !this.state.tooltips_clicked){
 
         this.setState({
           tooltips_clicked: false,
@@ -452,7 +452,9 @@ class GlobeVisual extends React.Component{
       }
 
       // check height( if height = -1 then data is not in the current selection)
-      if(this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] >= 0){
+      if(this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 2] >= 0
+        && !this.state.tooltips_clicked
+      ){
 
         const phi = (90 - this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 0] ) * Math.PI / 180;
         const theta = (180 - this.points.userData.userData[ this.currentSelectedTimeFrame /* current item selected on timeLine*/ ][1] [ (dataIndex*4) + 1] ) * Math.PI / 180;
@@ -465,12 +467,12 @@ class GlobeVisual extends React.Component{
 
       }
 
-    }else if(this.intersected){
+    }else if(this.intersected && !this.state.tooltips_clicked){
+
 
       // hide tooltips component
       this.state.mv_show && this.setState({
-        mv_show : false,
-        mv_position :[0,0]
+        mv_show : false
       });
       this.rotatePause = false;
       this.setState({
@@ -484,6 +486,7 @@ class GlobeVisual extends React.Component{
       this.tooltips_mouseoverFeedback.position.x = 0;
       this.tooltips_mouseoverFeedback.position.y = 0;
       this.tooltips_mouseoverFeedback.position.z = 0;
+
     }
 
   }
@@ -495,10 +498,8 @@ class GlobeVisual extends React.Component{
     this.mount.addEventListener('mousemove', this.onMouseMove, false);
     this.mount.addEventListener('mouseup', this.onMouseUp, false);
     this.mount.addEventListener('mouseout', this.onMouseOut, false);
-
     this.mouseOnDown.x = - event.clientX;
     this.mouseOnDown.y = event.clientY;
-
     this.targetOnDown.x = this.target.x;
     this.targetOnDown.y = this.target.y;
     this.mount.style.cursor = 'move';
@@ -512,7 +513,7 @@ class GlobeVisual extends React.Component{
 
         this.setTarget([this.state.mv_tooltips[5],this.state.mv_tooltips[6]],700)
         this.setState({
-          mv_position:[ (window.innerWidth * 0.75)/2 + (350/2) + 20 , window.innerHeight/2 - 150/2 -40],
+          mv_position:[ (window.innerWidth*0.75)*0.75 - 400/1.5 , window.innerHeight* 0.75 - 300 + 25 ],
           tooltips_clicked : true,
           tooltips_expendInfo : d,
           tooltips_clicked_id : d[0].id
@@ -860,6 +861,26 @@ class GlobeVisual extends React.Component{
       }
   }
 
+  tooltips_onexit(){
+
+    // hide tooltips component
+    this.state.mv_show && this.setState({
+      mv_show : false
+    });
+    this.rotatePause = false;
+    this.setState({
+      tooltips_clicked : false,
+      tooltips_clicked_id : Math.random() // reset clickedID
+    })
+
+    this.WarID = Math.random(); // reset warID
+
+    // hide tooltips white bar on the globe
+    this.tooltips_mouseoverFeedback.position.x = 0;
+    this.tooltips_mouseoverFeedback.position.y = 0;
+    this.tooltips_mouseoverFeedback.position.z = 0;
+
+  }
 
   animate() {
     // console.time('animate takes');
@@ -904,6 +925,7 @@ class GlobeVisual extends React.Component{
           mv_position = {this.state.mv_position}
           tooltips_clicked = {this.state.tooltips_clicked}
           tooltips_expendInfo = {this.state.tooltips_expendInfo}
+          tooltips_onexit = {this.tooltips_onexit}
         />
         <div id="globev"
           style={{ width: '100%', height: window.innerHeight - 60, backgroundColor: 'red'}}

@@ -7,10 +7,12 @@ import * as warDict from '../data/warDictionary';
 const expend_tooltips_animation = keyframes`
   100% {
     height: 300px;
+    width: 400px;
   }
 `
 const Tooltip_warpper = styled.div`
   position: absolute;
+  opacity: 1;
   background: #15151c;
   box-shadow: 0px 0px 25px 2px rgba(0,0,0,0.75);
   width: 350px;
@@ -21,14 +23,19 @@ const Tooltip_warpper = styled.div`
 
   ${'' /* hide tooltips when mouseleave */}
   ${props => !props.showornot && css`
-    display: none;
+    animation: ${keyframes`
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    `} .3s;
+    animation-fill-mode: forwards;
   `}
 
   ${'' /* tooltips position*/}
   ${props => props.mv_position && css`
-
     left: ${ props.mv_position[0] - (350/2) + 'px'};
-    top:  ${ props.mv_position[1] + 20  + 'px'};
+    top:  ${ props.mv_position[1] + 30  + 'px'};
   `}
 
   ${'' /* expend tooltips*/}
@@ -47,8 +54,7 @@ const Fatality = styled.p`
   top: 7px;
   right: 10px;
 
-  &:before{
-    ${'' /* content: 'Fatality: ' */}
+  ${'' /* &:before{
     background-image: url(./fatality_icon.png);
     background-size: 25px 25px;
     display: inline-block;
@@ -56,6 +62,15 @@ const Fatality = styled.p`
     height: 25px;
     content: "";
     top: 4px;
+    right: 7px;
+    position: relative;
+  } */}
+
+  &:before{
+    content: 'Fatality: ';
+    color: #b6b7ca;
+    font-size: 9px;
+    font-weight: 400;
     right: 7px;
     position: relative;
   }
@@ -140,6 +155,13 @@ const ExitButton = styled.button`
   color: white;
   background: none;
   border: none;
+  cursor: pointer;
+  opacity: .7;
+  transition: all 300ms;
+  &:hover{
+    opacity: 1;
+    font-size: 15px;
+  }
 `
 
 class GlobeTooltips extends React.Component {
@@ -181,7 +203,6 @@ class GlobeTooltips extends React.Component {
   }
 
   render(){
-
     var expend_note_text;
     var limitation_note = 459
     if(this.tooltips_expendInfo[0] != undefined){
@@ -212,9 +233,7 @@ class GlobeTooltips extends React.Component {
         expendornot = {this.tooltips_clicked}
       >
 
-        <ExitButton onClick={() =>{
-          console.log("aa");
-        }}>x</ExitButton>
+        <ExitButton onClick={() => this.props.tooltips_onexit() }>x</ExitButton>
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>
         <Event> {this.toUpper(warDict.event_dict[this.evt])} </Event>
