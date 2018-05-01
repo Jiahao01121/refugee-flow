@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Modal from './Modal';
 import RegionNav from './RegionNav';
 import Region from './Region';
+import RegionNavBar from '../stylesheets/RegionNavBar.css'
 
 const SwitchCountryButton = styled.button`
   cursor: pointer;
@@ -66,7 +67,9 @@ class ModalButton extends Component {
         </SwitchCountryButton>
 
           <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
+          <div className='container'>
             <RegionNav />
+          </div>
             <Region />
           </Modal>
       </div>
