@@ -49,7 +49,12 @@ class ModalButton extends Component {
     this.state = {
       showModal: false
     };
+
+    this.data = this.props.conflictData;
+    console.log(this.data);
   }
+
+
 
   handleToggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
@@ -68,7 +73,7 @@ class ModalButton extends Component {
 
           <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
           <div className='container'>
-            <RegionNav />
+            <RegionNav data = {this.state.conflictData} />
           </div>
             <Region />
           </Modal>

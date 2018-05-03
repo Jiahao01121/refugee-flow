@@ -496,6 +496,7 @@ class GlobeVisual extends React.Component{
       fetch(new Request( url, {method: 'GET', cache: true})).then(res => res.json()).then(d =>{
 
         this.setTarget([this.state.mv_tooltips[5],this.state.mv_tooltips[6]],700)
+        console.log('called');
         this.setState({
           mv_position:[ (window.innerWidth * 0.75)/2 + (350/2) + 20 , window.innerHeight/2 - 150/2 -40],
           tooltips_clicked : true,

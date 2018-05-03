@@ -32,6 +32,7 @@ class RegionNav extends Component {
     this.state = {
       selectedRegion: 'All Regions'
     };
+    console.log(props);
 
     this.updateRegion = this.updateRegion.bind(this);
   }
