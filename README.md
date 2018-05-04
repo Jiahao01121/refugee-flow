@@ -1,4 +1,4 @@
-## Refugee-Flow:
+## Refugee-Flow: A comparative study of armed conflict and refugee flows
 
 ![thumbnail.gif](thumbnail.gif)
 
