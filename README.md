@@ -1,6 +1,6 @@
 ## Refugee-Flow: A comparative study of armed conflict and refugee flows
 
-![thumbnail.gif](thumbnail.gif)
+![thumbnail_big.gif](thumbnail_big.gif)
 
 “Being a refugee… is the most pervasive kind of cruelty that can be exercised against a human being.”
     — Ai Weiwei
