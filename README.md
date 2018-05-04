@@ -1,5 +1,6 @@
 ## Refugee-Flow:
 
+![thumbnail.gif](thumbnail.gif)
 
 “Being a refugee… is the most pervasive kind of cruelty that can be exercised against a human being.”
     — Ai Weiwei
