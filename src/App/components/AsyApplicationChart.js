@@ -157,7 +157,8 @@ class AsyApplicationChart extends React.Component {
   }
 
   drawDataontoChart(chartD){
-    // draw Asylum application line
+
+    //hard coded year list for x axis
     let AllDomain = ['2010Q1','2010Q2','2010Q3','2010Q4',
              '2011Q1','2011Q2','2011Q3','2011Q4',
              '2012Q1','2012Q2','2012Q3','2012Q4',
@@ -168,6 +169,8 @@ class AsyApplicationChart extends React.Component {
              '2017Q1','2017Q2','2017Q3','2017Q4',
              '2018Q1','2018Q2','2018Q3','2018Q4',
            ];
+
+    // setup x,y scaler base on chartD(passed from parent component)
     chartD.length > 4
     ? this.x = d3.scalePoint()
       .domain( AllDomain ).range([0,this.width])
@@ -177,8 +180,10 @@ class AsyApplicationChart extends React.Component {
       .domain([0,d3.max(chartD)]).range([this.height,0])
       .nice();
 
-
-
+    /********************
+    * draw Asylum application line
+    * - only draw once, if any changes happened, alterate "d" for line
+    ********************/
     d3.selectAll('.dataLine')._groups[0].length >0
     ? d3.selectAll('.dataLine')
         .attr("d", d3.line()
@@ -186,12 +191,11 @@ class AsyApplicationChart extends React.Component {
           .y( d => this.y(d) )
           .curve(d3.curveMonotoneX)(chartD)
         )
-        .attr("stroke-dasharray", function(d){ console.log(this.getTotalLength());return this.getTotalLength() })
-        .attr("stroke-dashoffset", function(d){ return this.getTotalLength() })
+        .attr("stroke-dasharray", function(){ return this.getTotalLength() })
+        .attr("stroke-dashoffset", function(){ return this.getTotalLength() })
         .transition()
         .duration(1500)
         .attr("stroke-dashoffset", 0)
-        // .on('end',function(){d3.select(this).remove()})
     : d3.select(this.mount).append("path")
       .datum(chartD)
       .attr('class','dataLine')
@@ -214,49 +218,27 @@ class AsyApplicationChart extends React.Component {
       .attr("stroke-dashoffset", 0)
 
 
-
-
-      console.log(d3.selectAll('.dataPoint')._groups[0].length);
-
+    // wipe all dataPoint if there's any.
+    d3.selectAll('.dataPoint')._groups[0].length >0 && d3.selectAll('.dataPoint').remove();
     // draw Asylum application point
-    if(d3.selectAll('.dataPoint')._groups[0].length >0){
+    d3.select(this.mount)
+      .selectAll('.dataPoint')
+      .data(chartD)
+      .enter()
+      .append('circle')
+      .attr('class','dataPoint')
+      .attr("fill", "#41edb8")
+      .attr("stroke", "#1b1f3a")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 3)
+      .attr('r',5)
+      .attr('cx',(d,i) => chartD.length > 4 ? this.x(AllDomain[i]) : this.x(this.quaterList[i]) )
+      .attr('cy', d => this.y(d) )
+      .on('mouseover', this.dataPointMouseOver)
 
 
-        d3.selectAll('.dataPoint').remove();
-        d3.select(this.mount)
-          .selectAll('.dataPoint')
-          .data(chartD)
-          .enter()
-          .append('circle')
-          .attr('class','dataPoint')
-          .attr("fill", "#41edb8")
-          .attr("stroke", "#1b1f3a")
-          .attr("stroke-linejoin", "round")
-          .attr("stroke-linecap", "round")
-          .attr("stroke-width", 3)
-          .attr('r',5)
-          .attr('cx',(d,i) => chartD.length > 4 ? this.x(AllDomain[i]) : this.x(this.quaterList[i]) )
-          .attr('cy', d => this.y(d) )
-
-
-    } else{
-      d3.select(this.mount)
-          .selectAll('.dataPoint')
-          .data(chartD)
-          .enter()
-          .append("circle")
-          .attr('class','dataPoint')
-          .attr("fill", "#41edb8")
-          .attr("stroke", "#1b1f3a")
-          .attr("stroke-linejoin", "round")
-          .attr("stroke-linecap", "round")
-          .attr("stroke-width", 3)
-          .attr('cx',(d,i) => this.x(this.quaterList[i]) )
-          .attr('cy', d => this.y(d) )
-          .attr('r',5)
-    }
-
-    // draw Asylum application avg
+    // draw Asylum application avg line
     d3.selectAll('.asy-stats')._groups[0].length >0
     ? d3.selectAll('.asy-stats').call((g) =>{
       g.select('line')
@@ -315,6 +297,9 @@ class AsyApplicationChart extends React.Component {
 
   }
 
+  dataPointMouseOver(){
+    // TODO
+  }
 
   render(){
     console.log("a");
