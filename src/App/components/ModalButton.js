@@ -52,13 +52,18 @@ class ModalButton extends Component {
     this.data = this.props.data;
   }
 
-
+  componentWillReceiveProps(nextProps){
+    this.data = nextProps.data;
+  }
 
   handleToggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   }
 
   render() {
+    if(this.data.length>0){
+      console.log(this.data);
+    }
     const { showModal, data } = this.state;
 
     return (

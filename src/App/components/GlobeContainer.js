@@ -408,7 +408,7 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
-    console.log(this.state.data);
+
     return(
       <div className = 'globe'>
         <TitleContainer>
