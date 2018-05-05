@@ -1,10 +1,20 @@
 import React from 'react';
+import styled, { css } from 'styled-components';
 
-import {Chart} from './styledComponents/AsyApplicationChartContainer.styled'
 import AsyApplicationChart from './AsyApplicationChart'
 
 import * as d3 from 'd3';
 import $ from "jquery";
+
+const Chart = styled.div`
+    width: 90%;
+    left: 5%;
+    ${'' /* background: #0000ff1f; */}
+    height: 75%;
+    position: absolute;
+    top: 15%;
+`
+
 
 class AsyApplicationChartContainer extends React.Component {
   constructor(props){
@@ -124,11 +134,26 @@ class AsyApplicationChartContainer extends React.Component {
   callGMountTransition(){
       console.log(this.gMount);
       if(this.gMount != undefined){
+<<<<<<< HEAD
         console.log("drawDataontoChart called");
-        this.gMount.drawDataontoChart(this.state.chartData)
-        this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
+=======
 
-        //transition
+>>>>>>> master
+        this.gMount.drawDataontoChart(this.state.chartData)
+
+        //x axis transition
+        this.chartMode === 2
+        ? this.gMount.x.domain(['2010','2018'])
+        : this.gMount.x.domain(this.gMount.quaterList)
+        this.gMount.xAxisGroup
+          .transition()
+          .duration(1700)
+          .call((g)=>{
+            this.gMount.customXaxis(g)
+          })
+
+        //y axis transition
+        this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
         this.gMount.yAxisGroup
           .transition()
           .duration(1700)
@@ -150,7 +175,6 @@ class AsyApplicationChartContainer extends React.Component {
             .attr('x1',0)
             .attr('id','');
           })
-
           .on('end',function(){
             d3.select('#asy_app_chart_baseLine')
               .transition()
