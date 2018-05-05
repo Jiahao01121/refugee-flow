@@ -40,7 +40,7 @@ class GlobeContainer extends React.Component {
       loadingText   : 'Fetching data from the server...',
 
       titleText : 'Global',
-      conflictData: []
+      data: []
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -100,9 +100,8 @@ class GlobeContainer extends React.Component {
           console.log(d);
           console.log(this);
           this.setState({
-            conflictData: d
+            data: d
           })
-
           return d = d.map(data =>{
             const data_year = data.Year;
             const data_value = data.value;
@@ -335,14 +334,12 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
-
+    console.log(this.state.data);
     return(
       <div className = 'globe'>
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
-
-
-          <ModalButton conflictData = {this.state.conflictData}/>
+          <ModalButton data={this.state.data}/>
           <GlobeControllerButton>MAP</GlobeControllerButton>
 
           {/* <GlobeControllerItems>

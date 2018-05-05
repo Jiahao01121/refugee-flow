@@ -49,9 +49,7 @@ class ModalButton extends Component {
     this.state = {
       showModal: false
     };
-
-    this.data = this.props.conflictData;
-    console.log(this.data);
+    this.data = this.props.data;
   }
 
 
@@ -61,7 +59,7 @@ class ModalButton extends Component {
   }
 
   render() {
-    const { showModal } = this.state;
+    const { showModal, data } = this.state;
 
     return (
       <div>
@@ -71,12 +69,12 @@ class ModalButton extends Component {
           GLOBAL
         </SwitchCountryButton>
 
-          <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
-          <div className='container'>
-            <RegionNav data = {this.state.conflictData} />
-          </div>
-            <Region />
-          </Modal>
+        <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
+        <div className='container'>
+          <RegionNav data={data} />
+        </div>
+          <Region />
+        </Modal>
       </div>
     );
   }
