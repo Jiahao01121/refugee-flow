@@ -29,11 +29,16 @@ const asy_application_model = mongoose.model(
 const find_war_note = function(query){
   return new Promise((resolve, reject) => {
 
+    console.log("clientSide Clicked!");
     war_note_model.find({'id': query}, function(err,data){
+
       if(err) {
+        console.log("error happened on query war note.");
         console.log(err);
         reject(err);
       } else {
+        console.log("data successfully retrived from database");
+        console.log("____________");
         resolve(data)
       }
     })
