@@ -124,15 +124,21 @@ class AsyApplicationChartContainer extends React.Component {
 
 
   renderChart(){
+    console.count('renderCharrt called');
     if(this.state.data.length != 0 && this.state.chartData.length != 0){
+      console.log("renderchart correctly");
       return (<AsyApplicationChart {...this.state} ref = {(gMount) => {return this.gMount = gMount }}/>)
     }
   }
 
   callGMountTransition(){
-
+      console.log(this.gMount);
       if(this.gMount != undefined){
+<<<<<<< HEAD
+        console.log("drawDataontoChart called");
+=======
 
+>>>>>>> master
         this.gMount.drawDataontoChart(this.state.chartData)
 
         //x axis transition

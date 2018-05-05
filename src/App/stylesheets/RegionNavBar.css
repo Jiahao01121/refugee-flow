@@ -1,0 +1,51 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+.regions {
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+.regions li {
+  margin: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  z-index: 1;
+}
+
+.RegionNavBar {
+  z-index: 1;
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.RegionNavBar button {
+  width: 100%;
+  background: black;
+  color: white;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-color: black;
+  padding-bottom: 10px;
+}
+
+button:hover {
+  border-bottom-color: red;
+}

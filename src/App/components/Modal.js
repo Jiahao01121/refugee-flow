@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import isNil from 'lodash/fp/isNil';
 import styled, { keyframes } from 'styled-components';
 
 import ModalCreator from 'react-modal';
@@ -20,7 +19,7 @@ class Modal extends Component {
           className="GlobeModal"
           overlayClassName="Overlay"
         >
-          <div>
+          <div className="CloseButtonPostioning">
             <span
               onClick={this.props.onCloseRequest}
               className="CloseButton">

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Modal from './Modal';
+import RegionNav from './RegionNav';
+import Region from './Region';
+import RegionNavBar from '../stylesheets/RegionNavBar.css'
 
 const SwitchCountryButton = styled.button`
   cursor: pointer;
@@ -40,21 +43,23 @@ const SwitchCountryButton = styled.button`
   }
 `
 
-
 class ModalButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false
     };
+    this.data = this.props.data;
   }
+
+
 
   handleToggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   }
 
   render() {
-    const { showModal } = this.state;
+    const { showModal, data } = this.state;
 
     return (
       <div>
@@ -64,9 +69,12 @@ class ModalButton extends Component {
           GLOBAL
         </SwitchCountryButton>
 
-          <Modal showModal={this.state.showModal} onCloseRequest={this.handleToggleModal}>
-            //PUT COMPONENTS HERE
-          </Modal>
+        <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
+        <div className='container'>
+          <RegionNav data={data} />
+        </div>
+          <Region />
+        </Modal>
       </div>
     );
   }

@@ -112,7 +112,8 @@ class GlobeContainer extends React.Component {
       loadingStatus : true,
       loadingText   : 'Fetching data from the server...',
 
-      titleText : 'Global'
+      titleText : 'Global',
+      data: []
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -169,113 +170,118 @@ class GlobeContainer extends React.Component {
     const request = new Request( url, {method: 'GET', cache: true});
     return (
       fetch(request).then(res => res.json()).then(
+        d => {
+          console.log(d);
+          console.log(this);
+          this.setState({
+            data: d
+          })
+          return d = d.map(data =>{
+            const data_year = data.Year;
+            const data_value = data.value;
+            const minMax = (()=>{
+              if(Object.keys(data_value).length == 4){
+                const arr = data_value[ Object.keys(data_value)[0] ].concat(
+                  data_value[ Object.keys(data_value)[1] ],
+                  data_value[ Object.keys(data_value)[2] ],
+                  data_value[ Object.keys(data_value)[3] ],
+                )
 
-        d => d = d.map(data =>{
-
-          const data_year = data.Year;
-          const data_value = data.value;
-          const minMax = (()=>{
-            if(Object.keys(data_value).length == 4){
-              const arr = data_value[ Object.keys(data_value)[0] ].concat(
-                data_value[ Object.keys(data_value)[1] ],
-                data_value[ Object.keys(data_value)[2] ],
-                data_value[ Object.keys(data_value)[3] ],
-              )
 
 
+                let max = d3.max(arr,d => d.fat )
+                let min = d3.min(arr,d => d.fat )
+                return [min,max];
+              }else{
+                console.log("err at compute max/min");
+              }
+            })();
+            let scaler = d3.scaleLinear().domain(minMax).range([0,1]);
+            const out = [];
+            const all = [];
+            const noHeight = [];
 
-              let max = d3.max(arr,d => d.fat )
-              let min = d3.min(arr,d => d.fat )
-              return [min,max];
-            }else{
-              console.log("err at compute max/min");
-            }
-          })();
-          let scaler = d3.scaleLinear().domain(minMax).range([0,1]);
-          const out = [];
-          const all = [];
-          const noHeight = [];
+            for (var quater in data_value) {
 
-          for (var quater in data_value) {
+              let output = [];
+              data_value[quater].forEach(d =>{
+                all.push(
+                  d.lat,
+                  d.lng,
+                  scaler(d.fat),
+                  {
+                    'fat' : scaler(d.fat),
+                    'id': d.id,
+                    'int': d.int,
+                    'cot': d.cot,
+                    'evt': d.evt,
+                  }
+                )
 
-            let output = [];
-            data_value[quater].forEach(d =>{
-              all.push(
-                d.lat,
-                d.lng,
-                scaler(d.fat),
-                {
-                  'fat' : scaler(d.fat),
-                  'id': d.id,
-                  'int': d.int,
-                  'cot': d.cot,
-                  'evt': d.evt,
+                noHeight.push(
+                  d.lat,
+                  d.lng,
+                  0,
+                  {}
+                )
+              })
+
+              for (var _q in data_value) {
+
+                // console.log(quater);
+                // console.log(_q);
+                // console.log(data[_q]);
+
+                if(_q === quater){
+
+                  data_value[_q].forEach(d =>{
+                    output.push(
+                      d.lat,
+                      d.lng,
+                      scaler(d.fat),
+                      {
+                        'fat' : scaler(d.fat),
+                        'id': d.id,
+                        'int': d.int,
+                        'cot': d.cot,
+                        'evt': d.evt,
+                      }
+                    )
+                  })
                 }
-              )
+                else {
 
-              noHeight.push(
-                d.lat,
-                d.lng,
-                0,
-                {}
-              )
-            })
+                  data_value[_q].forEach(d =>{
+                    output.push(
+                      d.lat,
+                      d.lng,
+                      -1, // height
+                      {
+                        'fat' : scaler(d.fat), // color
+                        'id': d.id,
+                        'int': d.int,
+                        'cot': d.cot,
+                        'evt': d.evt,
+                      }
+                    )
+                  })
+                }
 
-            for (var _q in data_value) {
+              }// for in
 
-              // console.log(quater);
-              // console.log(_q);
-              // console.log(data[_q]);
+              out.push([quater,output]);
 
-              if(_q === quater){
+            }
 
-                data_value[_q].forEach(d =>{
-                  output.push(
-                    d.lat,
-                    d.lng,
-                    scaler(d.fat),
-                    {
-                      'fat' : scaler(d.fat),
-                      'id': d.id,
-                      'int': d.int,
-                      'cot': d.cot,
-                      'evt': d.evt,
-                    }
-                  )
-                })
-              }
-              else {
-
-                data_value[_q].forEach(d =>{
-                  output.push(
-                    d.lat,
-                    d.lng,
-                    -1, // height
-                    {
-                      'fat' : scaler(d.fat), // color
-                      'id': d.id,
-                      'int': d.int,
-                      'cot': d.cot,
-                      'evt': d.evt,
-                    }
-                  )
-                })
-              }
-
-            }// for in
-
-            out.push([quater,output]);
-
-          }
-
-          return {
-              year : data_year,
-              value : [ ['all',all] ].concat(out,[ ['noHeight',noHeight] ]),
-              scaler: scaler,
-          }
+            return {
+                year : data_year,
+                value : [ ['all',all] ].concat(out,[ ['noHeight',noHeight] ]),
+                scaler: scaler,
+            }
 
 
-        })
+          })
+        }
 
       )
     )
@@ -402,16 +408,13 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
-
+    console.log(this.state.data);
     return(
       <div className = 'globe'>
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
-
-
-          <ModalButton />
+          <ModalButton data={this.state.data}/>
           <GlobeControllerButton>MAP</GlobeControllerButton>
-
 
           {/* <GlobeControllerItems>
             <AllConflict>Show All Armed Conflict</AllConflict>
