@@ -132,10 +132,22 @@ class AsyApplicationChartContainer extends React.Component {
   callGMountTransition(){
 
       if(this.gMount != undefined){
-        this.gMount.drawDataontoChart(this.state.chartData)
-        this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
 
-        //transition
+        this.gMount.drawDataontoChart(this.state.chartData)
+
+        //x axis transition
+        this.chartMode === 2
+        ? this.gMount.x.domain(['2010','2018'])
+        : this.gMount.x.domain(this.gMount.quaterList)
+        this.gMount.xAxisGroup
+          .transition()
+          .duration(1700)
+          .call((g)=>{
+            this.gMount.customXaxis(g)
+          })
+
+        //y axis transition
+        this.gMount.y.domain([0,d3.max(this.state.chartData)]).nice();
         this.gMount.yAxisGroup
           .transition()
           .duration(1700)
@@ -157,7 +169,6 @@ class AsyApplicationChartContainer extends React.Component {
             .attr('x1',0)
             .attr('id','');
           })
-
           .on('end',function(){
             d3.select('#asy_app_chart_baseLine')
               .transition()
