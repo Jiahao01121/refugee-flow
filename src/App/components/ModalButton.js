@@ -42,6 +42,27 @@ const SwitchCountryButton = styled.button`
     position: absolute;
   }
 `
+const RegionTitle = styled.p`
+  font-family: 'Roboto';
+  font-size: 25px;
+  color: white;
+  font-weight: 300;
+  z-index: 111111;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+
+  &::after{
+    content: 'select regions & filter downbelow: CLick jump to country';
+    font-weight: 300;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    width: 300px;
+    top: 42px;
+    left: 0;
+  }
+`
 
 class ModalButton extends Component {
   constructor(props) {
@@ -76,6 +97,7 @@ class ModalButton extends Component {
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
         <div className='container'>
+          <RegionTitle>Select a country</RegionTitle>
           <RegionNav data={data} />
         </div>
           <Region />

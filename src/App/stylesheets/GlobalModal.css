@@ -39,17 +39,18 @@
 .CloseButtonPostioning {
   z-index: 1;
   position: absolute;
-  top: 4px;
-  right: 13px;
+  top: -6px;
+  right: 30px;
 }
 
 /* The Close Button */
 .CloseButton {
-    color: rgba(255,255,255, 0.8);
-    font-size: 28px;
-    font-weight: bold;
-    clear: both;
-    z-index: 1;
+  color: rgba(255, 255, 255, 0.29);
+  font-size: 60px;
+  clear: both;
+  z-index: 1;
+  font-weight: 100;
+  font-family: 'Roboto';
 }
 
 .CloseButton:hover,
