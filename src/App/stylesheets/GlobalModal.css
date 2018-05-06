@@ -3,8 +3,10 @@
 }
 
 .ReactModal__Content--after-open {
+  width: 90%;
+  height: 90%;
   opacity: 1;
-  transition: opacity 5000ms;
+  transition: all 800ms;
 }
 
 .ReactModal__Content--before-close {
@@ -14,12 +16,15 @@
 .GlobeModal {
   display: flex;
   position: absolute;
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 40px;
-  background-color: rgb(255,255,255);
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%,50%);
 }
+
+.GlobeModal:focus {
+  outline:0;
+}
+
 
 .Overlay {
   position: fixed;
@@ -27,7 +32,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.8);
+  background-color: #01010ecc;
+  z-index: 100;
 }
 
 .CloseButtonPostioning {

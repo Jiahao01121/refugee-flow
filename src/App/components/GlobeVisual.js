@@ -885,7 +885,7 @@ class GlobeVisual extends React.Component{
 
   animate() {
     // console.time('animate takes');
-    this.rotateGlobe(3/1000,this.rotatePause);
+    this.rotateGlobe(2/1000,this.rotatePause);
 
     // get frameID, frameID is for cancelling when unmount
     this.frameId = window.requestAnimationFrame(this.animate)
