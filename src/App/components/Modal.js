@@ -12,7 +12,7 @@ class Modal extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{'z-index': '100'}}>
         <ModalCreator
           isOpen={this.props.showModal}
           onRequestClose={this.props.onCloseRequest}
