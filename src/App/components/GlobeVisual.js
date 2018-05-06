@@ -880,7 +880,8 @@ class GlobeVisual extends React.Component{
     this.tooltips_mouseoverFeedback.position.x = 0;
     this.tooltips_mouseoverFeedback.position.y = 0;
     this.tooltips_mouseoverFeedback.position.z = 0;
-
+    //zoom out
+    this.setTarget([-11.874010, 44.605859],945)
   }
 
   animate() {

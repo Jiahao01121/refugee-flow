@@ -8,7 +8,6 @@ const RegionContainer = styled.div`
   top: 140px;
   position: relative;
 `
-
 function SelectRegion (props) {
   var regions = ["Eastern Africa", "Middle Africa", "Middle East", "Northern Africa", "South-Eastern Asia", "Southern Africa", "Southern Asia", "Western Africa"];
 
@@ -18,9 +17,9 @@ function SelectRegion (props) {
         return (
           <li
             style={region === props.selectedRegion ? {
-              'border-style': 'solid',
-              'border-width': '0px 0px 2px',
-              'border-bottom-color': 'rgb(255, 0, 0)',
+              'borderStyle': 'solid',
+              'borderWidth': '0px 0px 2px',
+              'borderBottomColor': 'rgb(255, 0, 0)',
               'width': '150px',
               'height': '26px'
             } : null}
@@ -47,58 +46,22 @@ class RegionNav extends Component {
       selectedRegion: 'Eastern Africa',
       regions: null
     };
-
+    this.data = this.props.data;
     this.updateRegion = this.updateRegion.bind(this);
   }
 
+  componentWillReceiveProps(nextProps){
+    this.data = nextProps.data;
+  }
+
   componentDidMount () {
-    const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
+    console.log(this.data);
 
-    this.fetchData(url).then(d => {
-      console.log(d);
-    })
   }
-
-  fetchData(url){
-
-    console.time("received & processed data");
-    const request = new Request( url, {method: 'GET', cache: true});
-    return (
-      fetch(request).then(res => res.json()).then(
-        d => {
-          this.setState({
-            data: d
-          })
-          return d = d.map(data =>{
-            const dataYear = data.Year;
-            const dataValue = data.value;
-            const minMax = (()=>{
-              if(Object.keys(dataValue).length == 4){
-                const arr = dataValue[ Object.keys(dataValue)[0] ].concat(
-                  dataValue[ Object.keys(dataValue)[1] ],
-                  dataValue[ Object.keys(dataValue)[2] ],
-                  dataValue[ Object.keys(dataValue)[3] ],
-                )
-                console.log(arr);
-                let max = d3.max(arr,d => d.fat )
-                console.log(max)
-                let min = d3.min(arr,d => d.fat )
-                console.log(min)
-                return [min,max];
-              }else{
-                console.log("err at compute max/min");
-              }
-            })();
-
-          })
-        }
-
-      )
-    )
-  }
-
 
   updateRegion(region) {
+    console.log(region);
+    console.log(this.state);
     this.setState(function() {
       return {
         selectedRegion: region

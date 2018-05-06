@@ -91,7 +91,7 @@ const GlobeControllerItems = styled.div`
   transition: all 300ms ease-in-out;
   ${props => !props.show
   ? css`
-    transform: translateX(0px);
+    transform: translateX(-300px);
     opacity: 0;
   `
   : css`
@@ -124,18 +124,18 @@ const Conflict_Civilians = styled.button`
     font-weight: 600;
   `}
 `
-const Heat_map = styled.button`
-  cursor: pointer;
-  font-family: 'Roboto';
-  font-weight: 100;
-  font-size: 12px;
-  color: white;
-  background: none;
-  border: none;
-  ${props => props.selectornot == 3 && css`
-    font-weight: 600;
-  `}
-`
+// const Heat_map = styled.button`
+//   cursor: pointer;
+//   font-family: 'Roboto';
+//   font-weight: 100;
+//   font-size: 12px;
+//   color: white;
+//   background: none;
+//   border: none;
+//   ${props => props.selectornot == 3 && css`
+//     font-weight: 600;
+//   `}
+// `
 
 
 class GlobeContainer extends React.Component {
