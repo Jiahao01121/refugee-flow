@@ -82,9 +82,7 @@ class ModalButton extends Component {
   }
 
   render() {
-    if(this.data.length>0){
-      console.log(this.data);
-    }
+
     const { showModal, data } = this.state;
 
     return (
@@ -98,7 +96,7 @@ class ModalButton extends Component {
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
         <div className='container'>
           <RegionTitle>Select a country</RegionTitle>
-          <RegionNav data={data} />
+          <RegionNav data={this.data} />
         </div>
           <Region />
         </Modal>
