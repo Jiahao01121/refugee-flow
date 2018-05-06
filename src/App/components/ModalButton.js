@@ -38,7 +38,7 @@ const SwitchCountryButton = styled.button`
     height: 27px;
     content: "";
     bottom: 0px;
-    right: 58px;
+    right: 98px;
     position: absolute;
   }
 `
@@ -71,7 +71,7 @@ class ModalButton extends Component {
         <SwitchCountryButton
           type="button"
           onClick={this.handleToggleModal}>
-          GLOBAL
+          Select Region
         </SwitchCountryButton>
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
