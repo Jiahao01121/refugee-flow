@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css , keyframes } from 'styled-components';
 
 
 import * as THREE from 'three';
@@ -63,6 +63,8 @@ const GlobeControllerButton = styled.button`
   border: none;
   top: 160px;
   margin: 0px;
+  z-index: 10;
+  transition: all 300ms;
 
   &:before{
     background-image: url(./globe_icon.png);
@@ -73,12 +75,67 @@ const GlobeControllerButton = styled.button`
     display: inline-block;
     content: "";
     bottom: -16px;
-    right: 12px;
+    right: 28px;
     position: absolute;
     margin-right: 10px;
   }
-`
 
+  &:hover{
+    color: #ffffffd1;
+  }
+`
+const GlobeControllerItems = styled.div`
+  position: absolute;
+  top: 160px;
+  left: 20px;
+  transition: all 300ms ease-in-out;
+  ${props => !props.show
+  ? css`
+    transform: translateX(0px);
+    opacity: 0;
+  `
+  : css`
+    transform: translateX(90px);
+    opacity: 1;
+  `}
+`
+const AllConflict = styled.button`
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-weight: 100;
+  font-size: 12px;
+  color: white;
+  background: none;
+  border: none;
+
+  ${props => props.selectornot == 1 && css`
+    font-weight: 600;
+  `}
+`
+const Conflict_Civilians = styled.button`
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-weight: 100;
+  font-size: 12px;
+  color: white;
+  background: none;
+  border: none;
+  ${props => props.selectornot == 2 && css`
+    font-weight: 600;
+  `}
+`
+const Heat_map = styled.button`
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-weight: 100;
+  font-size: 12px;
+  color: white;
+  background: none;
+  border: none;
+  ${props => props.selectornot == 3 && css`
+    font-weight: 600;
+  `}
+`
 
 
 class GlobeContainer extends React.Component {
@@ -88,6 +145,7 @@ class GlobeContainer extends React.Component {
 
     this.timlineYearClicked = this.timlineYearClicked.bind(this);
     this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
+    this.globeControllerClick = this.globeControllerClick.bind(this);
     // const color = rgbToHsl(19,254,253);
     const color = rgbToHsl(22,247,123);
     this.state = {
@@ -113,7 +171,9 @@ class GlobeContainer extends React.Component {
       loadingText   : 'Fetching data from the server...',
 
       titleText : 'Global',
-      data: []
+      data: [],
+      controllerShow: true,
+      currentControllerSelection: 1
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -157,6 +217,8 @@ class GlobeContainer extends React.Component {
           this.gv.setTarget([-11.874010, 44.605859],945) // set initial position
           console.timeEnd('animate takes');
           this.props.loadingManager(false);
+
+          this.setState({controllerShow: false})
         }); // this takes a long time
       },10)
 
@@ -171,8 +233,6 @@ class GlobeContainer extends React.Component {
     return (
       fetch(request).then(res => res.json()).then(
         d => {
-          console.log(d);
-          console.log(this);
           this.setState({
             data: d
           })
@@ -222,7 +282,7 @@ class GlobeContainer extends React.Component {
                   d.lat,
                   d.lng,
                   0,
-                  {}
+                  {'evt': d.evt}
                 )
               })
 
@@ -340,71 +400,115 @@ class GlobeContainer extends React.Component {
   timlineYearClicked(year){
 
     if(year == this.state.currentYear){
-
       // Animate to all records within the currentYear;
       this.gv.transition(0);
     } else {
-
-      // inform parent component loading status
-      // this.props.loadingManager(true);
-
       //switch data
-      this.setState({
-        loadingStatus : true,
-        loadingText   : 'Switching data to '+ year,
-      })
-      this.gv.transition(5,() => {
+      this.setState({loadingStatus : true, loadingText : 'Switching data to '+ year,currentControllerSelection:1})
 
+      this.gv.transition(5,() => {
         //update visualization
         this.gv.octree.remove(this.gv.points); //takes ~ 10ms
         this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-
         this.state.warData.slice().forEach((d,i) => {
           if(d.year == year ) {
-
             // inform parent component of changed current year;
-            (() => {
-              this.props.changeYearManager(i);
-            })();
-
+            this.props.changeYearManager(i);
             // here only happens once.
             this.drawData( d.value );
+            // set scaler.
             this.gv.scaler = d.scaler;
-              //
-              // this.setState({
-              //   rotatePause: true,
-              //   currentYear: year,
-              //   loadingStatus : true,
-              //   loadingText   : 'Optimizing Octree...',
-              // });
-
-              this.gv.octree.update(
-                () =>{
-                // inform parent component loading status
-                this.props.loadingManager(false);
-
-                this.setState({
-                  rotatePause: false,
-                  currentYear: year,
-                  loadingStatus : false,
-                  loadingText   : '',
-                });
-              }
-            );
-              this.gv.transition(0,() => {
+            //after init octree, present animation
+            this.gv.octree.update(() =>{
+              this.gv.transition(0);
+              // inform parent component loading status
+              this.props.loadingManager(false);
+              this.setState({
+                rotatePause: false,
+                currentYear: year,
+                loadingStatus : false,
+                loadingText   : '',
               });
-
-
-          } //
+            });
+          };
         });
       });
-
     } //else
 
   }
 
   timlineQuaterClicked(quater){
     this.gv.transition(quater); // Animate to selected quater;
+  }
+
+  globeControllerClick(id){
+    if(this.state.currentControllerSelection != id){
+      if(id === 1){
+        this.setState({loadingStatus : true, loadingText : 'Filtering Data...',currentControllerSelection: id})
+        this.gv.transition(5,() => {
+          this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+          this.gv.scene.remove(this.gv.points); //takes ~ 10ms
+
+          this.state.warData.slice().forEach((d,i) => {
+            if(d.year == this.state.currentYear) {
+              this.drawData( d.value );
+              this.gv.scaler = d.scaler;
+              this.gv.octree.update(() =>{
+                this.gv.transition(0);
+                // inform parent component loading status
+                this.props.loadingManager(false);
+                this.setState({
+                  rotatePause: false,
+                  loadingStatus : false,
+                  loadingText   : '',
+                });
+              });
+            };
+          });
+        });
+      }
+      else if(id === 2){
+        this.setState({loadingStatus : true, loadingText : 'Filtering Data...',currentControllerSelection: id})
+        this.gv.transition(5,() => {
+          const warDataCopy = JSON.parse(JSON.stringify(this.state.warData));
+          warDataCopy.forEach((d,i) =>{
+            // filter out violance not against civilians
+            if(d.year === this.state.currentYear){
+              d.value.forEach((d,i)=>{
+                let data = d[1];
+                for (var i = data.length -1 ; i >=0 ; i-=4) {
+                  if(data[i].evt != 0){
+                      data.splice(i - 3,4)
+                  }
+                }
+              })
+              this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+              this.gv.scene.remove(this.gv.points); //takes ~ 10ms
+              this.drawData( d.value );
+              this.gv.scaler = (()=>{
+                var temp;
+                this.state.warData.forEach((d,i) => {
+                  if(d.year === this.state.currentYear) {
+                    temp =  d.scaler;
+                  }
+                })
+                return temp;
+              })()
+              this.gv.octree.update(() =>{
+                this.gv.transition(0);
+                // inform parent component loading status
+                this.props.loadingManager(false);
+                this.setState({
+                  rotatePause: false,
+                  loadingStatus : false,
+                  loadingText   : '',
+                });
+              });
+            };
+          });
+        });
+      };
+    };
   }
 
   render(){
@@ -414,13 +518,30 @@ class GlobeContainer extends React.Component {
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
           <ModalButton data={this.state.data}/>
-          <GlobeControllerButton>MAP</GlobeControllerButton>
+          <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >GLOBE</GlobeControllerButton>
 
-          {/* <GlobeControllerItems>
-            <AllConflict>Show All Armed Conflict</AllConflict>
-            <Conflict_Civilians>Show Only Conflict Against Civilians</Conflict_Civilians>
+          <GlobeControllerItems show ={this.state.controllerShow}>
 
-          </GlobeControllerItems> */}
+            <AllConflict
+              selectornot = {this.state.currentControllerSelection}
+              onClick = {() => this.globeControllerClick(1)}
+              >All Armed Conflict
+            </AllConflict>
+
+            <Conflict_Civilians
+              selectornot = {this.state.currentControllerSelection}
+              onClick = {() => this.globeControllerClick(2)}
+              >Conflict Against Civilians
+            </Conflict_Civilians>
+
+            {/* TODO: heat map implimentation */}
+            {/* <Heat_map
+              selectornot = {this.state.currentControllerSelection}
+              onClick = {() => this.globeControllerClick(3)}
+              >Heat Map
+            </Heat_map> */}
+
+          </GlobeControllerItems>
         </TitleContainer>
           {this.renderGlobeTimeline()}
           {this.renderGlobeVisual()}
