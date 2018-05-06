@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import api from '../utils/api';
-// import RegionNavBar from '../stylesheets/RegionNavBar.css'
+import styled from 'styled-components';
+
+const RegionContainer = styled.div`
+  top: 140px;
+  position: relative;
+`
 
 function SelectRegion (props) {
   var regions = ["Eastern Africa", "Middle Africa", "Middle East", "Northern Africa", "South-Eastern Asia", "Southern Africa", "Southern Asia", "Western Africa"];
@@ -12,7 +17,13 @@ function SelectRegion (props) {
       {regions.map((region) => {
         return (
           <li
-            style={region === props.selectedRegion ? {color: '#d0021b'} : null}
+            style={region === props.selectedRegion ? {
+              'border-style': 'solid',
+              'border-width': '0px 0px 2px',
+              'border-bottom-color': 'rgb(255, 0, 0)',
+              'width': '150px',
+              'height': '26px'
+            } : null}
             onClick={props.onSelect.bind(null, region)}
             key={region}>
               {region}
@@ -97,13 +108,13 @@ class RegionNav extends Component {
 
   render() {
       return(
-        <div>
+        <RegionContainer>
           <SelectRegion
             selectedRegion={this.state.selectedRegion}
             onSelect={this.updateRegion}
             regions={this.state.regions}
           />
-        </div>
+        </RegionContainer>
     )
   }
 }

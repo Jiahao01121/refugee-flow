@@ -1,6 +1,5 @@
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 ul {
@@ -14,15 +13,20 @@ li {
 .regions {
   display: flex;
   justify-content: center;
-  color: white;
 }
 
 .regions li {
-  margin: 10px;
-  font-weight: bold;
+  transition: all 300ms;
+  margin: 0 35px;
+  position: relative;
   cursor: pointer;
-  color: white;
+  color: #ffffff;
   z-index: 1;
+  font-family: 'Roboto';
+  font-weight: 100;
+  font-size: 13px;
+  width: 100px;
+  text-align: center;
 }
 
 .RegionNavBar {
