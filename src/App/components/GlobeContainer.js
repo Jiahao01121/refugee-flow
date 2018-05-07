@@ -517,7 +517,7 @@ class GlobeContainer extends React.Component {
       <div className = 'globe'>
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
-          <ModalButton data={this.state.data}/>
+          <ModalButton data={this.state.warData}/>
           <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >GLOBE</GlobeControllerButton>
 
           <GlobeControllerItems show ={this.state.controllerShow}>

@@ -68,9 +68,11 @@ class ModalButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      visualizeSectionData: []
     };
     this.data = this.props.data;
+    this.passCountryToRegion = this.passCountryToRegion.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -81,10 +83,15 @@ class ModalButton extends Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
+  passCountryToRegion(data,currentSelection){
+    this.setState({
+      visualizeSectionData: data[currentSelection]
+    })
+  }
   render() {
 
     const { showModal, data } = this.state;
-
+    console.log('rendered');
     return (
       <div>
         <SwitchCountryButton
@@ -94,11 +101,11 @@ class ModalButton extends Component {
         </SwitchCountryButton>
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
-        <div className='container'>
-          <RegionTitle>Select a country</RegionTitle>
-          <RegionNav data={this.data} />
-        </div>
-          <Region />
+          <div className='container'>
+            <RegionTitle>Select a country</RegionTitle>
+            <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
+          </div>
+          {(() => {if(this.state.visualizeSectionData.length>0){return <Region data={this.state.visualizeSectionData}/>}})()}
         </Modal>
       </div>
     );
