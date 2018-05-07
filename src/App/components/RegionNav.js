@@ -3,13 +3,20 @@ import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import api from '../utils/api';
 import styled from 'styled-components';
+import {countryList} from '../data/warDictionary';
+import _ from 'underscore';
 
 const RegionContainer = styled.div`
   top: 140px;
   position: relative;
 `
 function SelectRegion (props) {
-  var regions = ["Eastern Africa", "Middle Africa", "Middle East", "Northern Africa", "South-Eastern Asia", "Southern Africa", "Southern Asia", "Western Africa"];
+
+  var regions = (() =>{
+    let temp = [];
+    countryList.forEach(d => temp.push(d[1]));
+    return _.uniq(temp)
+  })()
 
   return (
     <ul className='regions'>
@@ -43,30 +50,60 @@ class RegionNav extends Component {
     super(props);
 
     this.state = {
-      selectedRegion: 'Eastern Africa',
-      regions: null
+      selectedRegion: 'Middle Africa',
+      regions: null,
+      data_list: []
     };
     this.data = this.props.data;
     this.updateRegion = this.updateRegion.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps){
-    this.data = nextProps.data;
+    this.aggregate = this.aggregate.bind(this);
+    this.pass = this.props.pass;
   }
 
   componentDidMount () {
-    console.log(this.data);
+    this.country = this.aggregate(this.data);
+    this.setState({selectedRegion:'Middle East'});
+    this.pass(this.country,this.state.selectedRegion);
 
+    //ugly fix for Region component jqury stuff
+    setTimeout(() =>{
+      this.setState({selectedRegion:'Middle East'});
+      this.pass(this.country,this.state.selectedRegion);
+    },100)
+  }
+
+  aggregate(d){
+    this.country = (() =>{
+
+      let arr = [];
+      countryList.forEach((d,i) =>{
+        let temp = {};
+        temp['country'] = d[0];
+        temp['total_fat'] = [];
+        temp['region'] = d[1];
+        arr.push(temp)
+      })
+      return arr;
+    })();
+    d.forEach((d,i) =>{
+      let t = d.value[0][1];
+      for (var i = t.length - 1; i >=0; i-=4) {
+        let country_ref_index = _.findIndex(this.country,{ 'country' : t[i].cot[0].toUpperCase() } );
+        country_ref_index >=0 && this.country[country_ref_index].total_fat.push(d.scaler.invert(t[i].fat))
+      }
+    })
+
+    this.country.forEach( d => d.total_fat = d.total_fat.reduce((a,c) => a+c,0) );
+    this.country = _.groupBy(this.country,d => d.region)
+
+    return this.country;
   }
 
   updateRegion(region) {
-    console.log(region);
-    console.log(this.state);
-    this.setState(function() {
-      return {
-        selectedRegion: region
-      }
-    });
+    if(this.state.selectedRegion != region) {
+      this.setState({selectedRegion: region})
+      this.pass(this.country,region)
+    }
   }
 
   render() {
