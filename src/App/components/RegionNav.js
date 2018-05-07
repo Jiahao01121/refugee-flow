@@ -74,13 +74,23 @@ class RegionNav extends Component {
 
   aggregate(d){
     this.country = (() =>{
-
       let arr = [];
       countryList.forEach((d,i) =>{
         let temp = {};
         temp['country'] = d[0];
         temp['total_fat'] = [];
         temp['region'] = d[1];
+        temp['fat_year'] = {
+          '2010':[],
+          '2011':[],
+          '2012':[],
+          '2013':[],
+          '2014':[],
+          '2015':[],
+          '2016':[],
+          '2017':[],
+          '2018':[],
+        };
         arr.push(temp)
       })
       return arr;
@@ -89,11 +99,15 @@ class RegionNav extends Component {
       let t = d.value[0][1];
       for (var i = t.length - 1; i >=0; i-=4) {
         let country_ref_index = _.findIndex(this.country,{ 'country' : t[i].cot[0].toUpperCase() } );
+        country_ref_index >=0 && this.country[country_ref_index].fat_year[d.year].push( d.scaler.invert(t[i].fat) )
         country_ref_index >=0 && this.country[country_ref_index].total_fat.push(d.scaler.invert(t[i].fat))
       }
     })
 
-    this.country.forEach( d => d.total_fat = d.total_fat.reduce((a,c) => a+c,0) );
+    this.country.forEach( d => {
+      d.total_fat = d.total_fat.reduce((a,c) => a+c,0)
+      for (let year in d.fat_year) {d.fat_year[year] = d.fat_year[year].reduce((a,c) => a+c,0)}
+    });
     this.country = _.groupBy(this.country,d => d.region)
 
     return this.country;
