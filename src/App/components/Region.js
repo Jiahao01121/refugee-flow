@@ -120,7 +120,8 @@ const MouseoverButton = styled.div`
     font-weight: inherit;
     font-size: 12px;
     position: absolute;
-    top: 20px;
+    top: 0px;
+    padding-top: 20px;
     color: inherit;
     font-family: 'Roboto';
     left: 50%;
@@ -144,10 +145,9 @@ class Region extends Component {
   }
 
   visualization(d){
-
-    console.log("visualization caleed");
+    
     d = _.sortBy(d,d => this.state.mv? d.fat_year['201'+this.state.mv_year] : d.total_fat).reverse();
-    console.log(d);
+
     const jsxArray = [];
     const minMax = d3.extent(d,d => d.total_fat);
     const scaler = d3.scaleLinear().domain(minMax).range([0,300]).nice();
