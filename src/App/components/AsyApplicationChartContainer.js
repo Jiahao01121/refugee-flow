@@ -24,6 +24,7 @@ class AsyApplicationChartContainer extends React.Component {
       margin: {top: 20, right: 10, bottom: 30, left: 30},
       data : this.props.data,
       currentYear : this.props.currentYear,
+      currentCountry: this.props.currentCountry,
       width : 0,
       height : 0,
       chartData : []
@@ -41,6 +42,7 @@ class AsyApplicationChartContainer extends React.Component {
     this.setState({
       data: nextProps.data,
       currentYear: nextProps.currentYear,
+      currentCountry: nextProps.currentCountry
     })
     this.chartMode = nextProps.chartMode;
     this.loadingManager = nextProps.loadingManager;
@@ -59,12 +61,12 @@ class AsyApplicationChartContainer extends React.Component {
   }
 
   processData(data,currentYear,mode){
+    console.log('processData Caleed');
+    // console.log(this.state.currentCountry);
+    // console.log(currentYear);
 
-    console.log(currentYear);
-    console.count('process chart data called - current');
-    //if receives data is not an empty array
 
-    if(data.length >0){
+    if(data.length >0){ //if receives data is not an empty array
 
       //shallow copy
       const _data = JSON.parse(JSON.stringify(data));
@@ -78,14 +80,18 @@ class AsyApplicationChartContainer extends React.Component {
           // get general num
           for (var quater in eachYear) {
             eachYear[quater] = eachYear[quater].reduce((a, c) => {
-              return {
-                Value:a.Value + c.Value
+
+              if(this.state.currentCountry === 'GLOBAL'){
+                return {Value:a.Value + c.Value}
+              }else{
+                return c.Origin.toUpperCase() === this.state.currentCountry ? {Value:a.Value + c.Value} : {Value:a.Value+0}
               }
             }, {Value: 0})
           }
           // object format to array format
           d[year] = (() =>{
               let obj_to_array = [];
+
               for (var quater in eachYear) {
                 obj_to_array.push(eachYear[quater].Value);
               }
@@ -102,7 +108,8 @@ class AsyApplicationChartContainer extends React.Component {
         this.setState({
           chartData : currentData
         })
-      }else if (mode ===2) {
+      }
+      else if (mode ===2) {
         const allData = []
         for (var year in _data[0]) {
           allData.push(
@@ -118,13 +125,14 @@ class AsyApplicationChartContainer extends React.Component {
           chartData : allData
         })
       }
+
     }
   }
 
 
 
   renderChart(){
-    console.count('renderCharrt called');
+    console.count('renderChart called');
     if(this.state.data.length != 0 && this.state.chartData.length != 0){
       console.log("renderchart correctly");
       return (<AsyApplicationChart {...this.state} ref = {(gMount) => {return this.gMount = gMount }}/>)
