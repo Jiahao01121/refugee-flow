@@ -84,7 +84,6 @@ class Timeline extends React.Component {
   }
 
   checkYearClassName(year){
-    console.log('called');
     if(year == this.props.currentYear){
       return 'years_selected years'
     }else{
@@ -102,7 +101,6 @@ class Timeline extends React.Component {
   }
 
   render(){
-    console.log(this.state);
     const TimelineItems = [];
     warDict.year.forEach( (d,i) => TimelineItems[i] = this.renderYearItem(d) );
 

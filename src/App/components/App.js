@@ -13,8 +13,6 @@ import RefugeeRoute from './RefugeeRoute'
 class App extends React.Component {
 
   render(){
-    console.count("---------- App's render called");
-
     injectGlobal`
       html  body {
         width: 100%;

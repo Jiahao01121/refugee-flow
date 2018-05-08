@@ -19,6 +19,7 @@ class Modal extends Component {
           className="GlobeModal"
           overlayClassName="Overlay"
           ariaHideApp={false}
+          closeTimeoutMS={200}
         >
           <div className="CloseButtonPostioning">
             <span
