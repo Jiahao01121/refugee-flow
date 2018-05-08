@@ -6,12 +6,10 @@ export default class Landing extends Component {
     return(
       <div className='container'>
         <div className='mid'>
-          <div>
-            <ul className='links'>
-              <li><a href="https://www.behance.com" target="_blank">Behance</a></li>
-              <li><a href="https://www.github.com" target="_blank">Github</a></li>
-            </ul>
-          </div>
+          {/* <ul className='links'>
+            <li><a href="https://www.behance.com" target="_blank">Behance</a></li>
+            <li><a href="https://www.github.com" target="_blank">Github</a></li>
+          </ul> */}
           <h1>"The world is in much greater disarray than it was during the Cold War, in the Cold War,
             the world had two fundamental concentrations of power in the United States and the Soviet Union,
             and both respective alliance-systems. We understood how to avoid direct confrontation,
