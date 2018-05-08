@@ -5,6 +5,8 @@ import $ from "jquery";
 import _ from 'underscore';
 import * as emojiFlags from 'emoji-flags';
 import {countryCode} from '../data/warDictionary';
+import { ScaleLoader } from 'react-spinners';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 
 const RegionContainer = styled.div`
   display: flex;
@@ -100,7 +102,6 @@ const Fat_num = styled.p`
     transform: translateX(-50%);
   }
 `
-
 const MouseoverButton = styled.div`
   width: ${() =>($('.sectionItemWrapper').width() / 3 - 20) / 9 - 8 + 'px'};
   height: ${props => props.heightMap + 'px'};
@@ -129,23 +130,29 @@ const MouseoverButton = styled.div`
     transform: translateX(-50%);
   }
 `
+
+
 class Region extends Component {
   constructor(props) {
     super(props);
     this.visualization = this.visualization.bind(this);
     this.data = this.props.data;
+    this.clickHandler = this.props.clickHandler;
+    this.closeModal = this.props.closeModal;
     this.state = {
-      'mv':false,
-      'mv_year':null
+      mv:false,
+      mv_year:null,
+      loadingStatus: true,
+      loadingText : 'Fetching data from the server...'
     }
   }
 
   componentWillReceiveProps(nextProps){
     this.data = nextProps.data;
+    this.setState({loadingStatus: false});
   }
 
   visualization(d){
-    
     d = _.sortBy(d,d => this.state.mv? d.fat_year['201'+this.state.mv_year] : d.total_fat).reverse();
 
     const jsxArray = [];
@@ -165,23 +172,26 @@ class Region extends Component {
 
       jsxArray[i] = (() =>{
         return (
-          <SectionItem key={i} index={i}>
+          <SectionItem key={i} index={i} onClick = {() => {
+            this.closeModal();
+            this.clickHandler(d[i].country);
+          }}>
             {(()=>{
               let mouseOverButtonGroup = [];
               for (let _i = 0; _i < 9; _i++) {
                 mouseOverButtonGroup[_i] = <MouseoverButton
-                  key ={'201' + _i}
+                  key = {'201' + _i}
                   tag = {'201' + _i}
                   heightMap = {heightMap_scaler(d[i].fat_year['201'+_i])}
-                  className={'section-mouseover-button-y201' + _i}
-                  onMouseOver={() =>{
+                  className = {'section-mouseover-button-y201' + _i}
+                  onMouseOver = {() =>{
                     this.setState({mv: true,mv_year: _i})
                     d3.selectAll('.section-mouseover-button-y201'+ _i)
                       .style('background','rgb(255, 65, 65)')
                       .style('color','rgb(255, 65, 65)')
                       .style('font-weight','900')
-                    }}
-                  onMouseOut={() =>{
+                  }}
+                  onMouseOut = {() =>{
                     this.setState({mv: false,mv_year: null})
                     d3.selectAll('.section-mouseover-button-y201'+ _i)
                       .style('background','white')
@@ -201,6 +211,7 @@ class Region extends Component {
         )
       })()
     }
+
     return jsxArray;
   }
 
@@ -208,13 +219,20 @@ class Region extends Component {
     return (
       <RegionContainer>
         <SectionContainer>
-          <SectionItemWrapper className={'sectionItemWrapper'}>
-            {this.visualization(this.data)}
-        </SectionItemWrapper>
+
+          <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%' marginTop = '-60'>
+            <LoaderGraphWrapper>
+              <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
+            </LoaderGraphWrapper>
+            <LoadingIndicator>{this.state.loadingText}</LoadingIndicator>
+            </LoadingDivWrapper>
+
+          <SectionItemWrapper className={'sectionItemWrapper'}>{this.visualization(this.data)}</SectionItemWrapper>
         </SectionContainer>
       </RegionContainer>
     )
   }
+  
 }
 
 export default Region;

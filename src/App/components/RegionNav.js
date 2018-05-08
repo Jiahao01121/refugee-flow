@@ -69,7 +69,7 @@ class RegionNav extends Component {
     setTimeout(() =>{
       this.setState({selectedRegion:'Middle East'});
       this.pass(this.country,this.state.selectedRegion);
-    },100)
+    },10)
   }
 
   aggregate(d){

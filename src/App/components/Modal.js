@@ -18,6 +18,7 @@ class Modal extends Component {
           onRequestClose={this.props.onCloseRequest}
           className="GlobeModal"
           overlayClassName="Overlay"
+          ariaHideApp={false}
         >
           <div className="CloseButtonPostioning">
             <span
