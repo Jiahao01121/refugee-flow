@@ -146,6 +146,7 @@ class GlobeContainer extends React.Component {
     this.timlineYearClicked = this.timlineYearClicked.bind(this);
     this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
     this.globeControllerClick = this.globeControllerClick.bind(this);
+    this.countryChangeHandler = this.countryChangeHandler.bind(this);
     // const color = rgbToHsl(19,254,253);
     const color = rgbToHsl(22,247,123);
     this.state = {
@@ -173,7 +174,8 @@ class GlobeContainer extends React.Component {
       titleText : 'Global',
       data: [],
       controllerShow: true,
-      currentControllerSelection: 1
+      currentControllerSelection: 1,
+      currentCountry: 'GLOBE',
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -511,13 +513,17 @@ class GlobeContainer extends React.Component {
     };
   }
 
+  countryChangeHandler(country){
+    // this.setState({currentCountry: country})
+    console.log(country);
+  }
   render(){
 
     return(
       <div className = 'globe'>
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
-          <ModalButton data={this.state.warData}/>
+          <ModalButton data={this.state.warData} countryChangeHandler = {this.countryChangeHandler}/>
           <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >GLOBE</GlobeControllerButton>
 
           <GlobeControllerItems show ={this.state.controllerShow}>

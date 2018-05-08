@@ -73,10 +73,12 @@ class ModalButton extends Component {
     };
     this.data = this.props.data;
     this.passCountryToRegion = this.passCountryToRegion.bind(this);
+    this.passhandler = this.props.countryChangeHandler;
   }
 
   componentWillReceiveProps(nextProps){
     this.data = nextProps.data;
+    this.passhandler = nextProps.countryChangeHandler;
   }
 
   handleToggleModal = () => {
@@ -105,7 +107,11 @@ class ModalButton extends Component {
             <RegionTitle>Select a country</RegionTitle>
             <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
           </div>
-          {(() => {if(this.state.visualizeSectionData.length>0){return <Region data={this.state.visualizeSectionData}/>}})()}
+          {(() => {if(this.state.visualizeSectionData.length>0){return <Region
+            data={this.state.visualizeSectionData}
+            clickHandler = {this.passhandler}
+            closeModal = {this.handleToggleModal}
+          />}})()}
         </Modal>
       </div>
     );
