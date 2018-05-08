@@ -1,0 +1,77 @@
+a {
+  text-decoration:none
+}
+li {
+  list-style:none
+}
+ul {
+  padding:0;
+  margin:0
+}
+.image {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/cheese-curds.jpg);
+  background-size: cover;
+  height: 100vh;
+}
+
+.mid h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 2rem;
+  transform: translate(-50%, -50%);
+}
+
+.links {
+  padding:0;
+  margin:0;
+  display: flex;
+  color: white;
+  justify-content: center;
+  padding: 20px;
+}
+
+.links li {
+  padding-left: 20px;
+}
+
+.links li a {
+  color: white;
+}
+
+.side-links {
+  display: flex;
+  justify-content: space-around ;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  white-space: nowrap;
+
+  position: fixed;
+  width: 100vh;
+  bottom: 0;
+  right: 2.5em;
+  line-height: 2em;
+  transform: rotate(90deg);
+  transform-origin: 100% 100%;
+}
+
+.side-links li {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+.side-links li a {
+  color: white;
+}

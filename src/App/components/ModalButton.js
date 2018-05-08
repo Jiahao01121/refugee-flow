@@ -125,8 +125,10 @@ class ModalButton extends Component {
   }
   render() {
 
+
     const { showModal, data } = this.state;
     console.log(this.currentCountry);
+
     return (
       <div>
         <SwitchCountryButton
