@@ -547,9 +547,13 @@ class GlobeContainer extends React.Component {
 
   changeCountryData(country,year){
 
+    // inform parent component currentCountry
+    this.props.changeCountryManager(country);
+
     if(year === null){year = '2010'}else{year = '201'+ year}
 
     this.timeLineScroll.toElement($('.individualWrapper')[year.charAt(3)]).then(()=>console.log('aaaaa'));
+
     const data = JSON.parse(JSON.stringify(this.state.warData));
 
     data.forEach(d =>{
@@ -562,7 +566,6 @@ class GlobeContainer extends React.Component {
         }
       })
     })
-
 
     //switch data
     this.setState({
@@ -608,6 +611,9 @@ class GlobeContainer extends React.Component {
         loadingText : 'Deselect Country data...',
         currentCountry: 'GLOBAL',
       })
+      // inform parent component currentCountry
+      this.props.changeCountryManager('GLOBAL');
+
       if(this.state.currentYear === '2017'){
         this.setState({currentYear: '2010'})
       }
@@ -648,7 +654,7 @@ class GlobeContainer extends React.Component {
     return(
       <div className = 'globe'>
         <TitleContainer>
-          <TitleText> {'Armed Conflict: ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
+          <TitleText> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
           <ModalButton
              data={this.state.warData}
              countryChangeHandler = {this.countryChangeHandler}
