@@ -15,6 +15,7 @@ const RegionContainer = styled.div`
   position: absolute;
   background-color: #15151cd1;
   box-shadow: 0px 16px 20px 11px rgba(6, 6, 14, 0.38);
+  border-radius: 10px;
 `
 const SectionContainer = styled.div`
   width: 100%;
@@ -51,6 +52,10 @@ const SectionItem = styled.div`
   `} */}
   cursor: pointer;
   transition: all 800ms;
+
+  &:hover{
+    background: #353550b3;
+  }
 `
 const SectionTitle = styled.p`
   color: white;
@@ -173,8 +178,12 @@ class Region extends Component {
       jsxArray[i] = (() =>{
         return (
           <SectionItem key={i} index={i} onClick = {() => {
-            this.closeModal();
-            this.clickHandler(d[i].country);
+            this.setState({loadingStatus: true},() =>{
+              setTimeout(() => {
+                this.closeModal();
+                this.clickHandler(d[i].country);
+              },10);
+            });
           }}>
             {(()=>{
               let mouseOverButtonGroup = [];
@@ -232,7 +241,7 @@ class Region extends Component {
       </RegionContainer>
     )
   }
-  
+
 }
 
 export default Region;

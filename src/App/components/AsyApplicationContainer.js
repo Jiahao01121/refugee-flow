@@ -10,7 +10,7 @@ import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledC
 
 const Background = styled.div`
   width: 25%;
-  background: #15151cf5;
+  background: #0f1015f7;
   height: 100%;
   position: absolute;
   right: 0;
