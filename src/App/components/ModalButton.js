@@ -92,7 +92,7 @@ class ModalButton extends Component {
   }
   render() {
 
-    const { showModal, data } = this.state;
+    const { showModal } = this.state;
     console.log('rendered');
     return (
       <div>
