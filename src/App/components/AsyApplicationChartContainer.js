@@ -132,7 +132,6 @@ class AsyApplicationChartContainer extends React.Component {
   }
 
   callGMountTransition(){
-      console.log(this.gMount);
       if(this.gMount != undefined){
 
         this.gMount.drawDataontoChart(this.state.chartData)
