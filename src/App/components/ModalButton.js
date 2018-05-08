@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Modal from './Modal';
@@ -42,6 +42,38 @@ const SwitchCountryButton = styled.button`
     position: absolute;
   }
 `
+const CurrentCountryTag = styled.div`
+  background: #3f415891;
+  position: absolute;
+  top: 109px;
+  color: white;
+  left: 150px;
+  padding: ${props => props.currentCountry !='GLOBAL'?'5px 15px 5px 25px':'5px 15px 5px 15px' };
+  border-radius: 100px;
+  font-family: 'Roboto';
+  font-size: 10px;
+  font-weight: 400;
+  cursor: ${props => props.currentCountry !='GLOBAL'?'pointer':'default' };
+  transition: all 400ms;
+  &:before{
+    ${props =>
+      props.currentCountry && css`
+        content: ${props.currentCountry !='GLOBAL'?"'x'":null};
+    `}
+    font-weight: 300;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    left: 10px;
+    top: 2px;
+    }
+
+  &:hover{
+    ${props => props.currentCountry !='GLOBAL'&&css`
+      background: #3f4158;
+    `};
+  }
+`
 const RegionTitle = styled.p`
   font-family: 'Roboto';
   font-size: 25px;
@@ -73,10 +105,13 @@ class ModalButton extends Component {
     };
     this.data = this.props.data;
     this.passCountryToRegion = this.passCountryToRegion.bind(this);
+    this.passhandler = this.props.countryChangeHandler;
+    this.currentCountry = this.props.currentCountry;
   }
 
   componentWillReceiveProps(nextProps){
     this.data = nextProps.data;
+    this.currentCountry = nextProps.currentCountry;
   }
 
   handleToggleModal = () => {
@@ -90,8 +125,10 @@ class ModalButton extends Component {
   }
   render() {
 
-    const { showModal } = this.state;
-    console.log('rendered');
+
+    const { showModal, data } = this.state;
+    console.log(this.currentCountry);
+
     return (
       <div>
         <SwitchCountryButton
@@ -99,13 +136,18 @@ class ModalButton extends Component {
           onClick={this.handleToggleModal}>
           Select Region
         </SwitchCountryButton>
+        <CurrentCountryTag currentCountry={this.currentCountry} > {this.currentCountry} </CurrentCountryTag>
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
           <div className='container'>
             <RegionTitle>Select a country</RegionTitle>
             <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
           </div>
-          {(() => {if(this.state.visualizeSectionData.length>0){return <Region data={this.state.visualizeSectionData}/>}})()}
+          {(() => {if(this.state.visualizeSectionData.length>0){return <Region
+            data={this.state.visualizeSectionData}
+            clickHandler = {this.passhandler}
+            closeModal = {this.handleToggleModal}
+          />}})()}
         </Modal>
       </div>
     );

@@ -146,6 +146,8 @@ class GlobeContainer extends React.Component {
     this.timlineYearClicked = this.timlineYearClicked.bind(this);
     this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
     this.globeControllerClick = this.globeControllerClick.bind(this);
+    this.countryChangeHandler = this.countryChangeHandler.bind(this);
+    this.changeCountryData = this.changeCountryData.bind(this);
     // const color = rgbToHsl(19,254,253);
     const color = rgbToHsl(22,247,123);
     this.state = {
@@ -173,7 +175,8 @@ class GlobeContainer extends React.Component {
       titleText : 'Global',
       data: [],
       controllerShow: true,
-      currentControllerSelection: 1
+      currentControllerSelection: 1,
+      currentCountry: 'GLOBAL',
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -185,8 +188,7 @@ class GlobeContainer extends React.Component {
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
 
     this.fetchData(url).then(d =>{
-      d.forEach((d,i) => console.log('year: ' + i + ' | ' + d.value[0][1].length))
-      console.timeEnd("received & processed data");
+      d.forEach((d,i) => console.log('year: ' + i + ' | dataPoint: ' + d.value[0][1].length))
 
       return ({
         'warData' : d,
@@ -227,8 +229,6 @@ class GlobeContainer extends React.Component {
   }
 
   fetchData(url){
-
-    console.time("received & processed data");
     const request = new Request( url, {method: 'GET', cache: true});
     return (
       fetch(request).then(res => res.json()).then(
@@ -511,13 +511,35 @@ class GlobeContainer extends React.Component {
     };
   }
 
-  render(){
+  countryChangeHandler(country){
+    this.setState({currentCountry: country});
+    this.changeCountryData(country);
+  }
 
+  changeCountryData(country){
+
+    const data = JSON.parse(JSON.stringify(this.state.warData));
+    data.forEach(d =>{
+      d.value.forEach(d =>{
+        let t = d[1];
+        for (var i = t.length - 1; i >=0; i-=4) {
+          if(t[i].cot!=undefined && t[i].cot[0].toUpperCase() == country){}else{
+            t.splice(i-3,4);
+          }
+        }
+      })
+    })
+
+    console.log(data);
+
+  }
+
+  render(){
     return(
       <div className = 'globe'>
         <TitleContainer>
           <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
-          <ModalButton data={this.state.warData}/>
+          <ModalButton data={this.state.warData} countryChangeHandler = {this.countryChangeHandler} currentCountry={this.state.currentCountry}/>
           <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >GLOBE</GlobeControllerButton>
 
           <GlobeControllerItems show ={this.state.controllerShow}>
