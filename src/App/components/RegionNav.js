@@ -7,7 +7,7 @@ import {countryList} from '../data/warDictionary';
 import _ from 'underscore';
 
 const RegionContainer = styled.div`
-  top: 140px;
+  top: 14%;
   position: relative;
 `
 function SelectRegion (props) {
