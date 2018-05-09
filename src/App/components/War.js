@@ -10,25 +10,25 @@ export default class War extends React.Component {
     super(props);
     this.state = {
       currentYear: 0,
-      stillLoading: true
+      stillLoading: true,
+      currentCountry: 'GLOBAL'
     }
 
     this.changeYearManager = this.changeYearManager.bind(this);
     this.loadingManager = this.loadingManager.bind(this);
+    this.changeCountryManager = this.changeCountryManager.bind(this);
   }
 
   changeYearManager(year){
-    this.setState({
-      currentYear: year
-    })
+    this.setState({currentYear: year});
   }
 
-  loadingManager(boo){
-    console.log('manager called!');
-    console.log(boo);
-    this.setState({
-      stillLoading: boo
-    })
+  loadingManager(boolean){
+    this.setState({ stillLoading: boolean});
+  }
+
+  changeCountryManager(country){
+    this.setState({currentCountry: country});
   }
 
   render() {
@@ -36,8 +36,10 @@ export default class War extends React.Component {
       <div>
         <GlobeContainer changeYearManager = {this.changeYearManager}
           loadingManager = { this.loadingManager }
+          changeCountryManager = {this.changeCountryManager}
         />
         <AsyApplicationContainer currentYear = {this.state.currentYear}
+          currentCountry = {this.state.currentCountry}
           loadingManager = { this.state.stillLoading }
         />
       </div>

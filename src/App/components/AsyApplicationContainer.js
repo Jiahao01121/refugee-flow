@@ -68,7 +68,16 @@ const CurrentYearButton = styled.button`
   border: none;
   top: 110px;
   margin: 0px;
-  text-decoration : ${props => props.selected == 1 ? 'underline' : 'none'}
+  text-decoration : ${props => props.selected == 1 ? 'underline' : 'none'};
+
+  &::after{
+    content: ${ props => "'" + '('+props.currentYear+')' + "'" };
+    color: #7f7f7f;
+    font-weight: 700;
+    font-size: 10px;
+    position: absolute;
+    bottom: 4px;
+    right: -23px;
   }
 `
 const AllYearButton = styled.button`
@@ -77,7 +86,7 @@ const AllYearButton = styled.button`
   font-weight: 300;
   font-size: 13px;
   color: #ffffff66;
-  left: 170px;
+  left: 211px;
   position: absolute;
   background: none;
   border: none;
@@ -100,6 +109,7 @@ class AsyApplicationContainer extends React.Component {
     }
     this.data = [];
     this.currentYear = this.props.currentYear;
+    this.currentCountry = this.props.currentCountry;
     this.loadingManager = this.props.loadingManager;
     this.renderAsyAppContainer = this.renderAsyAppContainer.bind(this);
     this.buttonClick = this.buttonClick.bind(this);
@@ -116,6 +126,7 @@ class AsyApplicationContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.currentYear = nextProps.currentYear;
+    this.currentCountry = nextProps.currentCountry;
     this.loadingManager = nextProps.loadingManager;
   }
 
@@ -134,6 +145,7 @@ class AsyApplicationContainer extends React.Component {
       return (
         <AsyApplicationChartContainer
           currentYear={ this.currentYear }
+          currentCountry = { this.currentCountry }
           data={this.data}
           loadingManager={this.loadingManager}
           ref={(ChartContainerMount) => {return this.ChartContainerMount = ChartContainerMount }}
@@ -147,16 +159,14 @@ class AsyApplicationContainer extends React.Component {
     this.setState({
       buttonMode: i
     })
-
-    console.log(this.state.buttonMode);
   }
 
   render(){
 
     return(
       <Background>
-        <Title>Total Asylum Application</Title>
-        <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode}>SHOW CURRENT YEAR</CurrentYearButton>
+        <Title>{'Total Asylum Application - ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
+        <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode} currentYear = {'201'.concat(this.currentYear)}>SHOW CURRENT YEAR</CurrentYearButton>
         <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>
 
         <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%' marginTop = '-60'>

@@ -115,7 +115,7 @@ const MouseoverButton = styled.div`
   top: 0;
   float: left;
   margin: 0 4px;
-  cursor: default;
+  cursor: alias;
   transition: all 200ms;
   font-weight: 300;
   color: white;
@@ -181,11 +181,12 @@ class Region extends Component {
             this.setState({loadingStatus: true},() =>{
               setTimeout(() => {
                 this.closeModal();
-                this.clickHandler(d[i].country);
+                this.clickHandler(d[i].country,this.state.mv_year);
               },10);
             });
           }}>
             {(()=>{
+
               let mouseOverButtonGroup = [];
               for (let _i = 0; _i < 9; _i++) {
                 mouseOverButtonGroup[_i] = <MouseoverButton

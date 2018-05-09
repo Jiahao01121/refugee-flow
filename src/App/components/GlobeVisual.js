@@ -43,15 +43,16 @@ class GlobeVisual extends React.Component{
   componentDidMount(){
 
     // opts, also passed in on .adddata() from other component
-    this.opts = this.props.opts || {
-      imgDir : './globe/',
-      colorFn: (x) => {
-        const c = new THREE.Color();
-        c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
-        // console.log(c);
-        return c;
-      }
-    };
+    this.opts = this.props.opts
+    //  || {
+    //   imgDir : './globe/',
+    //   colorFn: (x) => {
+    //     const c = new THREE.Color();
+    //     c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
+    //     // console.log(c);
+    //     return c;
+    //   }
+    // };
 
     // shader collection
     this.Shaders = {
@@ -288,7 +289,7 @@ class GlobeVisual extends React.Component{
       colorFnWrapper = (data,i) => this.opts.colorFn(data[i+2])
     } else if ( this.opts.format === 'legend') {
       step = 4;
-      colorFnWrapper = (data, i) => this.opts.colorFn(data[i+3].fat);
+      colorFnWrapper = (data, i) => this.opts.colorFn(data[i+3].fat, data[i+3]);
     } else {
       throw('error: format not supported: '+ this.opts.format);
     }

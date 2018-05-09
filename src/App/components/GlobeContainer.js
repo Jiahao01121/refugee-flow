@@ -15,6 +15,11 @@ import ModalButton from './ModalButton';
 
 import { ScaleLoader } from 'react-spinners';
 
+import $ from "jquery";
+const Scroll = require('scroll-js');
+
+const cot_latLng = require('../data/cot_latLng.json');
+
 const TitleContainer = styled.div`
   position: absolute;
   ${'' /* background: #0000ff61; */}
@@ -142,11 +147,11 @@ class GlobeContainer extends React.Component {
 
   constructor(props){
     super(props);
-
     this.timlineYearClicked = this.timlineYearClicked.bind(this);
     this.timlineQuaterClicked = this.timlineQuaterClicked.bind(this);
     this.globeControllerClick = this.globeControllerClick.bind(this);
     this.countryChangeHandler = this.countryChangeHandler.bind(this);
+    this.removeCountryHandler = this.removeCountryHandler.bind(this);
     this.changeCountryData = this.changeCountryData.bind(this);
     // const color = rgbToHsl(19,254,253);
     const color = rgbToHsl(22,247,123);
@@ -172,11 +177,11 @@ class GlobeContainer extends React.Component {
       loadingStatus : true,
       loadingText   : 'Fetching data from the server...',
 
-      titleText : 'Global',
       data: [],
       controllerShow: true,
       currentControllerSelection: 1,
       currentCountry: 'GLOBAL',
+      countryData:[]
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -184,6 +189,8 @@ class GlobeContainer extends React.Component {
   }
 
   componentDidMount(){
+
+    this.timeLineScroll = new Scroll($('.TimelineWrapper')[0]);
 
     const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
 
@@ -225,7 +232,6 @@ class GlobeContainer extends React.Component {
       },10)
 
     })
-
   }
 
   fetchData(url){
@@ -282,7 +288,10 @@ class GlobeContainer extends React.Component {
                   d.lat,
                   d.lng,
                   0,
-                  {'evt': d.evt}
+                  {
+                    'evt': d.evt,
+                    'cot': d.cot
+                  }
                 )
               })
 
@@ -400,38 +409,58 @@ class GlobeContainer extends React.Component {
   timlineYearClicked(year){
 
     if(year == this.state.currentYear){
-      // Animate to all records within the currentYear;
-      this.gv.transition(0);
+      this.gv.transition(0);// Animate to all records within the currentYear;
     } else {
       //switch data
       this.setState({loadingStatus : true, loadingText : 'Switching data to '+ year,currentControllerSelection:1})
+      this.timeLineScroll.toElement($('.individualWrapper')[year.charAt(3)]).then(()=>console.log('aaaaa'));
 
       this.gv.transition(5,() => {
         //update visualization
         this.gv.octree.remove(this.gv.points); //takes ~ 10ms
         this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-        this.state.warData.slice().forEach((d,i) => {
-          if(d.year == year ) {
-            // inform parent component of changed current year;
-            this.props.changeYearManager(i);
-            // here only happens once.
-            this.drawData( d.value );
-            // set scaler.
-            this.gv.scaler = d.scaler;
-            //after init octree, present animation
-            this.gv.octree.update(() =>{
-              this.gv.transition(0);
-              // inform parent component loading status
-              this.props.loadingManager(false);
-              this.setState({
-                rotatePause: false,
-                currentYear: year,
-                loadingStatus : false,
-                loadingText   : '',
+        if(this.state.currentCountry === 'GLOBAL'){
+
+          this.state.warData.slice().forEach((d,i) => {
+            if(d.year === year ) {
+              // inform parent component of changed current year;
+              this.props.changeYearManager(i);
+              // here only happens once.
+              this.drawData( d.value );
+              // set scaler.
+              this.gv.scaler = d.scaler;
+              //after init octree, present animation
+              this.gv.octree.update(() =>{
+                this.gv.transition(0);
+                // inform parent component loading status
+                this.props.loadingManager(false);
+                this.setState({
+                  rotatePause: false,
+                  currentYear: year,
+                  loadingStatus : false,
+                  loadingText   : '',
+                });
               });
+            };
+          });
+
+        }else{
+          this.props.changeYearManager(+year.charAt(3));
+          this.drawData(_.find(this.state.countryData,d => d.year === year)['value']);
+          this.gv.scaler = _.find(this.state.warData,d => d.year === year)['scaler'];
+          this.gv.octree.update(() =>{
+            this.gv.transition(0);
+            // inform parent component loading status
+            this.props.loadingManager(false);
+            this.setState({
+              rotatePause: false,
+              currentYear: year,
+              loadingStatus : false,
+              loadingText   : '',
             });
-          };
-        });
+          });
+        }
+
       });
     } //else
 
@@ -444,85 +473,119 @@ class GlobeContainer extends React.Component {
   globeControllerClick(id){
     if(this.state.currentControllerSelection != id){
       if(id === 1){
+        this.gv.opts.colorFn = this.state.colorFn;
         this.setState({loadingStatus : true, loadingText : 'Filtering Data...',currentControllerSelection: id})
         this.gv.transition(5,() => {
           this.gv.octree.remove(this.gv.points); //takes ~ 10ms
           this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-
-          this.state.warData.slice().forEach((d,i) => {
-            if(d.year == this.state.currentYear) {
-              this.drawData( d.value );
-              this.gv.scaler = d.scaler;
-              this.gv.octree.update(() =>{
-                this.gv.transition(0);
-                // inform parent component loading status
-                this.props.loadingManager(false);
-                this.setState({
-                  rotatePause: false,
-                  loadingStatus : false,
-                  loadingText   : '',
+          if(this.state.currentCountry === 'GLOBAL'){
+            this.state.warData.slice().forEach((d,i) => {
+              if(d.year == this.state.currentYear) {
+                this.drawData( d.value );
+                this.gv.scaler = d.scaler;
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
                 });
-              });
-            };
-          });
+              };
+            });
+
+          }else{
+            this.state.countryData.forEach((d,i) => {
+              if(d.year == this.state.currentYear) {
+                this.drawData( d.value );
+                this.gv.scaler = _.find(this.state.warData, _d => _d.year === d.year)['scaler'];
+
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
+                });
+              }
+            })
+          }
+
         });
       }
       else if(id === 2){
         this.setState({loadingStatus : true, loadingText : 'Filtering Data...',currentControllerSelection: id})
+        this.gv.opts.colorFn = (x,criteria) => criteria.evt !=0 ? new THREE.Color('#004542') : new THREE.Color('#F44745');
+
         this.gv.transition(5,() => {
-          const warDataCopy = JSON.parse(JSON.stringify(this.state.warData));
-          warDataCopy.forEach((d,i) =>{
-            // filter out violance not against civilians
-            if(d.year === this.state.currentYear){
-              d.value.forEach((d,i)=>{
-                let data = d[1];
-                for (var i = data.length -1 ; i >=0 ; i-=4) {
-                  if(data[i].evt != 0){
-                      data.splice(i - 3,4)
-                  }
-                }
-              })
-              this.gv.octree.remove(this.gv.points); //takes ~ 10ms
-              this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-              this.drawData( d.value );
-              this.gv.scaler = (()=>{
-                var temp;
-                this.state.warData.forEach((d,i) => {
-                  if(d.year === this.state.currentYear) {
-                    temp =  d.scaler;
-                  }
-                })
-                return temp;
-              })()
-              this.gv.octree.update(() =>{
-                this.gv.transition(0);
-                // inform parent component loading status
-                this.props.loadingManager(false);
-                this.setState({
-                  rotatePause: false,
-                  loadingStatus : false,
-                  loadingText   : '',
+          // filter out violance not against civilians
+          if(this.state.currentCountry === 'GLOBAL'){
+            this.state.warData.forEach((d,i) =>{
+              if(d.year === this.state.currentYear){
+                this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+                this.gv.scene.remove(this.gv.points); //takes ~ 10ms
+                this.drawData( d.value );
+                this.gv.scaler = _.find(this.state.warData,d => d.year === this.state.currentYear)['scaler'];
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
                 });
-              });
-            };
-          });
+              };
+            });
+          }else{
+            this.state.countryData.forEach((d,i) => {
+              if(d.year == this.state.currentYear) {
+                this.drawData( d.value );
+                this.gv.scaler = _.find(this.state.warData, _d => _d.year === d.year)['scaler'];
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
+                });
+              }
+            })
+          }
         });
       };
     };
   }
 
-  countryChangeHandler(country){
+  countryChangeHandler(country,year){
     this.setState({currentCountry: country});
-    this.changeCountryData(country);
+    this.changeCountryData(country,year);
   }
 
-  changeCountryData(country){
+  changeCountryData(country,year){
+
+    // inform parent component currentCountry
+    this.props.changeCountryManager(country);
+
+    if(year === null){year = '2010'}else{year = '201'+ year}
+
+    this.timeLineScroll.toElement($('.individualWrapper')[year.charAt(3)]).then(()=>console.log('aaaaa'));
 
     const data = JSON.parse(JSON.stringify(this.state.warData));
+
     data.forEach(d =>{
       d.value.forEach(d =>{
         let t = d[1];
-        for (var i = t.length - 1; i >=0; i-=4) {
+        for (let i = t.length - 1; i >=0; i-=4) {
           if(t[i].cot!=undefined && t[i].cot[0].toUpperCase() == country){}else{
             t.splice(i-3,4);
           }
@@ -530,16 +593,100 @@ class GlobeContainer extends React.Component {
       })
     })
 
-    console.log(data);
+    //switch data
+    this.setState({
+      loadingStatus : true,
+      loadingText : 'Switching to ' + country + '...',
+      countryData: data,
+      currentYear: year
+    })
 
+    this.gv.transition(5,() => {
+
+      this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+      this.gv.scene.remove(this.gv.points); //takes ~ 10ms
+      this.props.changeYearManager(+year.charAt(3));
+      this.drawData(_.find(data,d => d.year === this.state.currentYear)['value']);
+      this.gv.scaler = _.find(this.state.warData,d => d.year === this.state.currentYear)['scaler'];
+
+      this.gv.octree.update(() =>{
+        this.gv.transition(0);
+        // inform parent component loading status
+        this.props.loadingManager(false);
+        this.setState({
+          rotatePause: false,
+          loadingStatus : false,
+          loadingText   : '',
+        });
+        const latLng = _.find(cot_latLng, d=> d.cot.toUpperCase() === country );
+        if(latLng != undefined){
+          this.gv.setTarget([latLng.lat,latLng.lng],700)
+        }
+      });
+
+    });
+
+
+  }
+
+  removeCountryHandler(){
+    if(this.state.currentCountry != 'GLOBAL'){
+
+      this.setState({
+        loadingStatus : true,
+        loadingText : 'Deselect Country data...',
+        currentCountry: 'GLOBAL',
+      })
+      // inform parent component currentCountry
+      this.props.changeCountryManager('GLOBAL');
+
+      if(this.state.currentYear === '2017'){
+        this.setState({currentYear: '2010'})
+      }
+      this.gv.transition(5,() => {
+
+        this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+        this.gv.scene.remove(this.gv.points); //takes ~ 10ms
+
+        this.state.warData.slice().forEach((d,i) => {
+          if(d.year === this.state.currentYear ) {
+            // inform parent component of changed current year;
+            this.props.changeYearManager(i);
+            // here only happens once
+            this.drawData( d.value );
+            // set scaler
+            this.gv.scaler = d.scaler;
+            //after init octree, present animation
+            this.gv.octree.update(() =>{
+              this.gv.transition(0);
+              this.gv.setTarget([-11.874010, 44.605859],945) // set initial position
+              // inform parent component loading status
+              this.props.loadingManager(false);
+              this.setState({
+                rotatePause: false,
+                loadingStatus : false,
+                loadingText   : '',
+              });
+            });
+          };
+        });
+
+      });
+
+    }
   }
 
   render(){
     return(
       <div className = 'globe'>
         <TitleContainer>
-          <TitleText> {'Armed Conflict: ' + this.state.titleText} </TitleText>
-          <ModalButton data={this.state.warData} countryChangeHandler = {this.countryChangeHandler} currentCountry={this.state.currentCountry}/>
+          <TitleText> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
+          <ModalButton
+             data={this.state.warData}
+             countryChangeHandler = {this.countryChangeHandler}
+             removeCountryHandler = {this.removeCountryHandler}
+             currentCountry={this.state.currentCountry}
+           />
           <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >GLOBE</GlobeControllerButton>
 
           <GlobeControllerItems show ={this.state.controllerShow}>

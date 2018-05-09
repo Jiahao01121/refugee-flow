@@ -107,6 +107,7 @@ class ModalButton extends Component {
     this.passCountryToRegion = this.passCountryToRegion.bind(this);
     this.passhandler = this.props.countryChangeHandler;
     this.currentCountry = this.props.currentCountry;
+    this.removeCountryHandler = this.props.removeCountryHandler;
   }
 
   componentWillReceiveProps(nextProps){
@@ -127,7 +128,7 @@ class ModalButton extends Component {
 
 
     const { showModal, data } = this.state;
-    console.log(this.currentCountry);
+
 
     return (
       <div>
@@ -136,7 +137,7 @@ class ModalButton extends Component {
           onClick={this.handleToggleModal}>
           Select Region
         </SwitchCountryButton>
-        <CurrentCountryTag currentCountry={this.currentCountry} > {this.currentCountry} </CurrentCountryTag>
+        <CurrentCountryTag currentCountry={this.currentCountry} onClick={this.removeCountryHandler} > {this.currentCountry} </CurrentCountryTag>
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
           <div className='container'>
