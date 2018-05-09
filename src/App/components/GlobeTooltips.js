@@ -13,7 +13,7 @@ const expend_tooltips_animation = keyframes`
 const Tooltip_warpper = styled.div`
   position: absolute;
   opacity: 1;
-  background: #15151c;
+  background: #15151ce6;
   box-shadow: 0px 0px 25px 2px rgba(0,0,0,0.75);
   width: 350px;
   height: 100px;
@@ -25,10 +25,11 @@ const Tooltip_warpper = styled.div`
   ${props => !props.showornot && css`
     animation: ${keyframes`
       100% {
+        filter: blur(5px);
         opacity: 0;
         visibility: hidden;
       }
-    `} .3s;
+    `} .35s;
     animation-fill-mode: forwards;
   `}
 
