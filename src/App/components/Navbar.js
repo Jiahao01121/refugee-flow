@@ -14,7 +14,7 @@ class Navbar extends React.Component {
       background: #0C0C14;
       position: relative;
       box-shadow: 0px 5px 90px -1px rgba(0,0,0,1);
-
+      z-index: 10000000000;
       > a{
         font-family: 'Miller-DisplaySC';
         font-size: 20px;
@@ -62,7 +62,7 @@ class Navbar extends React.Component {
           <Nav>
             <Link to='/war'>War</Link>
             <Link to='/route'>Route</Link>
-            <Link to='/about'>About</Link>
+            {/* <Link to='/about'>About</Link> */}
           </Nav>
         </NavbarContainer>
     )

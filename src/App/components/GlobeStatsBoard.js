@@ -10,7 +10,7 @@ const BoardWrapper = styled.div`
   height: 40px;
   position: absolute;
   ${'' /* background: red; */}
-  bottom: 45px;
+  bottom: 50px;
   right: 25%;
 `
 
