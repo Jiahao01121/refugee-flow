@@ -10,6 +10,7 @@ import { rgbToHsl } from '../utils/color-conversion-algorithms';
 
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
+import GlobeStatsBoard from './GlobeStatsBoard'; //child component
 import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 import ModalButton from './ModalButton';
 
@@ -289,7 +290,10 @@ class GlobeContainer extends React.Component {
       controllerShow: true,
       currentControllerSelection: 1,
       currentCountry: 'GLOBAL',
-      countryData:[]
+      countryData:[],
+      country_totalFatality : [],
+      country_civilianFatality : [],
+      country_totalConflictCount : []
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -347,10 +351,15 @@ class GlobeContainer extends React.Component {
     return (
       fetch(request).then(res => res.json()).then(
         d => {
-          this.setState({
-            data: d
-          })
+          this.setState({data: d});
+
           return d = d.map(data =>{
+
+            // for stats Board
+            const totalFatalityArr = [];
+            const civilianFatalityArr = [];
+            var totalConflictCount = 0;
+            //
             const data_year = data.Year;
             const data_value = data.value;
             const minMax = (()=>{
@@ -379,6 +388,12 @@ class GlobeContainer extends React.Component {
 
               let output = [];
               data_value[quater].forEach(d =>{
+
+                // for statsBoard
+                totalFatalityArr.push(d.fat);
+                d.evt === 0 && civilianFatalityArr.push(d.fat);
+                totalConflictCount++;
+                //
                 all.push(
                   d.lat,
                   d.lng,
@@ -450,10 +465,14 @@ class GlobeContainer extends React.Component {
 
             }
 
+
             return {
                 year : data_year,
                 value : [ ['all',all] ].concat(out,[ ['noHeight',noHeight] ]),
                 scaler: scaler,
+                totalFatality: _.reduce(totalFatalityArr, (a,c) => a+c, 0),
+                civilianFatality: _.reduce(civilianFatalityArr, (a,c) => a+c, 0),
+                totalConflictCount:totalConflictCount
             }
 
 
@@ -689,16 +708,47 @@ class GlobeContainer extends React.Component {
     this.timeLineScroll.toElement($('.individualWrapper')[year.charAt(3)]).then(()=>console.log('aaaaa'));
 
     const data = JSON.parse(JSON.stringify(this.state.warData));
+    const country_totalFatality = []
+    const country_civilianFatality = []
+    const country_totalConflictCount = []
 
-    data.forEach(d =>{
+    data.forEach((d,_i) =>{
+
+      // for stats Board
+      let totalFatalityArr = [];
+      let civilianFatalityArr = [];
+      let totalConflictCount = 0;
+
       d.value.forEach(d =>{
         let t = d[1];
         for (let i = t.length - 1; i >=0; i-=4) {
-          if(t[i].cot!=undefined && t[i].cot[0].toUpperCase() == country){}else{
+          if(t[i].cot!=undefined && t[i].cot[0].toUpperCase() == country){
+            // for statsBoard
+            if(d[0] ==='all'){
+              totalFatalityArr.push(this.state.warData[_i].scaler.invert(t[i].fat));
+              t[i].evt === 0 && civilianFatalityArr.push(this.state.warData[_i].scaler.invert(t[i].fat));
+              totalConflictCount++;
+            }
+
+          }else{
             t.splice(i-3,4);
           }
         }
       })
+
+      country_totalFatality.push({
+        'year': d.year,
+        'totalFatality': _.reduce(totalFatalityArr, (a,c) => a+c, 0),
+      })
+      country_civilianFatality.push({
+        'year': d.year,
+        'civilianFatality': _.reduce(civilianFatalityArr, (a,c) => a+c, 0),
+      })
+      country_totalConflictCount.push({
+        'year': d.year,
+        'totalConflictCount': totalConflictCount
+      })
+
     })
 
     //switch data
@@ -706,7 +756,10 @@ class GlobeContainer extends React.Component {
       loadingStatus : true,
       loadingText : 'Switching to ' + country + '...',
       countryData: data,
-      currentYear: year
+      currentYear: year,
+      country_totalFatality : country_totalFatality,
+      country_civilianFatality : country_civilianFatality,
+      country_totalConflictCount : country_totalConflictCount
     })
 
     this.gv.transition(5,() => {
@@ -833,6 +886,33 @@ class GlobeContainer extends React.Component {
           <LegendTitle mode={this.state.currentControllerSelection}>Fatality Count</LegendTitle>
           <Legend src={this.state.currentControllerSelection === 1 ? './globe_lagend-all.png' : './globe_lagend-civilian.png'}></Legend>
         </LegendWrapper>
+
+        <GlobeStatsBoard data = {
+          this.state.warData && {
+            'Total Fatality': (()=>{
+              if(this.state.currentCountry === 'GLOBAL'){
+                return _.find(this.state.warData,d => d.year === this.state.currentYear)['totalFatality']
+              }else{
+                return this.state.country_totalFatality.length>0 && _.find(this.state.country_totalFatality,d => d.year === this.state.currentYear)['totalFatality']
+              }
+            })(),
+            'Civilian Fatality': (()=>{
+              if(this.state.currentCountry === 'GLOBAL'){
+                return _.find(this.state.warData,d => d.year === this.state.currentYear)['civilianFatality']
+              }else{
+                return this.state.country_civilianFatality.length>0 && _.find(this.state.country_civilianFatality,d => d.year === this.state.currentYear)['civilianFatality']
+              }
+            })(),
+            'Armed Conflict Count': (()=>{
+              if(this.state.currentCountry === 'GLOBAL'){
+                return _.find(this.state.warData,d => d.year === this.state.currentYear)['totalConflictCount']
+              }else{
+                return this.state.country_totalConflictCount.length>0 && _.find(this.state.country_totalConflictCount,d => d.year === this.state.currentYear)['totalConflictCount']
+              }
+            })()
+          }
+
+        }></GlobeStatsBoard>
       </div>
     )
   }
