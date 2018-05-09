@@ -66,7 +66,7 @@ const CurrentYearButton = styled.button`
   position: absolute;
   background: none;
   border: none;
-  top: 110px;
+  top: 13.5%;
   margin: 0px;
   text-decoration : ${props => props.selected == 1 ? 'underline' : 'none'};
 
@@ -90,7 +90,7 @@ const AllYearButton = styled.button`
   position: absolute;
   background: none;
   border: none;
-  top: 110px;
+  top: 13.5%;
   margin: 0px;
   text-decoration : ${props => props.selected == 2 ? 'underline' : 'none'}
 `

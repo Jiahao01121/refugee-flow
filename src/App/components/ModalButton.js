@@ -81,7 +81,6 @@ const RegionTitle = styled.p`
   font-weight: 300;
   z-index: 111111;
   position: absolute;
-  top: 20px;
   left: 30px;
 
   &::after{

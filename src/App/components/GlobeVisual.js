@@ -44,15 +44,6 @@ class GlobeVisual extends React.Component{
 
     // opts, also passed in on .adddata() from other component
     this.opts = this.props.opts
-    //  || {
-    //   imgDir : './globe/',
-    //   colorFn: (x) => {
-    //     const c = new THREE.Color();
-    //     c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
-    //     // console.log(c);
-    //     return c;
-    //   }
-    // };
 
     // shader collection
     this.Shaders = {

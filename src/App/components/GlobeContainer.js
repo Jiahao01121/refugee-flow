@@ -142,6 +142,115 @@ const Conflict_Civilians = styled.button`
 //   `}
 // `
 
+const LegendWrapper = styled.div`
+  position: absolute;
+  bottom: 60px;
+  left: 165px;
+  height: 15px;
+
+  &:before{
+    content: ${props => props.minMax && "'"+props.minMax[1]+"'"};
+    font-weight: 300;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 18px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 10px;
+  }
+
+  &:after{
+    content: ${props => props.minMax && "'"+props.minMax[0]+"'"};
+    right: 0;
+    font-weight: 300;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 18px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 10px;
+  }
+`
+const LegendTitle = styled.p`
+  font-family: 'Roboto';
+  font-weight: 700;
+  font-size: 14.2px;
+  position: absolute;
+  color: white;
+  top: -50px;
+  &:before{
+    content: ${props => props.mode === 1 ? "'Max'" : "'Others'" };
+    font-weight: 300;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 21px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 10px;
+  }
+
+  &:after{
+    content: ${props => props.mode === 1 ? "'Min'" : "'Civilians'" };
+    font-weight: 300;
+    color: white;
+    font-size: 12px;
+    right: 0px;
+    position: absolute;
+    top: 21px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 10px;
+  }
+`
+const Legend = styled.img`
+  width: 90px;
+  opacity: 0.5;
+  transition: all 400ms;
+  &:hover{
+    opacity: 1;
+  }
+`
+const GlobeNavPanel = styled.div`
+  position: absolute;
+  top: 105px;
+  right: 28.6%;
+`
+const Compass = styled.img`
+  position: absolute;
+  width: 32px;
+  left: -3px;
+  cursor: pointer;
+  opacity: .6;
+  transition: all 300ms;
+  &:hover{
+    opacity: 1;
+  }
+`
+const ZoomIn = styled.img`
+  position: absolute;
+  width: 25px;
+  top: 41px;
+  cursor: pointer;
+  opacity: .6;
+  transition: all 300ms;
+  &:hover{
+    opacity: 1;
+  }
+`
+const ZoomOut = styled.img`
+  position: absolute;
+  width: 25px;
+  top: 73px;
+  cursor: pointer;
+  opacity: .6;
+  transition: all 300ms;
+  &:hover{
+    opacity: 1;
+  }
+`
 
 class GlobeContainer extends React.Component {
 
@@ -160,13 +269,12 @@ class GlobeContainer extends React.Component {
       imgDir  : '../globe/',
       colorFn : (x) => {
         const c = new THREE.Color();
-        // c.setHSL( ( 0.6 - ( x * 0.5 ) ), 0.4, 0.4 ); // r,g,b
         c.setHSL(
           color[0] + 0.4*x
           ,
-          color[1]
+          0.87 + 0.13*x// color[1]
           ,
-          color[2]
+          0.56// color[2]
         );
         return c;
       },
@@ -658,6 +766,7 @@ class GlobeContainer extends React.Component {
             this.gv.scaler = d.scaler;
             //after init octree, present animation
             this.gv.octree.update(() =>{
+              this.timeLineScroll.toElement($('.individualWrapper')[this.state.currentYear.charAt(3)]).then(()=>console.log('aaaaa'));
               this.gv.transition(0);
               this.gv.setTarget([-11.874010, 44.605859],945) // set initial position
               // inform parent component loading status
@@ -677,6 +786,7 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
+
     return(
       <div className = 'globe'>
         <TitleContainer>
@@ -714,6 +824,15 @@ class GlobeContainer extends React.Component {
         </TitleContainer>
           {this.renderGlobeTimeline()}
           {this.renderGlobeVisual()}
+        <GlobeNavPanel>
+          <Compass src='./compass_icon.png' onClick={() => this.gv.setTarget([-11.874010, 44.605859],945)}></Compass>
+          <ZoomIn  src='./zoomin_icon.png'  onClick={() => this.gv.zoom(100)}></ZoomIn>
+          <ZoomOut src='./zoomout_icon.png' onClick={() => this.gv.zoom(-100)}></ZoomOut>
+        </GlobeNavPanel>
+        <LegendWrapper minMax = {this.state.warData && this.state.warData[+this.state.currentYear.charAt(3)]['scaler'].domain()}>
+          <LegendTitle mode={this.state.currentControllerSelection}>Fatality Count</LegendTitle>
+          <Legend src={this.state.currentControllerSelection === 1 ? './globe_lagend-all.png' : './globe_lagend-civilian.png'}></Legend>
+        </LegendWrapper>
       </div>
     )
   }
