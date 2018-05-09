@@ -181,7 +181,7 @@ class GlobeContainer extends React.Component {
       controllerShow: true,
       currentControllerSelection: 1,
       currentCountry: 'GLOBAL',
-      'countryData':[]
+      countryData:[]
     }
     // TODO: web worker
     // this.vkthread = window.vkthread;
@@ -473,68 +473,94 @@ class GlobeContainer extends React.Component {
   globeControllerClick(id){
     if(this.state.currentControllerSelection != id){
       if(id === 1){
+        this.gv.opts.colorFn = this.state.colorFn;
         this.setState({loadingStatus : true, loadingText : 'Filtering Data...',currentControllerSelection: id})
         this.gv.transition(5,() => {
           this.gv.octree.remove(this.gv.points); //takes ~ 10ms
           this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-
-          this.state.warData.slice().forEach((d,i) => {
-            if(d.year == this.state.currentYear) {
-              this.drawData( d.value );
-              this.gv.scaler = d.scaler;
-              this.gv.octree.update(() =>{
-                this.gv.transition(0);
-                // inform parent component loading status
-                this.props.loadingManager(false);
-                this.setState({
-                  rotatePause: false,
-                  loadingStatus : false,
-                  loadingText   : '',
+          if(this.state.currentCountry === 'GLOBAL'){
+            this.state.warData.slice().forEach((d,i) => {
+              if(d.year == this.state.currentYear) {
+                this.drawData( d.value );
+                this.gv.scaler = d.scaler;
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
                 });
-              });
-            };
-          });
+              };
+            });
+
+          }else{
+            this.state.countryData.forEach((d,i) => {
+              if(d.year == this.state.currentYear) {
+                this.drawData( d.value );
+                this.gv.scaler = _.find(this.state.warData, _d => _d.year === d.year)['scaler'];
+
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
+                });
+              }
+            })
+          }
+
         });
       }
       else if(id === 2){
         this.setState({loadingStatus : true, loadingText : 'Filtering Data...',currentControllerSelection: id})
+        this.gv.opts.colorFn = (x,criteria) => criteria.evt !=0 ? new THREE.Color('#004542') : new THREE.Color('#F44745');
+
         this.gv.transition(5,() => {
-          const warDataCopy = JSON.parse(JSON.stringify(this.state.warData));
-          warDataCopy.forEach((d,i) =>{
-            // filter out violance not against civilians
-            if(d.year === this.state.currentYear){
-              d.value.forEach((d,i)=>{
-                let data = d[1];
-                for (var i = data.length -1 ; i >=0 ; i-=4) {
-                  if(data[i].evt != 0){
-                      data.splice(i - 3,4)
-                  }
-                }
-              })
-              this.gv.octree.remove(this.gv.points); //takes ~ 10ms
-              this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-              this.drawData( d.value );
-              this.gv.scaler = (()=>{
-                var temp;
-                this.state.warData.forEach((d,i) => {
-                  if(d.year === this.state.currentYear) {
-                    temp =  d.scaler;
-                  }
-                })
-                return temp;
-              })()
-              this.gv.octree.update(() =>{
-                this.gv.transition(0);
-                // inform parent component loading status
-                this.props.loadingManager(false);
-                this.setState({
-                  rotatePause: false,
-                  loadingStatus : false,
-                  loadingText   : '',
+          // filter out violance not against civilians
+          if(this.state.currentCountry === 'GLOBAL'){
+            this.state.warData.forEach((d,i) =>{
+              if(d.year === this.state.currentYear){
+                this.gv.octree.remove(this.gv.points); //takes ~ 10ms
+                this.gv.scene.remove(this.gv.points); //takes ~ 10ms
+                this.drawData( d.value );
+                this.gv.scaler = _.find(this.state.warData,d => d.year === this.state.currentYear)['scaler'];
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
                 });
-              });
-            };
-          });
+              };
+            });
+          }else{
+            this.state.countryData.forEach((d,i) => {
+              if(d.year == this.state.currentYear) {
+                this.drawData( d.value );
+                this.gv.scaler = _.find(this.state.warData, _d => _d.year === d.year)['scaler'];
+                this.gv.octree.update(() =>{
+                  this.gv.transition(0);
+                  // inform parent component loading status
+                  this.props.loadingManager(false);
+                  this.setState({
+                    rotatePause: false,
+                    loadingStatus : false,
+                    loadingText   : '',
+                  });
+                });
+              }
+            })
+          }
         });
       };
     };
