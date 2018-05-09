@@ -8,20 +8,6 @@ ul {
   padding:0;
   margin:0
 }
-.image {
-  background:
-    linear-gradient(
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.5)
-    ),
-    url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/cheese-curds.jpg);
-  background-size: cover;
-  height: 100vh;
-}
-
-.container {
-  z-index: -100;
-}
 
 #videoBackground {
   position: fixed;
@@ -36,8 +22,8 @@ ul {
 
 h1 {
   position: absolute;
-  left: 0;
-  margin-top: 100px;
+  top: 30%;
+  left: 25%;
   width: 50%;
   font-size: 20px;
   letter-spacing: 3px;
@@ -45,6 +31,9 @@ h1 {
   font-family: Oswald, sans-serif;
   text-align: center;
   z-index: -99;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 h1 span {
@@ -60,7 +49,7 @@ h1 span a {
 }
 
 .mid {
-  z-index: -99;
+  z-index: -100;
 }
 
 .mid h2 {
@@ -82,18 +71,15 @@ h1 span a {
   display: flex;
   color: white;
   justify-content: center;
-  padding: 20px;
   z-index: -99;
 }
 
 .links li {
   padding-left: 20px;
-  z-index: -99;
 }
 
 .links li a {
   color: white;
-  z-index: -99;
 }
 
 .side-links {
