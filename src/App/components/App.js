@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Navbar from './Navbar'
 import ModalButton from './ModalButton'
-// import Landing from './Landing'
+import Landing from './Landing'
 import War from './War'
 import RefugeeRoute from './RefugeeRoute'
 
@@ -29,8 +29,8 @@ class App extends React.Component {
             <Router>
               <div>
                 <Navbar />
-                {/* <Landing /> */}
                 <Switch>
+                  <Route exact path='/' component={Landing} />
                   <Route path='/war' component={War} />
                   <Route path='/route' component={RefugeeRoute} />
                 </Switch>
