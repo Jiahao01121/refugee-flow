@@ -501,7 +501,7 @@ class GlobeVisual extends React.Component{
     // console.log(this.state.tooltips_clicked_id);
     if(this.state.mv_show && this.state.tooltips_clicked_id != this.WarID) {
       let url = 'http://' + window.location.hostname + ':2700' + '/data/note/'+ this.WarID;
-      fetch(new Request( url, {method: 'GET', cache: true})).then(res => res.json()).then(d =>{
+      fetch(new Request( url, {method: 'GET'})).then(res => res.json()).then(d =>{
 
         this.setTarget([this.state.mv_tooltips[5],this.state.mv_tooltips[6]],700)
         console.log('called');

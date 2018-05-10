@@ -131,7 +131,7 @@ class AsyApplicationContainer extends React.Component {
   }
 
   fetchData(url){
-    const request = new Request( url, {method: 'GET', cache: true});
+    const request = new Request( url, {method: 'GET'});
     return(
       fetch(request).then(res => res.json()).then(d =>{
         return d
