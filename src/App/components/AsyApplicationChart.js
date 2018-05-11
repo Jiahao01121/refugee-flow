@@ -267,7 +267,7 @@ class AsyApplicationChart extends React.Component {
             g.append('text')
               .attr('x',() => +d3.select(this).attr('cx') > w/2 ? +d3.select(this).attr('cx') - w/2 + 20: +d3.select(this).attr('cx') + 20 )
               .attr('y',() => +d3.select(this).attr('cy') + 15 + 20 )
-              .text( "Year/Quater: " +(
+              .text( "Year/Quarter: " +(
                   chartD.indexOf(d3.select(this).datum()) > 4
                   ? allDomain[chartD.indexOf(d3.select(this).datum())].toUpperCase()
                   : currentDomain[chartD.indexOf(d3.select(this).datum())].toUpperCase()

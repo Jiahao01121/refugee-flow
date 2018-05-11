@@ -56,7 +56,7 @@ const BoardItem = styled.div`
       content:${props => "'" + props.name + "'"};
       left: 38px;
       font-weight: 500;
-      font-size: 12px;
+      font-size: ${props => props.fontSize};
       position: absolute;
 
       top: 47%;
@@ -109,14 +109,28 @@ class GlobeStatsBoard extends React.Component {
       const jsxArr = [];
       const keys = Object.keys(data);
       for (let i = 0; i<keys.length; i++) {
+
         jsxArr.push(
           <BoardItem
             key={keys[i]}
             order={i}
-            _width={250}
-            _margin_end={70}
+            _width={this.container_width/4}
+            _margin_end={this.container_width/20}
             container_width = {this.container_width}
-            name={keys[i]}
+            name={(()=>{
+              if(window.innerWidth < 1450){
+                return i === 2 ? 'War Count' : keys[i]
+              }else{
+                return keys[i]
+              }
+            })()}
+            fontSize={(()=>{
+              if(window.innerWidth < 1450){
+                return '9px';
+              }else{
+                return '12px';
+              }
+            })()}
             >{ <p id ={'stats_'+i}>{ Math.floor(data[keys[i]]) }</p> }</BoardItem>
         )
       }
