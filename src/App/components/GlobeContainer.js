@@ -347,7 +347,10 @@ class GlobeContainer extends React.Component {
   }
 
   fetchData(url){
-    const request = new Request( url, {method: 'GET', cache: true});
+    const request = new Request( url,  {
+      method: 'GET',
+      cache: 'force-cache'
+    });
     return (
       fetch(request).then(res => res.json()).then(
         d => {
