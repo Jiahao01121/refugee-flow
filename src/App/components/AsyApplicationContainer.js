@@ -28,7 +28,7 @@ const Title = styled.p`
   top: 15px;
 
   &:after{
-    background-image: url(./title_icon.png);
+    background-image: url(./assets/title_icon.png);
     background-size: 14px 14px;
     display: inline-block;
     width: 14px;
@@ -180,7 +180,7 @@ class AsyApplicationContainer extends React.Component {
           </LoadingDivWrapper>
 
         {this.renderAsyAppContainer()}
-        <Legend src="./chartLegend_icon.png" alt="Smiley face" />
+        <Legend src="./assets/chartLegend_icon.png" alt="Smiley face" />
       </Background>
     )
 

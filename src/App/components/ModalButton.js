@@ -30,7 +30,7 @@ const SwitchCountryButton = styled.button`
   }
 
   &:before{
-    background-image: url(./location_icon.png);
+    background-image: url(./assets/location_icon.png);
     background-size: 50%;
     background-repeat: no-repeat;
     display: inline-block;

@@ -36,7 +36,7 @@ const TitleText = styled.p`
   margin-top: 0;
 
   &:after{
-    background-image: url(./title_icon.png);
+    background-image: url(./assets/title_icon.png);
     background-size: 14px 14px;
     display: inline-block;
     width: 14px;
@@ -73,7 +73,7 @@ const GlobeControllerButton = styled.button`
   transition: all 300ms;
 
   &:before{
-    background-image: url(./globe_icon.png);
+    background-image: url(./assets/globe_icon.png);
     background-size: 50%;
     width: 60px;
     height: 40px;
@@ -267,7 +267,7 @@ class GlobeContainer extends React.Component {
     const color = rgbToHsl(22,247,123);
     this.state = {
       color   : new THREE.Color(0xffffff),
-      imgDir  : '../globe/',
+      imgDir  : '../assets/globe/',
       colorFn : (x) => {
         const c = new THREE.Color();
         c.setHSL(
@@ -881,13 +881,13 @@ class GlobeContainer extends React.Component {
           {this.renderGlobeTimeline()}
           {this.renderGlobeVisual()}
         <GlobeNavPanel>
-          <Compass src='./compass_icon.png' onClick={() => this.gv.setTarget([-11.874010, 44.605859],945)}></Compass>
-          <ZoomIn  src='./zoomin_icon.png'  onClick={() => this.gv.zoom(100)}></ZoomIn>
-          <ZoomOut src='./zoomout_icon.png' onClick={() => this.gv.zoom(-100)}></ZoomOut>
+          <Compass src='./assets/compass_icon.png' onClick={() => this.gv.setTarget([-11.874010, 44.605859],945)}></Compass>
+          <ZoomIn  src='./assets/zoomin_icon.png'  onClick={() => this.gv.zoom(100)}></ZoomIn>
+          <ZoomOut src='./assets/zoomout_icon.png' onClick={() => this.gv.zoom(-100)}></ZoomOut>
         </GlobeNavPanel>
         <LegendWrapper minMax = {this.state.warData && this.state.warData[+this.state.currentYear.charAt(3)]['scaler'].domain()}>
           <LegendTitle mode={this.state.currentControllerSelection}>Fatality Count</LegendTitle>
-          <Legend src={this.state.currentControllerSelection === 1 ? './globe_lagend-all.png' : './globe_lagend-civilian.png'}></Legend>
+          <Legend src={this.state.currentControllerSelection === 1 ? './assets/globe_lagend-all.png' : './assets/globe_lagend-civilian.png'}></Legend>
         </LegendWrapper>
 
         <GlobeStatsBoard data = {

@@ -56,7 +56,7 @@ const Fatality = styled.p`
   right: 10px;
 
   ${'' /* &:before{
-    background-image: url(./fatality_icon.png);
+    background-image: url(./assets/fatality_icon.png);
     background-size: 25px 25px;
     display: inline-block;
     width: 25px;
