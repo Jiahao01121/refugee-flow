@@ -40,7 +40,7 @@ const Title = styled.p`
   }
 
   &:before{
-    content: 'description: Lorem ipsum dolor sit amet, consectetuer Lorem ipsum dolor sit amet, consectetue.';
+    content: 'Submitted asylum applications over time';
     font-weight: 300;
     color: white;
     font-size: 12px;
