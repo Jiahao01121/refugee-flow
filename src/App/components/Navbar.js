@@ -14,7 +14,7 @@ class Navbar extends React.Component {
       background: #0C0C14;
       position: relative;
       box-shadow: 0px 5px 90px -1px rgba(0,0,0,1);
-      z-index: 10000000000;
+      z-index: 0;
       > a{
         font-family: 'Miller-DisplaySC';
         font-size: 20px;
