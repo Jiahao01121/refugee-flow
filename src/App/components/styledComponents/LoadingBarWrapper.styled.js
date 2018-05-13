@@ -6,7 +6,7 @@ const LoadingDivWrapper = styled.div`
   left: ${props => props.leftPercentage};
   display: block;
   transform: translate(-50%,-50%);
-  z-index: 1;
+  z-index: 10000000;
   ${props => !props.loading && css`
     display: none;
   `}
@@ -17,11 +17,13 @@ const LoadingDivWrapper = styled.div`
 `
 
 const LoaderGraphWrapper = styled.div`
+  z-index: 10000000;
   position: absolute;
   left:50%;
   transform: translate(-50%,-50%);
 `
 const LoadingIndicator = styled.p`
+  z-index: 10000000;
   font-family: 'Roboto';
   font-size: 0.75rem;
   font-weight: 700;

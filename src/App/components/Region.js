@@ -36,6 +36,10 @@ const SectionItemWrapper = styled.div`
     background-color: #5a5a61;
     -webkit-border-radius: 4px;
   }
+
+  ${props => props.fade && css`
+    filter: brightness(0.3);
+  `}
 `
 const SectionItem = styled.div`
   width: ${() =>$('.sectionItemWrapper').width() / 3 - 20 + 'px'};
@@ -51,7 +55,6 @@ const SectionItem = styled.div`
     left: ${ props.index%3 * ( $('.sectionItemWrapper').width() / 3 - 20 ) + 'px'};
   `} */}
   transition: all 800ms;
-
   &:hover{
     background: #353550b3;
   }
@@ -114,7 +117,7 @@ const MouseoverButton = styled.div`
   top: 0;
   float: left;
   margin: 0 4px;
-  cursor: alias;
+  cursor: pointer;
   transition: all 200ms;
   font-weight: 300;
   color: white;
@@ -147,7 +150,8 @@ class Region extends Component {
       mv:false,
       mv_year:null,
       loadingStatus: true,
-      loadingText : 'Fetching data from the server...'
+      loadingText : 'Fetching data from the server...',
+      fadeOutModal: false,
     }
   }
 
@@ -176,14 +180,7 @@ class Region extends Component {
 
       jsxArray[i] = (() =>{
         return (
-          <SectionItem key={i} index={i} onClick = {() => {
-            this.setState({loadingStatus: true},() =>{
-              setTimeout(() => {
-                this.closeModal();
-                this.clickHandler(d[i].country,this.state.mv_year);
-              },10);
-            });
-          }}>
+          <SectionItem key={i} index={i}>
             {(()=>{
 
               let mouseOverButtonGroup = [];
@@ -206,6 +203,15 @@ class Region extends Component {
                       .style('background','white')
                       .style('color','white')
                       .style('font-weight','300')
+                  }}
+                  onClick = {() => {
+                    this.setState({loadingStatus: true,fadeOutModal:true},() =>{
+
+                      setTimeout(() => {
+                        this.closeModal();
+                        this.clickHandler(d[i].country,this.state.mv_year);
+                      },10);
+                    });
                   }}
                 ></MouseoverButton>;
               }
@@ -236,7 +242,7 @@ class Region extends Component {
             <LoadingIndicator>{this.state.loadingText}</LoadingIndicator>
             </LoadingDivWrapper>
 
-          <SectionItemWrapper className={'sectionItemWrapper'}>{this.visualization(this.data)}</SectionItemWrapper>
+          <SectionItemWrapper className={'sectionItemWrapper'} fade={this.state.fadeOutModal} >{this.visualization(this.data)}</SectionItemWrapper>
         </SectionContainer>
       </RegionContainer>
     )

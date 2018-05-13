@@ -798,7 +798,7 @@ class GlobeContainer extends React.Component {
 
       this.setState({
         loadingStatus : true,
-        loadingText : 'Deselect Country data...',
+        loadingText : 'Return to global view...',
         currentCountry: 'GLOBAL',
       })
       // inform parent component currentCountry
