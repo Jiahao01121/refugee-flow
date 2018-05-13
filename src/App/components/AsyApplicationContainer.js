@@ -16,16 +16,17 @@ const Background = styled.div`
   right: 0;
   top: 60px;
   box-shadow: 5px 0px 78px -6px rgba(0,0,0,0.62);
+  display: flex;
+  flex-direction: column;
 `
 const Title = styled.p`
-  position: relative;
   font-family: 'Roboto';
   font-size: 20px;
   font-weight: 100;
   color: white;
-  margin-top: 0;
-  left: 5%;
-  top: 15px;
+  margin-top: 15px;
+  margin-left: 5%;
+  display: inherit;
 
   &:after{
     background-image: url(./assets/title_icon.png);
@@ -45,58 +46,53 @@ const Title = styled.p`
     color: white;
     font-size: 12px;
     position: absolute;
-    width: 320px;
-    top: 35px;
+    top: 45px;
   }
 `
-const Legend = styled.img`
-  position: absolute;
-  bottom: 75px;
-  margin: 0;
-  right: 30px;
-  width: 25%;
+const ButtonWrapper = styled.div`
+  display: inherit;
+  margin: 10px 0 0 5%;
+  justify-content: flex-start;
+  height: 40px;
 `
 const CurrentYearButton = styled.button`
+  display: inherit;
+  width: 50%;
   cursor: pointer;
   font-family: 'Tajawal';
   font-weight: 300;
   font-size: 13px;
   color: #ffffff66;
-  left: 20px;
-  position: absolute;
   background: none;
   border: none;
-  top: 13.5%;
   margin: 0px;
   text-decoration : ${props => props.selected == 1 ? 'underline' : 'none'};
+  padding: 0;
 
   &::after{
-    content: ${ props => "'" + '('+props.currentYear+')' + "'" };
-    color: #7f7f7f;
+    content: ${ props => "'" + props.currentYear + "'" };
+    color: white;
     font-weight: 700;
-    font-size: 10px;
-    position: absolute;
-    bottom: 4px;
-    right: -23px;
+    font-size: 9px;
+    margin-left: 7px;
+    text-decoration: underline;
+    text-decoration-color: #0f1015f7;
   }
 `
 const AllYearButton = styled.button`
+  display: inherit;
+  width: 50%;
   cursor: pointer;
   font-family: 'Tajawal';
   font-weight: 300;
   font-size: 13px;
   color: #ffffff66;
-  left: 211px;
-  position: absolute;
   background: none;
   border: none;
-  top: 13.5%;
   margin: 0px;
-  text-decoration : ${props => props.selected == 2 ? 'underline' : 'none'}
+  text-decoration : ${props => props.selected == 2 ? 'underline' : 'none'};
+  padding: 0;
 `
-
-
-
 
 class AsyApplicationContainer extends React.Component {
   constructor(props){
@@ -169,18 +165,21 @@ class AsyApplicationContainer extends React.Component {
     return(
       <Background>
         <Title>{'Total Asylum Application - ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
-        <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode} currentYear = {'201'.concat(this.currentYear)}>SHOW CURRENT YEAR</CurrentYearButton>
-        <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>
+        <ButtonWrapper>
+          <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode} currentYear = {'201'.concat(this.currentYear)}>SHOW CURRENT YEAR</CurrentYearButton>
+          <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>
+        </ButtonWrapper>
 
         <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%' marginTop = '-60'>
           <LoaderGraphWrapper>
             <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
           </LoaderGraphWrapper>
-          <LoadingIndicator>{this.state.loadingText}</LoadingIndicator>
-          </LoadingDivWrapper>
+          <LoadingIndicator>
+            {this.state.loadingText}
+          </LoadingIndicator>
+        </LoadingDivWrapper>
 
         {this.renderAsyAppContainer()}
-        <Legend src="./assets/chartLegend_icon.png" alt="Smiley face" />
       </Background>
     )
 

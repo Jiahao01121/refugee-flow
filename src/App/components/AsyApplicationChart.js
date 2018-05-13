@@ -148,7 +148,7 @@ class AsyApplicationChart extends React.Component {
   }
 
   drawDataontoChart(chartD){
-
+    const svg_width = this.width;
     let currentDomain = this.quaterList;
     //hard coded year list for x axis
     let allDomain = ['2010Q1','2010Q2','2010Q3','2010Q4',
@@ -242,7 +242,17 @@ class AsyApplicationChart extends React.Component {
           .call((g) =>{
 
             g.append('rect')
-              .attr('x',() => +d3.select(this).attr('cx') > w/2 ? +d3.select(this).attr('cx') - w/2 : +d3.select(this).attr('cx') )
+              .attr('x',() => {
+                if(svg_width - +d3.select(this).attr('cx') < w/2){
+                  return +d3.select(this).attr('cx') - w;
+                }
+                else if(+d3.select(this).attr('cx') > w/2){
+                  return +d3.select(this).attr('cx') - w/2;
+                }
+                else{
+                  return +d3.select(this).attr('cx');
+                }
+              })
               .attr('y',() => +d3.select(this).attr('cy') + 15 )
               .style('fill','#26242bb8')
               .attr('height',0)
@@ -252,7 +262,17 @@ class AsyApplicationChart extends React.Component {
               .attr('height',h)
 
             g.append('text')
-              .attr('x',() => +d3.select(this).attr('cx') > w/2 ? +d3.select(this).attr('cx') - w/2 + 20: +d3.select(this).attr('cx') + 20 )
+              .attr('x',() =>{
+                if(svg_width - +d3.select(this).attr('cx') < w/2){
+                  return +d3.select(this).attr('cx') - w + 20;
+                }
+                else if(+d3.select(this).attr('cx') > w/2){
+                  return +d3.select(this).attr('cx') - w/2 + 20;
+                }
+                else{
+                  return +d3.select(this).attr('cx') + 20;
+                }
+              })
               .attr('y',() => +d3.select(this).attr('cy') + 15 + 40 )
               .text('Total application: '+ d3.format(".5s")(d3.select(this).datum()))
               .attr("fill", "#b9b7b7")
@@ -265,7 +285,18 @@ class AsyApplicationChart extends React.Component {
               .style('opacity',1)
 
             g.append('text')
-              .attr('x',() => +d3.select(this).attr('cx') > w/2 ? +d3.select(this).attr('cx') - w/2 + 20: +d3.select(this).attr('cx') + 20 )
+              .attr('x',() => {
+                if(svg_width - +d3.select(this).attr('cx') < w/2){
+                  return +d3.select(this).attr('cx') - w + 20;
+                }
+                else if(+d3.select(this).attr('cx') > w/2){
+                  return +d3.select(this).attr('cx') - w/2 + 20;
+                }
+                else{
+                  return +d3.select(this).attr('cx') + 20;
+                }
+              })
+
               .attr('y',() => +d3.select(this).attr('cy') + 15 + 20 )
               .text( "Year/Quarter: " +(
                   chartD.indexOf(d3.select(this).datum()) > 4

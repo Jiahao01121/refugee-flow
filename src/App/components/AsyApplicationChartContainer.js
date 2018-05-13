@@ -12,7 +12,19 @@ const Chart = styled.div`
     ${'' /* background: #0000ff1f; */}
     height: 75%;
     position: absolute;
-    top: 15%;
+    bottom: 11%;
+
+    &:after{
+      background-image: url(./assets/chartLegend_icon.png);
+      background-size: 90px 10px;
+      display: inline-block;
+      width: 90px;
+      height: 10px;
+      content: "";
+      bottom: -5px;
+      left: 7%;
+      position: absolute;
+    }
 `
 
 
@@ -21,7 +33,7 @@ class AsyApplicationChartContainer extends React.Component {
     super(props);
 
     this.state = {
-      margin: {top: 20, right: 10, bottom: 30, left: 30},
+      margin: {top: 20, right: 20, bottom: 30, left: 30},
       data : this.props.data,
       currentYear : this.props.currentYear,
       currentCountry: this.props.currentCountry,
