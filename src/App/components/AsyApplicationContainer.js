@@ -40,7 +40,7 @@ const Title = styled.p`
   }
 
   &:before{
-    content: 'Submitted asylum applications over time';
+    content: 'Asylum application submissions over time';
     font-weight: 300;
     color: white;
     font-size: 12px;
