@@ -84,12 +84,12 @@ const RegionTitle = styled.p`
   left: 30px;
 
   &::after{
-    content: 'select regions & filter downbelow: CLick jump to country';
+    content: 'Select a region to view regional conflict data. Click on a year to view conflict data for a selected country by year';
     font-weight: 300;
     color: white;
     font-size: 12px;
     position: absolute;
-    width: 300px;
+    width: 650px;
     top: 42px;
     left: 0;
   }
@@ -140,7 +140,7 @@ class ModalButton extends Component {
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
           <div className='container'>
-            <RegionTitle>Select a country</RegionTitle>
+            <RegionTitle>Explore Regional Conflicts</RegionTitle>
             <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
           </div>
           {(() => {if(this.state.visualizeSectionData.length>0){return <Region

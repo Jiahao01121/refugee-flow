@@ -48,7 +48,7 @@ const TitleText = styled.p`
   }
 
   &:before{
-    content: 'select regions & filter downbelow to switch country/matrix...';
+    content: 'Select & filter regional conflict data';
     font-weight: 300;
     color: white;
     font-size: 12px;
