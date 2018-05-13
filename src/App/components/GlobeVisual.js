@@ -174,7 +174,7 @@ class GlobeVisual extends React.Component{
     this.drawThreeGeo(country_borderLine,this.globeRadius + 0.5,'sphere',{
       color:  0x245454,
       transparent: true,
-      linewidth: 10,
+      linewidth: 1,
       opacity: 0.6,
       dashSize: 1,
       gapSize: 5,
