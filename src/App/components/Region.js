@@ -50,7 +50,6 @@ const SectionItem = styled.div`
     top: ${ Math.floor(props.index/3) * 350 + 'px'};
     left: ${ props.index%3 * ( $('.sectionItemWrapper').width() / 3 - 20 ) + 'px'};
   `} */}
-  cursor: pointer;
   transition: all 800ms;
 
   &:hover{
