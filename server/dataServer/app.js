@@ -18,7 +18,7 @@ var dataRoutes = require('./routes/dataRoute');
 
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://production:production@ds145118.mlab.com:45118/refugee-flow');
+mongoose.connect('mongodb://will:will@ds145118.mlab.com:45118/refugee-flow');
 
 app.use('/static',express.static(path.join(__dirname, '/build/static/')));
 app.use('/assets',express.static(path.join(__dirname, '/build/assets/')));
