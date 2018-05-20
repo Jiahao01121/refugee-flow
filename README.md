@@ -10,6 +10,11 @@ In a world where nearly 20 people are forcibly displaced every minute as a resul
 
 [THESIS](https://drive.google.com/file/d/1LqVbtkBexCHoabZFNNumc9e-CBQCw3ML/view?usp=sharing)
 
+## Features
+- Visualization of armed conflict data
+- Visualization of asylum application data
+- Comparison of contemporary armed conflict and asylum application 
+
 ## Literature Review
 1. Herdeg, Walter. *Graphis diagrams: the graphic visualization of abstract data = die graphische Visualisierung abstrakter Gegebenheiten = la visualisation graphique de données abstraites.* Zürich: Graphis Press, 1983.
 2. Harris, Robert L. *Information graphics: a comprehensive illustrated reference.* Oxford: Oxford University Press, 1999.
