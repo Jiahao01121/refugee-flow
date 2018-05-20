@@ -8,6 +8,8 @@ To date, there were an unprecedented 65.6 million forcibly displaced people worl
 
 In a world where nearly 20 people are forcibly displaced every minute as a result of armed conflict or persecution, this study is aim to visualize a distinct cause-effect view, beginning with how wars and armed conflicts lead to the insurmountable displaced crowd and transitioning into how seasonality play a important role of the deadly journey of flee out of their home country finding asylums.
 
+[THESIS](https://drive.google.com/file/d/1LqVbtkBexCHoabZFNNumc9e-CBQCw3ML/view?usp=sharing)
+
 ## Literature Review
 1. Herdeg, Walter. *Graphis diagrams: the graphic visualization of abstract data = die graphische Visualisierung abstrakter Gegebenheiten = la visualisation graphique de données abstraites.* Zürich: Graphis Press, 1983.
 2. Harris, Robert L. *Information graphics: a comprehensive illustrated reference.* Oxford: Oxford University Press, 1999.
