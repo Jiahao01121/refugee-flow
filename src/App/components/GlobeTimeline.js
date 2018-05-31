@@ -7,10 +7,6 @@ import * as d3 from 'd3';
 
 import * as warDict from '../data/warDictionary';
 
-// import 'semantic-ui-css/semantic.min.css';
-// import { Button } from 'semantic-ui-react';
-
-// import styled, { css } from 'styled-components';
 import styles from '../stylesheets/GlobeTimeline.css'
 
 class Timeline extends React.Component {
@@ -22,10 +18,6 @@ class Timeline extends React.Component {
       current_Selected_Quater: 1
     }
   }
-
-  // componentDidMount(){
-  //
-  // }
 
   quater_selected_check(num,year){
     if(year == this.props.currentYear){
