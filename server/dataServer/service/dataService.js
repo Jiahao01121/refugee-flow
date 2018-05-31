@@ -86,6 +86,12 @@ const find_war_all = function (){
   })
 }
 
+const find_reduced_war = function (){
+  return new Promise((resolve, reject) => {
+    resolve(reducedWarData);
+  })
+}
+
 const find_asy_application_all = function(){
 
   return new Promise((resolve, reject) => {
@@ -112,4 +118,5 @@ module.exports = {
   find_war_note,
   find_war_all,
   find_asy_application_all,
+  find_reduced_war
 }

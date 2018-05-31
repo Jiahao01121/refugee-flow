@@ -100,6 +100,9 @@ router.get('/note/:id',function(req,res){
 router.get('/war_all',(req,res,next) =>{
   DataService.find_war_all().then(d => res.json(d) );
 })
+router.get('/reduced_war_data',(req,res,next) =>{
+  DataService.find_reduced_war().then(d => res.json(d) );
+})
 
 router.get('/asy_application_all',(req,res,next) =>{
   DataService.find_asy_application_all().then(d => res.json(d) );
