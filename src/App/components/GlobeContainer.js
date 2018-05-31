@@ -304,10 +304,12 @@ class GlobeContainer extends React.Component {
 
     this.timeLineScroll = new Scroll($('.TimelineWrapper')[0]);
 
-    const url = 'http://' + window.location.hostname + ':2700' + '/data/war_all';
+    const url = 'http://' + window.location.hostname + ':2700' + '/data/reducedWarData';
 
     this.fetchData(url).then(d =>{
-      d.forEach((d,i) => console.log('year: ' + i + ' | dataPoint: ' + d.value[0][1].length))
+      d.forEach((d,i) => {
+        console.log('year: ' + i + ' | dataPoint: ' + d.value[0][1].length);
+      })
 
       return ({
         'warData' : d,
