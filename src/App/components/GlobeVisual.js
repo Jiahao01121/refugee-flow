@@ -377,13 +377,8 @@ class GlobeVisual extends React.Component{
         this.points.userData =  {'userData': userData};
 
         //add to octree
-        // use vertices will be more easy to mouseover, but performance not as good.
 
-        if(userData[0][1].length > 70000){
-          this.octree.add(this.points,{ useFaces: true,useVertices: false });
-        } else {
-          this.octree.add(this.points,{ useFaces: false,useVertices: true });
-        }
+        this.octree.add(this.points,{ useFaces: true,useVertices: true });
 
 
 
@@ -591,7 +586,7 @@ class GlobeVisual extends React.Component{
     this.currentSelectedTimeFrame = currentIndex;
     const timer = d3.timer((e) => {
 
-      var t = Math.min(1,d3.easeCubicInOut(e/700));
+      var t = Math.min(1,d3.easeCubicInOut(e/400));
       // old data
       this.points.morphTargetInfluences[this.lastIndex] = 1 -t;
       // new data
