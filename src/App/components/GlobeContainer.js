@@ -710,7 +710,7 @@ class GlobeContainer extends React.Component {
 
     if(year === null){year = '2010'}else{year = '201'+ year}
 
-    this.timeLineScroll.toElement($('.individualWrapper')[year.charAt(3)]).then(()=>console.log('aaaaa'));
+    this.timeLineScroll.toElement($('.individualWrapper')[year.charAt(3)]);
 
     const data = JSON.parse(JSON.stringify(this.state.warData));
     const country_totalFatality = []
@@ -806,9 +806,6 @@ class GlobeContainer extends React.Component {
       // inform parent component currentCountry
       this.props.changeCountryManager('GLOBAL');
 
-      if(this.state.currentYear === '2017'){
-        this.setState({currentYear: '2010'})
-      }
       this.gv.transition(5,() => {
 
         this.gv.octree.remove(this.gv.points); //takes ~ 10ms

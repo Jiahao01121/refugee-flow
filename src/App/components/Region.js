@@ -28,6 +28,7 @@ const SectionItemWrapper = styled.div`
   margin: 0 auto;
   height: 100%;
   overflow-y: scroll;
+  opacity: 0;
 
   &::-webkit-scrollbar{
     width: 2px;
@@ -157,6 +158,7 @@ class Region extends Component {
 
   componentWillReceiveProps(nextProps){
     this.data = nextProps.data;
+    d3.select('.sectionItemWrapper').style('opacity',1);
     this.setState({loadingStatus: false});
   }
 

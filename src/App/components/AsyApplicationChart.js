@@ -25,6 +25,8 @@ class AsyApplicationChart extends React.Component {
 
   componentDidMount(){
     this.drawChart();
+    // default 2010
+    this.drawDataontoChart([40764, 39031, 45253, 45328]);
   }
 
   drawChart(){
@@ -148,6 +150,7 @@ class AsyApplicationChart extends React.Component {
   }
 
   drawDataontoChart(chartD){
+
     const svg_width = this.width;
     let currentDomain = this.quaterList;
     //hard coded year list for x axis
