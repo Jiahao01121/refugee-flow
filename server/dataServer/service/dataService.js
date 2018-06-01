@@ -4,7 +4,7 @@ const fs = require('fs');
 const lodash = require('lodash');
 
 // const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json') );
-const asy_all_data = JSON.parse( fs.readFileSync('./data/asy_application_all.json') );
+const asyAllData = JSON.parse( fs.readFileSync('./data/asy_application_all.json') );
 
 //Truncate function
 function toFixed(num, fixed) {
@@ -13,7 +13,7 @@ function toFixed(num, fixed) {
 }
 
 //Parse JSON
-const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json'), function(key, value){
+const warAllData = JSON.parse( fs.readFileSync('./data/war_all.json'), function(key, value){
 	if (key == "lat" || key == "lng") {
 		return toFixed(value, 2);
   }else {
@@ -21,7 +21,7 @@ const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json'), functio
   }
 });
 
-const reducedWarData = war_all_data.map(year => {
+const reducedWarData = warAllData.map(year => {
   let yearlyQuarters = Object.values(year.value);
 
   yearlyQuarters = yearlyQuarters.map(q => {
@@ -44,7 +44,7 @@ mongoose.connect('mongodb://will:will@ds145118.mlab.com:45118/refugee-flow');
 const db = mongoose.connection;
 db.on('error', console.log.bind(console,'connectinon error') );
 
-const war_note_model = mongoose.model(
+const warNoteModel = mongoose.model(
   'war_all_note',
   mongoose.Schema({
     'id': Number,
@@ -53,7 +53,7 @@ const war_note_model = mongoose.model(
   })
 )
 
-const asy_application_model = mongoose.model(
+const asyApplicationModel = mongoose.model(
   'asy_application_all',
   mongoose.Schema({
     'year' : String,
@@ -61,11 +61,11 @@ const asy_application_model = mongoose.model(
   })
 )
 
-const find_war_note = function(query){
+const findWarNote = function(query){
   return new Promise((resolve, reject) => {
 
     console.log("clientSide Clicked!");
-    war_note_model.find({'id': query}, function(err,data){
+    warNoteModel.find({'id': query}, function(err,data){
 
       if(err) {
         console.log("error happened on query war note.");
@@ -80,22 +80,22 @@ const find_war_note = function(query){
   })
 }
 
-const find_war_all = function (){
+const findWarAll = function (){
   return new Promise((resolve, reject) => {
-    resolve(war_all_data);
+    resolve(warAllData);
   })
 }
 
-const find_reduced_war = function (){
+const findReducedWar = function (){
   return new Promise((resolve, reject) => {
     resolve(reducedWarData);
   })
 }
 
-const find_asy_application_all = function(){
+const findAsyApplicationAll = function(){
 
   return new Promise((resolve, reject) => {
-      resolve([asy_all_data]);
+      resolve([asyAllData]);
     /**************
     *
     * fetching data from MongoDB hosted on mlab
@@ -115,8 +115,8 @@ const find_asy_application_all = function(){
 }
 
 module.exports = {
-  find_war_note,
-  find_war_all,
-  find_asy_application_all,
-  find_reduced_war
+  findWarNote,
+  findWarAll,
+  findAsyApplicationAll,
+  findReducedWar
 }
