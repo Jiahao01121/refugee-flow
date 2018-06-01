@@ -100,7 +100,7 @@ class AsyApplicationContainer extends React.Component {
 
     this.state = {
       loadingStatus: true,
-      loadingText : 'Fetching data from the server...',
+      loadingText : 'Loading...',
       buttonMode : 1,
     }
     this.data = [];

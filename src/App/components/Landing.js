@@ -131,7 +131,7 @@ export default class Landing extends Component {
         </Video> */}
         <Img src="https://www.activistpost.com/wp-content/uploads/2015/09/turkish-soldiers-stand-guard-syrian-refugees-wait-behind-border-fences.jpg"></Img>
 
-        <LaunchViz href='/war'>Launch Visualization</LaunchViz>
+        <LaunchViz href='/conflict'>Launch Visualization</LaunchViz>
       </Wrapper>
     )
   }

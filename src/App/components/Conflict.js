@@ -4,7 +4,7 @@ import { Route, Link } from 'react-router-dom'
 import GlobeContainer from './GlobeContainer'
 import AsyApplicationContainer from './AsyApplicationContainer'
 
-export default class War extends React.Component {
+export default class Conflict extends React.Component {
 
   constructor(props){
     super(props);
