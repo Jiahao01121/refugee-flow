@@ -284,7 +284,7 @@ class GlobeContainer extends React.Component {
       rotatePause : false,
       //loading state
       loadingStatus : true,
-      loadingText   : 'Fetching data from the server...',
+      loadingText   : 'Loading...',
 
       data: [],
       controllerShow: true,
@@ -314,7 +314,7 @@ class GlobeContainer extends React.Component {
       return ({
         'warData' : d,
         'loadingStatus': true,
-        loadingText : 'WebGL Initialization...'
+        loadingText : 'Loading Globe...'
       })
 
     }).then((loadingState) =>{
@@ -800,7 +800,7 @@ class GlobeContainer extends React.Component {
 
       this.setState({
         loadingStatus : true,
-        loadingText : 'Return to global view...',
+        loadingText : 'Returning to Global View...',
         currentCountry: 'GLOBAL',
       })
       // inform parent component currentCountry

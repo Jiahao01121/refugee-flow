@@ -151,7 +151,7 @@ class Region extends Component {
       mv:false,
       mv_year:null,
       loadingStatus: true,
-      loadingText : 'Fetching data from the server...',
+      loadingText : 'Loading...',
       fadeOutModal: false,
     }
   }

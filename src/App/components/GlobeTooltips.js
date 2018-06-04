@@ -4,13 +4,13 @@ import * as _ from 'underscore'
 import styled, {css, keyframes} from 'styled-components';
 import * as warDict from '../data/warDictionary';
 
-const expend_tooltips_animation = keyframes`
+const ExpandTooltipsAnimation = keyframes`
   100% {
     height: 300px;
     width: 400px;
   }
 `
-const Tooltip_warpper = styled.div`
+const TooltipWarpper = styled.div`
   position: absolute;
   opacity: 1;
   background: #15151ce6;
@@ -41,7 +41,7 @@ const Tooltip_warpper = styled.div`
 
   ${'' /* expend tooltips*/}
   ${props => props.expendornot && css`
-    animation: ${expend_tooltips_animation} .4s;
+    animation: ${ExpandTooltipsAnimation} .4s;
     animation-fill-mode: forwards;
   `}
 `
@@ -126,7 +126,7 @@ const Event = styled.p`
     left: 5px;
   }
 `
-const Expend_notes = styled.p`
+const ExpandNotes = styled.p`
   font-family: 'Roboto';
   font-size: 12px;
   font-weight: 100;
@@ -136,7 +136,7 @@ const Expend_notes = styled.p`
   width: 88%;
   line-height: 1.8;
 `
-const Expend_source = styled.p`
+const ExpandSource = styled.p`
   font-family: 'Roboto';
   font-size: 12px;
   font-weight: 800;
@@ -204,14 +204,14 @@ class GlobeTooltips extends React.Component {
   }
 
   render(){
-    var expend_note_text;
+    var expandNoteText;
     var limitation_note = 459
     if(this.tooltips_expendInfo[0] != undefined){
       var temp = this.tooltips_expendInfo[0].notes.toString().length
       if(temp>limitation_note){
-        expend_note_text = this.tooltips_expendInfo[0].notes.slice(0,limitation_note) + '...';
+        expandNoteText = this.tooltips_expendInfo[0].notes.slice(0,limitation_note) + '...';
       }else{
-        expend_note_text = this.tooltips_expendInfo[0].notes;
+        expandNoteText = this.tooltips_expendInfo[0].notes;
       }
     }
 
@@ -228,7 +228,7 @@ class GlobeTooltips extends React.Component {
     }
 
     return(
-      <Tooltip_warpper
+      <TooltipWarpper
         showornot = {this.mv_show}
         mv_position = {this.mv_position}
         expendornot = {this.tooltips_clicked}
@@ -237,10 +237,10 @@ class GlobeTooltips extends React.Component {
         <ExitButton onClick={() => this.props.tooltips_onexit() }>x</ExitButton>
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>
-        <Event> {this.toUpper(warDict.event_dict[this.evt])} </Event>
-        <Expend_notes> {expend_note_text} </Expend_notes>
-        <Expend_source hideText = {this.tooltips_clicked}>{expend_source_text}</Expend_source>
-      </Tooltip_warpper>
+        <Event> {this.toUpper(warDict.eventDict[this.evt])} </Event>
+        <ExpandNotes> {expandNoteText} </ExpandNotes>
+        <ExpandSource hideText = {this.tooltips_clicked}>{expend_source_text}</ExpandSource>
+      </TooltipWarpper>
     )
   }
 

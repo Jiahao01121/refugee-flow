@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Navbar from './Navbar'
 import ModalButton from './ModalButton'
 import Landing from './Landing'
-import War from './War'
+import Conflict from './Conflict'
 import RefugeeRoute from './RefugeeRoute'
 
 class App extends React.Component {
@@ -31,7 +31,7 @@ class App extends React.Component {
                 <Navbar />
                 <Switch>
                   <Route exact path='/' component={Landing} />
-                  <Route path='/war' component={War} />
+                  <Route path='/conflict' component={Conflict} />
                   <Route path='/route' component={RefugeeRoute} />
                 </Switch>
               </div>

@@ -119,7 +119,7 @@ class GlobeStatsBoard extends React.Component {
             container_width = {this.container_width}
             name={(()=>{
               if(window.innerWidth < 1450){
-                return i === 2 ? 'War Count' : keys[i]
+                return i === 2 ? 'Conflict Count' : keys[i]
               }else{
                 return keys[i]
               }

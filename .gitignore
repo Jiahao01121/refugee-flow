@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/server/dataServer/node_modules
 
 # testing
 /coverage

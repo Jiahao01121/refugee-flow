@@ -26,7 +26,7 @@ class Navbar extends React.Component {
       }
 
       > a:first-child:before{
-        content: 'A Comparitive Study on Wars and Refugee Flow';
+        content: 'A Comparitive Study on Conflicts and Refugee Flows';
         font-family: 'Roboto';
         font-weight: 400;
         color: white;
@@ -58,9 +58,9 @@ class Navbar extends React.Component {
 
     return (
       <NavbarContainer>
-          <Link to='/'>refugee flow</Link>
+          <Link to='/'>Refugee Flow</Link>
           <Nav>
-            <Link to='/war'>War</Link>
+            <Link to='/conflict'>Conflict</Link>
             <Link to='/route'>Route</Link>
             {/* <Link to='/about'>About</Link> */}
           </Nav>
