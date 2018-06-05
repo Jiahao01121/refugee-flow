@@ -7,6 +7,7 @@ const LoadingDivWrapper = styled.div`
   display: block;
   transform: translate(-50%,-50%);
   z-index: 10000000;
+  width: 100px;
   ${props => !props.loading && css`
     display: none;
   `}
