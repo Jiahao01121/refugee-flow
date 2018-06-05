@@ -22,6 +22,12 @@ export default class Conflict extends React.Component {
     this.changeCountryManager = this.changeCountryManager.bind(this);
   }
 
+  evokePrompt = _.once(() => {
+    !this.state.stillLoading && _.delay(() =>
+      d3.select('.annotation-wrapper').style('display','block').style('opacity','1')
+    , 2000 )
+  })
+
   changeYearManager(year){
     this.setState({currentYear: year});
   }
@@ -38,12 +44,7 @@ export default class Conflict extends React.Component {
 
     return(
       <div>
-        {(() => {
-          !this.state.stillLoading && _.delay(() =>
-            d3.select('.annotation-wrapper').style('display','block').style('opacity','1')
-          , 2000 )
-
-        })()}
+        { (() => !this.state.stillLoading && this.evokePrompt() )() }
         <Annotation/>
         <GlobeContainer changeYearManager = {this.changeYearManager}
           loadingManager = { this.loadingManager }
