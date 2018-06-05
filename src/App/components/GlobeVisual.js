@@ -504,7 +504,7 @@ class GlobeVisual extends React.Component{
         this.setTarget([this.state.mv_tooltips[5],this.state.mv_tooltips[6]],700)
         console.log('called');
         this.setState({
-          mv_position:[ (window.innerWidth*0.75)*0.75 - 400/1.5 , window.innerHeight* 0.75 - 300 + 25 ],
+          mv_position:[ (window.innerWidth*0.75)*0.75 - 400/1.5 , window.innerHeight* 0.75 - 300 + 25 -80 ],
           tooltips_clicked : true,
           tooltips_expendInfo : d,
           tooltips_clicked_id : d[0].id
