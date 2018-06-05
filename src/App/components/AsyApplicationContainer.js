@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
+import * as d3 from 'd3';
+import * as _ from 'underscore';
 import * as warDict from '../data/warDictionary';
-
 import { ScaleLoader } from 'react-spinners';
 import AsyApplicationChartContainer from './AsyApplicationChartContainer';
 
@@ -27,6 +27,7 @@ const Title = styled.p`
   margin-top: 15px;
   margin-left: 5%;
   display: inherit;
+  cursor: pointer;
 
   &:after{
     background-image: url(./assets/title_icon.png);
@@ -164,7 +165,7 @@ class AsyApplicationContainer extends React.Component {
 
     return(
       <Background>
-        <Title>{'Total Asylum Application - ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
+        <Title onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1')}>{'Total Asylum Application - ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
         <ButtonWrapper>
           <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode} currentYear = {'201'.concat(this.currentYear)}>SHOW CURRENT YEAR</CurrentYearButton>
           <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>

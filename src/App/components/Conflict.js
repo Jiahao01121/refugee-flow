@@ -1,5 +1,7 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
+import * as _ from 'underscore';
+import * as d3 from 'd3';
 
 import GlobeContainer from './GlobeContainer'
 import AsyApplicationContainer from './AsyApplicationContainer'
@@ -33,8 +35,15 @@ export default class Conflict extends React.Component {
   }
 
   render() {
+
     return(
       <div>
+        {(() => {
+          !this.state.stillLoading && _.delay(() =>
+            d3.select('.annotation-wrapper').style('display','block').style('opacity','1')
+          , 2000 )
+
+        })()}
         <Annotation/>
         <GlobeContainer changeYearManager = {this.changeYearManager}
           loadingManager = { this.loadingManager }
