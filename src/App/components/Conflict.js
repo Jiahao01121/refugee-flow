@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom'
 
 import GlobeContainer from './GlobeContainer'
 import AsyApplicationContainer from './AsyApplicationContainer'
+import Annotation from './Annotation';
 
 export default class Conflict extends React.Component {
 
@@ -34,6 +35,7 @@ export default class Conflict extends React.Component {
   render() {
     return(
       <div>
+        <Annotation/>
         <GlobeContainer changeYearManager = {this.changeYearManager}
           loadingManager = { this.loadingManager }
           changeCountryManager = {this.changeCountryManager}
