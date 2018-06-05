@@ -34,6 +34,8 @@ const TitleText = styled.p`
   font-weight: 100;
   color: white;
   margin-top: 0;
+  cursor: pointer;
+  position: absolute;
 
   &:after{
     background-image: url(./assets/title_icon.png);
@@ -45,6 +47,7 @@ const TitleText = styled.p`
     bottom: 10px;
     right: 0px;
     position: relative;
+    cursor: pointer;
   }
 
   &:before{
@@ -54,7 +57,7 @@ const TitleText = styled.p`
     font-size: 12px;
     position: absolute;
     width: 300px;
-    bottom: -7px;
+    top: 40px;
   }
 `
 const GlobeControllerButton = styled.button`
@@ -845,7 +848,7 @@ class GlobeContainer extends React.Component {
     return(
       <div className = 'globe'>
         <TitleContainer>
-          <TitleText> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
+          <TitleText onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1') }> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
           <ModalButton
              data={this.state.warData}
              countryChangeHandler = {this.countryChangeHandler}
