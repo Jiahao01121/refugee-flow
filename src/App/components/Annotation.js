@@ -295,7 +295,7 @@ class Annotation extends React.Component{
   render(){
     return (
       <Wrapper className='annotation-wrapper' onClick={() => {d3.select('.annotation-wrapper').style('opacity','0'); _.delay(() => d3.select('.annotation-wrapper').style('display','none'), 400 )}}>
-        <Title>Instructions - Click anywhere to began</Title>
+        <Title>Instructions - Click anywhere to begin</Title>
         <RegionAnnotation> Region Selector </RegionAnnotation>
         <FilterAnnotation>Filter</FilterAnnotation>
         <TimelineAnnotation>Timeline Controller</TimelineAnnotation>
