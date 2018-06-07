@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { getRoutes } from './../api';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -44,12 +45,30 @@ const UnderDev = styled.p`
 
 
 export default class RefugeeRoute extends Component {
+  state = {
+    routes: [],
+    loading: true,
+  }
+  componentDidMount () {
+    this.fetchRefugeeRoutes()
+  }
+  fetchRefugeeRoutes = () => {
+    getRoutes()
+      .then((routes) => this.setState(() => ({
+        loading: false,
+        routes
+      })))
+  }
+
   render() {
     return(
-      <Wrapper>
-        <UnderDev>Currently Under Construction<br/> Stay Tuned...</UnderDev>
-        <Img src="https://static01.nyt.com/images/2016/04/18/blogs/02australialetter32-18-lens-refugees-slide-8AS8-copy/18-lens-refugees-slide-8AS8-superJumbo.jpg?quality=90&auto=webp"></Img>
-      </Wrapper>
+      <div>
+        {JSON.stringify(this.state)}
+      </div>
+      // <Wrapper>
+      //   <UnderDev>Currently Under Construction<br/> Stay Tuned...</UnderDev>
+      //   <Img src="https://static01.nyt.com/images/2016/04/18/blogs/02australialetter32-18-lens-refugees-slide-8AS8-copy/18-lens-refugees-slide-8AS8-superJumbo.jpg?quality=90&auto=webp"></Img>
+      // </Wrapper>
     )
   }
 }
