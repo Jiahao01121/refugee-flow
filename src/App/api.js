@@ -1,15 +1,16 @@
-import {
-  refugeeRoute
-} from './../refugeeRouteData'
-
 let cachedRoutes = null;
 
 export function getRoutes() {
+  let url = 'http://' + window.location.hostname + ':2700' + '/data/note/1';
+  const request = new Request( url,  {
+    method: 'GET',
+    cache: 'force-cache'
+  });
   return new Promise((res) => {
     if(cachedRoutes === null) {
-      cachedRoutes = refugeeRoute
-      return setTimeout(() => res(cachedRoutes), 400)
+      cachedRoutes = fetch(request).then(res => res.json());
     }
-    return res(cachedRoutes)
+    return res(cachedRoutes);
   })
+
 }
