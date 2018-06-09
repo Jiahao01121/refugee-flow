@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getRoutes } from './../api';
+import { get_routeDeath, get_routeIBC } from './../api';
 
 const Wrapper = styled.div`
   position: absolute;
   width: 100%;
   height: ${window.innerHeight - 60 + 'px'};
-
 `
-
 const Img = styled.img`
   position: fixed;
   right: 0;
@@ -22,7 +20,6 @@ const Img = styled.img`
   filter: brightness(0.3);
   z-index: -1;
 `
-
 const UnderDev = styled.p`
   position: absolute;
   font-family: 'Roboto';
@@ -43,27 +40,29 @@ const UnderDev = styled.p`
   }
 `
 
-
 export default class RefugeeRoute extends Component {
+
   state = {
-    routes: [],
     loading: true,
   }
   componentDidMount () {
     this.fetchRefugeeRoutes()
   }
   fetchRefugeeRoutes = () => {
-    getRoutes()
-      .then((routes) => this.setState(() => ({
-        loading: false,
-        routes
-      })))
+    get_routeDeath()
+      .then( d => {
+        get_routeIBC().then( _d => this.setState({
+          route_death : d,
+          route_IBC : _d,
+          loading: false
+        }))
+        return
+      })
   }
 
   render() {
     return(
       <div>
-        {JSON.stringify(this.state)}
       </div>
       // <Wrapper>
       //   <UnderDev>Currently Under Construction<br/> Stay Tuned...</UnderDev>
