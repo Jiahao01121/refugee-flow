@@ -49,6 +49,7 @@ export default class Conflict extends React.Component {
         <GlobeContainer changeYearManager = {this.changeYearManager}
           loadingManager = { this.loadingManager }
           changeCountryManager = {this.changeCountryManager}
+          history = {this.props.history}
         />
         <AsyApplicationContainer currentYear = {this.state.currentYear}
           currentCountry = {this.state.currentCountry}

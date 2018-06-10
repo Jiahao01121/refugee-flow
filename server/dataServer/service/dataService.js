@@ -2,9 +2,13 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
 const lodash = require('lodash');
-
 // const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json') );
 const asyAllData = JSON.parse( fs.readFileSync('./data/asy_application_all.json') );
+
+const route_death  = JSON.parse( fs.readFileSync('./data/route_death.json') );
+const route_IBC_country_list  = JSON.parse( fs.readFileSync('./data/country_route_list.json') );
+const route_IBC = JSON.parse( fs.readFileSync('./data/IBC_all.json') );
+
 
 //Truncate function
 function toFixed(num, fixed) {
@@ -114,9 +118,29 @@ const findAsyApplicationAll = function(){
   })
 }
 
+const find_route_death = function(){
+  return new Promise((resolve, reject) => {
+    resolve(route_death);
+  })
+}
+const find_route_IBC_country_list = function(){
+  return new Promise((resolve, reject) => {
+    resolve(route_IBC_country_list);
+  })
+}
+
+const find_route_IBC = function(){
+  return new Promise((resolve, reject) => {
+    resolve(route_IBC);
+  })
+}
+
 module.exports = {
   findWarNote,
   findWarAll,
   findAsyApplicationAll,
-  findReducedWar
+  findReducedWar,
+  find_route_death,
+  find_route_IBC_country_list,
+  find_route_IBC
 }

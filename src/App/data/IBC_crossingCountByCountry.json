@@ -1,0 +1,34 @@
+[
+  {
+    "route": "Eastern Mediterranean",
+    "total_cross": 1323934
+  },
+  {
+    "route": "Central Mediterranean",
+    "total_cross": 687285
+  },
+  {
+    "route": "Western Mediterranean",
+    "total_cross": 56863
+  },
+  {
+    "route": "Western Balkans",
+    "total_cross": 259738
+  },
+  {
+    "route": "Circular Route from Albania to Greece",
+    "total_cross": 3080
+  },
+  {
+    "route": "Eastern Land Borders",
+    "total_cross": 5437
+  },
+  {
+    "route": "Western African",
+    "total_cross": 2692
+  },
+  {
+    "route": "Other",
+    "total_cross": 1196
+  }
+]

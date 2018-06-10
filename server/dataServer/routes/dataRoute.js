@@ -16,4 +16,16 @@ router.get('/asy_application_all',(req,res,next) =>{
   DataService.findAsyApplicationAll().then(d => res.json(d) );
 })
 
+router.get('/route_death',(req,res,next) =>{
+  DataService.find_route_death().then(d => res.json(d) );
+})
+
+router.get('/route_IBC_country_list',(req,res,next) =>{
+  DataService.find_route_IBC_country_list().then(d => res.json(d) );
+})
+
+router.get('/route_IBC',(req,res,next) =>{
+  DataService.find_route_IBC().then(d => res.json(d) );
+})
+
 module.exports = router;

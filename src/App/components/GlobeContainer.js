@@ -13,8 +13,8 @@ import Timeline from './GlobeTimeline'; //child component
 import GlobeStatsBoard from './GlobeStatsBoard'; //child component
 import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
 import ModalButton from './ModalButton';
-
 import { ScaleLoader } from 'react-spinners';
+import GlobeRouteButton from './GlobeRouteButton'
 
 import $ from "jquery";
 const Scroll = require('scroll-js');
@@ -266,7 +266,7 @@ class GlobeContainer extends React.Component {
     this.countryChangeHandler = this.countryChangeHandler.bind(this);
     this.removeCountryHandler = this.removeCountryHandler.bind(this);
     this.changeCountryData = this.changeCountryData.bind(this);
-    // const color = rgbToHsl(19,254,253);
+
     const color = rgbToHsl(22,247,123);
     this.state = {
       color   : new THREE.Color(0xffffff),
@@ -301,6 +301,12 @@ class GlobeContainer extends React.Component {
     // TODO: web worker
     // this.vkthread = window.vkthread;
 
+    this.history = props.history;
+
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.history = nextProps.history;
   }
 
   componentDidMount(){
@@ -881,6 +887,7 @@ class GlobeContainer extends React.Component {
           </GlobeControllerItems>
         </TitleContainer>
           {this.renderGlobeTimeline()}
+          <GlobeRouteButton history = {this.history} country = {this.state.currentCountry} />
           {this.renderGlobeVisual()}
         <GlobeNavPanel>
           <Compass src='./assets/compass_icon.png' onClick={() => this.gv.setTarget([-11.874010, 44.605859],945)}></Compass>
