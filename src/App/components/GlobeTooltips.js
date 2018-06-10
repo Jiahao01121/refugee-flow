@@ -11,6 +11,7 @@ const ExpandTooltipsAnimation = keyframes`
   }
 `
 const TooltipWarpper = styled.div`
+  z-index: 10;
   position: absolute;
   opacity: 1;
   background: #15151ce6;

@@ -1,7 +1,7 @@
 let cached_routeDeath = null;
 let cached_routeCountryList = null;
 let cached_routeIBC = null;
-
+let cashed_routeCrossingCount = require('./data/IBC_crossingCountByCountry.json')
 // route_death
 // route_IBC_country_list
 // route_IBC
@@ -51,8 +51,12 @@ function get_routeIBC() {
 
 }
 
+function get_routeCrossingCount(){
+  return new Promise(res => res(cashed_routeCrossingCount) )
+}
 export {
   get_routeDeath,
   get_routeCountryList,
   get_routeIBC,
+  get_routeCrossingCount,
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { get_routeDeath, get_routeIBC } from './../api';
+import * as _ from 'underscore';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -42,28 +43,41 @@ const UnderDev = styled.p`
 
 export default class RefugeeRoute extends Component {
 
-  state = {
-    loading: true,
+  constructor(props){
+    super(props);
+    this.state = {
+        loading: true,
+        currentRouteName: null
+    }
+    this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
   }
+
   componentDidMount () {
-    this.fetchRefugeeRoutes()
+    this.fetchRefugeeRoutes();
   }
+
   fetchRefugeeRoutes = () => {
     get_routeDeath()
       .then( d => {
-        get_routeIBC().then( _d => this.setState({
-          route_death : d,
-          route_IBC : _d,
-          loading: false
-        }))
-        return
+        get_routeIBC().then( _d => {
+          this.setState({route_death : d,route_IBC : _d,loading: false,currentRouteName:'Eastern Mediterranean'});
+          this.checkCurrentRouteName(_.clone(_d));
+        })
       })
   }
 
+  checkCurrentRouteName(data){
+    for (var route in data) {
+      if(route.replace(' ','') === this.props.match.params.arg){
+        this.setState({currentRouteName: route})
+      }
+    }
+  }
+
   render() {
+    console.log(this.state.route_IBC);
     return(
-      <div>
-      </div>
+      <p>{this.state.currentRouteName && JSON.stringify(this.state.route_IBC[this.state.currentRouteName])}</p>
       // <Wrapper>
       //   <UnderDev>Currently Under Construction<br/> Stay Tuned...</UnderDev>
       //   <Img src="https://static01.nyt.com/images/2016/04/18/blogs/02australialetter32-18-lens-refugees-slide-8AS8-copy/18-lens-refugees-slide-8AS8-superJumbo.jpg?quality=90&auto=webp"></Img>

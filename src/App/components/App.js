@@ -2,7 +2,7 @@ import React from 'react';
 import * as THREE from 'three';
 import * as d3 from 'd3';
 import { injectGlobal } from 'styled-components';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import Navbar from './Navbar'
 import ModalButton from './ModalButton'
@@ -32,7 +32,7 @@ class App extends React.Component {
                 <Switch>
                   <Route exact path='/' component={Landing} />
                   <Route path='/conflict' component={Conflict} />
-                  <Route path='/route' component={RefugeeRoute} />
+                  <Route path='/route/:arg' component={RefugeeRoute} />
                 </Switch>
               </div>
             </Router>

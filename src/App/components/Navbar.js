@@ -61,8 +61,8 @@ class Navbar extends React.Component {
           <Link to='/'>Refugee Flow</Link>
           <Nav>
             <Link to='/conflict'>Conflict</Link>
-            <Link to='/route'>Route</Link>
-            {/* <Link to='/about'>About</Link> */}
+            <Link to='/route/EasternMediterranean'>Route</Link>
+            <Link to='/about'>About</Link>
           </Nav>
         </NavbarContainer>
     )
