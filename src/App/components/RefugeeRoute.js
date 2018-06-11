@@ -1,47 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { get_routeDeath, get_routeIBC } from './../api';
 import * as _ from 'underscore';
+import RefugeeRoute_titleGroup from './RefugeeRoute_titleGroup';
+import RefugeeRoute_textArea from './RefugeeRoute_textArea';
+import RefugeeRoute_map from './RefugeeRoute_map';
 
-const Wrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  height: ${window.innerHeight - 60 + 'px'};
-`
-const Img = styled.img`
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  opacity: 0.3;
-  filter: brightness(0.3);
-  z-index: -1;
-`
-const UnderDev = styled.p`
-  position: absolute;
-  font-family: 'Roboto';
-  font-weight: 100;
-  font-size: 40px;
-  line-height: 1.4;
-  color: #fff;
-  text-align: center;
-  width: 65%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-100%);
-  z-index: 1;
-
-  &>strong{
-    color: #41EDB8;
-    font-weight: 400;
-  }
-`
-
-export default class RefugeeRoute extends Component {
+export default class RefugeeRoute extends React.Component {
 
   constructor(props){
     super(props);
@@ -50,6 +16,7 @@ export default class RefugeeRoute extends Component {
         currentRouteName: null
     }
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
+    this.changeRouteManager = this.changeRouteManager.bind(this);
   }
 
   componentDidMount () {
@@ -57,13 +24,12 @@ export default class RefugeeRoute extends Component {
   }
 
   fetchRefugeeRoutes = () => {
-    get_routeDeath()
-      .then( d => {
-        get_routeIBC().then( _d => {
-          this.setState({route_death : d,route_IBC : _d,loading: false,currentRouteName:'Eastern Mediterranean'});
-          this.checkCurrentRouteName(_.clone(_d));
-        })
+    get_routeDeath().then( d => {
+      get_routeIBC().then( _d => {
+        this.setState({route_death : d,route_IBC : _d,loading: false,currentRouteName:'Eastern Mediterranean'});
+        this.checkCurrentRouteName(_.clone(_d));
       })
+    })
   }
 
   checkCurrentRouteName(data){
@@ -74,14 +40,20 @@ export default class RefugeeRoute extends Component {
     }
   }
 
+  changeRouteManager(name){
+    this.setState({currentRouteName : name});
+  }
+
   render() {
-    console.log(this.state.route_IBC);
     return(
-      <p>{this.state.currentRouteName && JSON.stringify(this.state.route_IBC[this.state.currentRouteName])}</p>
-      // <Wrapper>
-      //   <UnderDev>Currently Under Construction<br/> Stay Tuned...</UnderDev>
-      //   <Img src="https://static01.nyt.com/images/2016/04/18/blogs/02australialetter32-18-lens-refugees-slide-8AS8-copy/18-lens-refugees-slide-8AS8-superJumbo.jpg?quality=90&auto=webp"></Img>
-      // </Wrapper>
+      <div>
+        <RefugeeRoute_titleGroup
+          currentRouteName = {this.state.currentRouteName}
+          changeRouteManager = {this.changeRouteManager}
+        />
+        <RefugeeRoute_map/>
+        <RefugeeRoute_textArea/>
+      </div>
     )
   }
 }
