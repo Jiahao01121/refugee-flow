@@ -15,6 +15,7 @@
     "countup.js": "^1.9.3",
     "css-loader": "0.28.7",
     "d3": "^5.0.0",
+    "d3-canvas-transition": "^0.3.7",
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
     "elemental": "^0.6.1",

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { get_routeDeath, get_routeIBC } from './../api';
 import * as _ from 'underscore';
@@ -13,7 +12,7 @@ export default class RefugeeRoute extends React.Component {
     super(props);
     this.state = {
         loading: true,
-        currentRouteName: null
+        currentRouteName: _.find(["Eastern Mediterranean","Central Mediterranean","Western Mediterranean","Western Balkans","Eastern Land Borders","Western African","Others" ],d => d.replace(' ','') === props.match.params.arg),
     }
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
     this.changeRouteManager = this.changeRouteManager.bind(this);
@@ -26,7 +25,7 @@ export default class RefugeeRoute extends React.Component {
   fetchRefugeeRoutes = () => {
     get_routeDeath().then( d => {
       get_routeIBC().then( _d => {
-        this.setState({route_death : d,route_IBC : _d,loading: false,currentRouteName:'Eastern Mediterranean'});
+        this.setState({route_death : d,route_IBC : _d,loading: false});
         this.checkCurrentRouteName(_.clone(_d));
       })
     })
@@ -45,14 +44,20 @@ export default class RefugeeRoute extends React.Component {
   }
 
   render() {
+    const map = <RefugeeRoute_map
+      data = {this.state.route_death}
+      currentRouteName = {this.state.currentRouteName}
+    />
+    const title = <RefugeeRoute_titleGroup
+      currentRouteName = {this.state.currentRouteName}
+      changeRouteManager = {this.changeRouteManager}
+    />
+    const textArea = <RefugeeRoute_textArea/>
     return(
       <div>
-        <RefugeeRoute_titleGroup
-          currentRouteName = {this.state.currentRouteName}
-          changeRouteManager = {this.changeRouteManager}
-        />
-        <RefugeeRoute_map/>
-        <RefugeeRoute_textArea/>
+        {this.state.route_death && title}
+        {this.state.route_death && map}
+        {this.state.route_death && textArea}
       </div>
     )
   }

@@ -175,7 +175,7 @@ class GlobeRouteButton extends React.Component {
   componentDidMount(){
     // get Data
     get_routeCountryList().then( d => {
-      d.push({'country':'GLOBAL',route:[ 'Eastern Mediterranean','Central Mediterranean','Western Mediterranean','Western Balkans','Circular Route from Albania to Greece','Eastern Land Borders','Western African','Other']})
+      d.push({'country':'GLOBAL',route:[ 'Eastern Mediterranean','Central Mediterranean','Western Mediterranean','Western Balkans','Eastern Land Borders','Western African','Others']})
       this.setState({data: d});
     })
     get_routeCrossingCount().then(d => this.setState({ cross_count: d }));
