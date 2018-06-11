@@ -1,0 +1,17 @@
+@media all and (max-width: 1100px) {
+  .mapboxgl-ctrl-top-right {
+    right: 47% !important;
+  }
+}
+
+@media all and (max-width: 900px) {
+
+  .mapboxgl-ctrl-top-right {
+    right: 37% !important;
+  }
+}
+
+.mapboxgl-ctrl-top-right {
+  top: 70px;
+  right: 57%;
+}
