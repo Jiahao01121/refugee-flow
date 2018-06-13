@@ -5,6 +5,7 @@ import * as _ from 'underscore';
 import RefugeeRoute_titleGroup from './RefugeeRoute_titleGroup';
 import RefugeeRoute_textArea from './RefugeeRoute_textArea';
 import RefugeeRoute_map from './RefugeeRoute_map';
+import RefugeeRoute_map_popup from './RefugeeRoute_map_popup';
 
 export default class RefugeeRoute extends React.Component {
 
@@ -13,9 +14,12 @@ export default class RefugeeRoute extends React.Component {
     this.state = {
         loading: true,
         currentRouteName: _.find(["Eastern Mediterranean","Central Mediterranean","Western Mediterranean","Western Balkans","Eastern Land Borders","Western African","Others" ],d => d.replace(' ','') === props.match.params.arg),
+        banned_category: null
     }
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
     this.changeRouteManager = this.changeRouteManager.bind(this);
+    this.passBannedCategoryManager = this.passBannedCategoryManager.bind(this);
+    this.banned_category = [];
   }
 
   componentDidMount () {
@@ -42,21 +46,37 @@ export default class RefugeeRoute extends React.Component {
   changeRouteManager(name){
     this.setState({currentRouteName : name});
   }
+  passBannedCategoryManager(category){
+    if(_.find(this.banned_category,d => d === category)){
+      for (var i = this.banned_category.length -1; i >= 0 ; i--) {
+        if(this.banned_category[i] === category){
+          this.banned_category.splice(i, 1);
+        }
+      }
+    }else{
+      this.banned_category.push(category);
+    }
+    this.setState({banned_category : this.banned_category});
+  }
 
   render() {
     const map = <RefugeeRoute_map
       data = {this.state.route_death}
       currentRouteName = {this.state.currentRouteName}
+      banned_category = {this.state.banned_category}
     />
+    const map_popup = <RefugeeRoute_map_popup/>
     const title = <RefugeeRoute_titleGroup
       currentRouteName = {this.state.currentRouteName}
       changeRouteManager = {this.changeRouteManager}
+      passBannedCategoryManager = {this.passBannedCategoryManager}
     />
     const textArea = <RefugeeRoute_textArea/>
     return(
       <div>
         {this.state.route_death && title}
         {this.state.route_death && map}
+        {this.state.route_death && map_popup}
         {this.state.route_death && textArea}
       </div>
     )
