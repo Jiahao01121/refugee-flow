@@ -13,11 +13,17 @@ export default class RefugeeRoute_map extends React.Component {
 
   constructor(props){
     super(props);
+    this.passClickedPointManager = props.passClickedPointManager;
     this.currentRouteName = props.currentRouteName;
     this.data = _.groupBy(props.data,d => d.route);
     this.currentMapParams = _.find(dataDict,d => d.route === this.currentRouteName);
     this.canvas_overlay_render = this.canvas_overlay_render.bind(this);
     this.canvas_overlay_drawCall = this.canvas_overlay_drawCall.bind(this);
+    this.handleMousemove = this.handleMousemove.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      mouseover_toggle: true
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -65,16 +71,29 @@ export default class RefugeeRoute_map extends React.Component {
     this.map.on('zoomend',(e) => this.myZoom.end = this.map.getZoom());
     this.map.on('viewreset', () => this.canvas_overlay_render());
     this.map.on('move', () => this.canvas_overlay_render());
-    this.map.on('mousemove',(e) => {
-      let p = this.tree.find(e.point.x, e.point.y);
-      if(p) this.intersected_id = p.id;
-      this.canvas_overlay_render();
-      console.log(p.cause_of_death);
-    })
-    this.map.on('click',() => {
-      // TODO
-    })
+
+    // traverse data points
+    this.map.on('mousemove',this.handleMousemove);
+    this.map.on('click',this.handleClick)
     this.canvas_overlay_render();
+  }
+
+  handleMousemove(e){
+    let p = this.tree.find(e.point.x, e.point.y);
+    if(p) this.intersected_id = p.id;
+    this.canvas_overlay_render();
+    // console.log(p.cause_of_death);
+  }
+
+  handleClick(e){
+    this.state.mouseover_toggle;
+    let p = this.tree.find(e.point.x, e.point.y);
+    if(p && this.state.mouseover_toggle) this.passClickedPointManager(p);
+    this.setState({mouseover_toggle: !this.state.mouseover_toggle},() =>{
+      // register/cancel mousemove listener
+      !this.state.mouseover_toggle ? this.map.off('mousemove',this.handleMousemove) : this.map.on('mousemove',this.handleMousemove);
+      this.canvas_overlay_render();
+    });
   }
 
   canvas_overlay_render(cb){
@@ -141,21 +160,19 @@ export default class RefugeeRoute_map extends React.Component {
     d.map_coord_y = ready.y;
     let size = this.sizeScaler(+d.dead_and_missing) * this.size_change;
     var color =  _.find(color_map,_d =>_d.key === d.cause_of_death).value;
-    if(this.intersected_id){
-      if(d.id === this.intersected_id) {
-        var color =  '#FFFFFF';
-      }
-    }
+
+    if(this.intersected_id && d.id === this.intersected_id) var color =  '#FFFFFF';
 
     this.ctx.beginPath();
     this.ctx.moveTo(d.map_coord_x + size , d.map_coord_y);
     this.ctx.arc(d.map_coord_x, d.map_coord_y, size  , 0, Math.PI*2);
+    if((this.intersected_id && d.id === this.intersected_id) && !this.state.mouseover_toggle){
+      this.ctx.strokeStyle="#666C82CC";
+      this.ctx.lineWidth=10;
+      this.ctx.stroke();
+    }
     this.ctx.fillStyle = color;
-    // TODO: stroke
     this.ctx.fill();
-    // this.ctx.strokeStyle="#FFFFFFCC";
-    // this.ctx.lineWidth=4;
-    // this.ctx.stroke();
     this.ctx.restore();
   }
 
@@ -170,11 +187,6 @@ export default class RefugeeRoute_map extends React.Component {
       height: '835px',
       height: window.innerHeight - 60 + 'px',
     };
-    return(
-      // <Wrapper>
-
-      // </Wrapper>
-      <div style={style} ref={el => this.mapContainer = el} />
-    )
+    return <div style={style} ref={el => this.mapContainer = el} />
   }
 }
