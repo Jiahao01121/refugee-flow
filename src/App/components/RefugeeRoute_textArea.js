@@ -54,10 +54,14 @@ export default class RefugeeRoute_textArea extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    this.selected_dataPoint = JSON.parse(nextProps.selected_data);
+  }
+
   render(){
+    console.log(this.selected_dataPoint);
     // mapbox nav position
     this.state.collapseToggle ? $('.mapboxgl-ctrl-top-right').css('right','2%') : $('.mapboxgl-ctrl-top-right').css('right','57%');
-
 
     return(
       <Wrapper toggle={this.state.collapseToggle}>

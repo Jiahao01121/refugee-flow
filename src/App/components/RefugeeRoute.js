@@ -14,11 +14,13 @@ export default class RefugeeRoute extends React.Component {
     this.state = {
         loading: true,
         currentRouteName: _.find(["Eastern Mediterranean","Central Mediterranean","Western Mediterranean","Western Balkans","Eastern Land Borders","Western African","Others" ],d => d.replace(' ','') === props.match.params.arg),
-        banned_category: null
+        banned_category: null,
+        clicked_datapoint: null,
     }
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
     this.changeRouteManager = this.changeRouteManager.bind(this);
     this.passBannedCategoryManager = this.passBannedCategoryManager.bind(this);
+    this.passClickedPointManager = this.passClickedPointManager.bind(this);
     this.banned_category = [];
   }
 
@@ -46,6 +48,7 @@ export default class RefugeeRoute extends React.Component {
   changeRouteManager(name){
     this.setState({currentRouteName : name});
   }
+
   passBannedCategoryManager(category){
     if(_.find(this.banned_category,d => d === category)){
       for (var i = this.banned_category.length -1; i >= 0 ; i--) {
@@ -56,22 +59,34 @@ export default class RefugeeRoute extends React.Component {
     }else{
       this.banned_category.push(category);
     }
+
     this.setState({banned_category : this.banned_category});
   }
 
+  passClickedPointManager(point){
+    this.setState({clicked_datapoint: JSON.stringify(point) });
+  }
+
   render() {
+
     const map = <RefugeeRoute_map
       data = {this.state.route_death}
       currentRouteName = {this.state.currentRouteName}
       banned_category = {this.state.banned_category}
+      passClickedPointManager = {this.passClickedPointManager}
     />
+
     const map_popup = <RefugeeRoute_map_popup/>
+
     const title = <RefugeeRoute_titleGroup
       currentRouteName = {this.state.currentRouteName}
       changeRouteManager = {this.changeRouteManager}
       passBannedCategoryManager = {this.passBannedCategoryManager}
     />
-    const textArea = <RefugeeRoute_textArea/>
+
+    const textArea = <RefugeeRoute_textArea
+      selected_data = {this.state.clicked_datapoint}
+    />
     return(
       <div>
         {this.state.route_death && title}

@@ -16,3 +16,7 @@
   right: 57%;
   transition: all cubic-bezier(0.63, 0.13, 0.01, 0.99) 500ms;
 }
+
+.mapboxgl-canvas-container{
+  cursor: pointer !important;
+}
