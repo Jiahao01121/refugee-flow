@@ -28,7 +28,7 @@ const Title = styled.p`
   margin-left: 5%;
   display: inherit;
   cursor: pointer;
-
+  z-index: 5;
   &:after{
     background-image: url(./assets/title_icon.png);
     background-size: 14px 14px;

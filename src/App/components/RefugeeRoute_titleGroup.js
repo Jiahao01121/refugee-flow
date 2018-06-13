@@ -2,12 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Switch, Redirect, Link } from 'react-router-dom'
 import * as _ from 'underscore';
+import { color_map } from '../data/routeDictionary';
 const dataDict = require('../data/IBC_crossingCountByCountry.json');
 
 const Wrapper = styled.div`
   position: absolute;
-  width: 45%;
+  width: 100%;
   z-index: 1;
+  height: 0;
+  box-shadow: 1px 10px 950px 180px rgba(0,0,0,0.82);
+  top: 40px;
 `
 const Title = styled.p`
   color: white;
@@ -57,12 +61,29 @@ const Button_next = styled.div`
   &:hover{opacity: 1;}
 `
 const Legend = styled.div`
-  width: 450px;
-  height: 20px;
   left: 30px;
   top: 100px;
-  background: #363658;
   position: relative;
+  width: 45%;
+`
+const LegendItem = styled.p`
+  color: #121217;
+  ${'' /* color: white; */}
+  font-size: 10px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  background: ${props => props.color};
+  position: relative;
+  float: left;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px 9px 0px 0px;
+  opacity: ${props => props.hide ? 0.15 : 0.85};
+  transition: all 300ms;
+  cursor: pointer;
+  &:hover{
+    opacity: ${props => props.hide ? 0.3 : 1};
+  }
 `
 
 export default class RefugeeRoute_titleGroup extends React.Component {
@@ -71,8 +92,20 @@ export default class RefugeeRoute_titleGroup extends React.Component {
     super(props);
     this.currentRouteName = props.currentRouteName;
     this.changeRouteManager = props.changeRouteManager;
+    this.passBannedCategoryManager = props.passBannedCategoryManager;
     this.handleClick = this.handleClick.bind(this);
     this.handleRouting = this.handleRouting.bind(this);
+    this.legendGenerator = this.legendGenerator.bind(this);
+    this.handleLegendClick = this.handleLegendClick.bind(this);
+    this.state = {
+      mapLegend_hide_0: false,
+      mapLegend_hide_1: false,
+      mapLegend_hide_2: false,
+      mapLegend_hide_3: false,
+      mapLegend_hide_4: false,
+      mapLegend_hide_5: false,
+      mapLegend_hide_6: false,
+    };
   }
 
   componentWillReceiveProps(nextProps){
@@ -113,10 +146,33 @@ export default class RefugeeRoute_titleGroup extends React.Component {
     }
   }
 
+  handleLegendClick(category,index){
+    this.passBannedCategoryManager(category);
+    this.setState({
+      ['mapLegend_hide_'+index]: !this.state['mapLegend_hide_'+index]
+    });
+  }
+
+  legendGenerator(){
+
+    let output = new Array(color_map.length);
+
+    color_map.forEach((d,i) => {
+      output[i] = <LegendItem
+        key={'mapLegend_'+i}
+        color={d.value}
+        hide={this.state['mapLegend_hide_'+i]}
+        onClick={() => this.handleLegendClick(d.key,i)}
+      >{d.key}</LegendItem>
+    })
+
+    return output;
+
+  }
+
   render(){
 
     return(
-      // <p>{this.state.currentRouteName && JSON.stringify(this.state.route_IBC[this.state.currentRouteName])}</p>
       <Wrapper>
         <Title>{this.currentRouteName && this.currentRouteName}</Title>
         <Router>
@@ -136,7 +192,7 @@ export default class RefugeeRoute_titleGroup extends React.Component {
             </Button_next>
           </div>
         </Router>
-        <Legend></Legend>
+        <Legend>{this.legendGenerator()}</Legend>
       </Wrapper>
     )
   }
