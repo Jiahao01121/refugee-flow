@@ -126,9 +126,9 @@ export default class Landing extends Component {
             <List><Link href="https://github.com/Jiahao01121/refugee-flow" target="_blank">Github</Link></List>
           </SideLinks>
         </div>
-        {/* <Video autoPlay loop muted plays-inline>
+        <Video autoPlay loop muted plays-inline>
           <source src="https://player.vimeo.com/external/158148793.hd.mp4?s=8e8741dbee251d5c35a759718d4b0976fbf38b6f&profile_id=119&oauth2_token_id=57447761" type="video/mp4" />
-        </Video> */}
+        </Video>
         <Img src="https://www.activistpost.com/wp-content/uploads/2015/09/turkish-soldiers-stand-guard-syrian-refugees-wait-behind-border-fences.jpg"></Img>
 
         <LaunchViz href='/conflict'>Launch Visualization</LaunchViz>
