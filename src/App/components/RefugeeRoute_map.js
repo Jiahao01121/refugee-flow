@@ -91,8 +91,15 @@ export default class RefugeeRoute_map extends React.Component {
     if(p && this.state.mouseover_toggle) this.passClickedPointManager(p);
     this.setState({mouseover_toggle: !this.state.mouseover_toggle},() =>{
       // register/cancel mousemove listener
-      !this.state.mouseover_toggle ? this.map.off('mousemove',this.handleMousemove) : this.map.on('mousemove',this.handleMousemove);
-      this.canvas_overlay_render();
+      !this.state.mouseover_toggle
+        ? this.map.off('mousemove',this.handleMousemove)
+        : this.map.on('mousemove',this.handleMousemove);
+      // fly
+      !this.state.mouseover_toggle
+        ? this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:10, offset:[-500,0]}))
+        : this.canvas_overlay_render(() => this.map.flyTo({center: [this.currentMapParams.center_lng,this.currentMapParams.center_lat],zoom:this.currentMapParams.zoom}));
+
+
     });
   }
 
@@ -109,20 +116,20 @@ export default class RefugeeRoute_map extends React.Component {
 
       this.sizeScaler = d3.scaleLinear()
         .domain(d3.extent(this.data[this.currentRouteName], d => +d.dead_and_missing))
-        .range([1,50]);
+        .range([2,50]);
 
       if(this.currentRouteName === 'Others'){
         // max > 500
         this.sizeScaler = d3.scaleLinear()
           .domain(d3.extent(this.data[this.currentRouteName], d => +d.dead_and_missing))
-          .range([1,200]);
+          .range([2,200]);
       }
 
       if(this.currentRouteName === 'Central Mediterranean'){
         // max > 500
         this.sizeScaler = d3.scaleLinear()
           .domain(d3.extent(this.data[this.currentRouteName], d => +d.dead_and_missing))
-          .range([1,120]);
+          .range([2,120]);
       }
     }
 
