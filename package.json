@@ -36,6 +36,7 @@
     "lodash": "^4.17.10",
     "mapbox-gl": "^0.45.0",
     "material-ui": "^0.20.0",
+    "moment": "^2.22.2",
     "mousetrap": "^1.6.1",
     "nodemon": "^1.17.5",
     "object-assign": "4.1.1",

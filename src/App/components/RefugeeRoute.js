@@ -16,11 +16,13 @@ export default class RefugeeRoute extends React.Component {
         currentRouteName: _.find(["Eastern Mediterranean","Central Mediterranean","Western Mediterranean","Western Balkans","Eastern Land Borders","Western African","Others" ],d => d.replace(' ','') === props.match.params.arg),
         banned_category: null,
         clicked_datapoint: null,
+        clickedPointRemoved: false,
     }
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
     this.changeRouteManager = this.changeRouteManager.bind(this);
     this.passBannedCategoryManager = this.passBannedCategoryManager.bind(this);
     this.passClickedPointManager = this.passClickedPointManager.bind(this);
+    this.passRemoveClickedPointManager = this.passRemoveClickedPointManager.bind(this);
     this.banned_category = [];
   }
 
@@ -64,16 +66,22 @@ export default class RefugeeRoute extends React.Component {
   }
 
   passClickedPointManager(point){
-    this.setState({clicked_datapoint: JSON.stringify(point) });
+    this.setState({clicked_datapoint: JSON.stringify(point), clickedPointRemoved: false});
+  }
+
+  passRemoveClickedPointManager(){
+    console.log('removed point manager called');
+    this.setState({clickedPointRemoved: true},()=>{
+    })
   }
 
   render() {
-
     const map = <RefugeeRoute_map
       data = {this.state.route_death}
       currentRouteName = {this.state.currentRouteName}
       banned_category = {this.state.banned_category}
       passClickedPointManager = {this.passClickedPointManager}
+      passRemoveClickedPointManager = {this.passRemoveClickedPointManager}
     />
 
     const map_popup = <RefugeeRoute_map_popup/>
@@ -86,6 +94,7 @@ export default class RefugeeRoute extends React.Component {
 
     const textArea = <RefugeeRoute_textArea
       selected_data = {this.state.clicked_datapoint}
+      clickedPointRemoved = {this.state.clickedPointRemoved}
     />
     return(
       <div>

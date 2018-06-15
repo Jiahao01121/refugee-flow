@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import * as _ from 'underscore';
 import $ from "jquery";
 
+import RefugeeRoute_textArea_contentManager from './RefugeeRoute_textArea_contentManager';
+
 const Wrapper = styled.div`
   height: ${window.innerHeight - 60 + 'px'};
   position: relative;
@@ -42,7 +44,7 @@ const CollapseButton = styled.div`
   height: 150px;
   border-radius: 3px;
   background: #1D2133CC;
-  position: relative;
+  position: absolute;
   transform: translateY(-50%);
   top: 47%;
   left: 12px;
@@ -112,11 +114,14 @@ export default class RefugeeRoute_textArea extends React.Component {
       currentTab: 1,
     }
     this.handleTabClick = this.handleTabClick.bind(this);
+    this.clickedPointRemoved = props.clickedPointRemoved;
   }
 
   componentWillReceiveProps(nextProps){
-    this.selected_dataPoint = JSON.parse(nextProps.selected_data);
+    this.selected_dataPoint = nextProps.selected_data;
+    this.clickedPointRemoved = nextProps.clickedPointRemoved;
     if(this.selected_dataPoint != null) this.setState({currentTab: 3});
+    if(this.clickedPointRemoved) this.setState({currentTab: 1});
   }
 
   handleTabClick(index){
@@ -126,20 +131,23 @@ export default class RefugeeRoute_textArea extends React.Component {
 
 
   render(){
-    console.log(this.selected_dataPoint);
-    // mapbox nav position
+
+    // mapbox nav position will change if the tab collapsed
     this.state.collapseToggle ? $('.mapboxgl-ctrl-top-right').css('right','3.3%') : $('.mapboxgl-ctrl-top-right').css('right','57%');
 
     return(
       <Wrapper toggle={this.state.collapseToggle}>
         <Icon src='/assets/route_icon.svg'></Icon>
         <CollapseButton onClick={() =>this.setState({collapseToggle: !this.state.collapseToggle}) }><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M190.4 354.1L91.9 256l98.4-98.1-30-29.9L32 256l128.4 128 30-29.9zm131.2 0L420 256l-98.4-98.1 30-29.9L480 256 351.6 384l-30-29.9z"/></svg></CollapseButton>
-
+        {/* tab nav */}
         <TabWrapper>
           <TabItem onClick={()=> this.handleTabClick(1)} tabIndex={1} currentTab={this.state.currentTab}><TabText>Basic Info</TabText></TabItem>
           <TabItem onClick={()=> this.handleTabClick(2)} tabIndex={2} currentTab={this.state.currentTab}><TabText>IBC Invoved Country</TabText></TabItem>
           <TabItem onClick={()=> this.handleTabClick(3)} tabIndex={3} currentTab={this.state.currentTab}><TabText>Current Select Point</TabText></TabItem>
         </TabWrapper>
+        <RefugeeRoute_textArea_contentManager
+          currentTab={this.state.currentTab}
+          selected_dataPoint={this.selected_dataPoint}/>
       </Wrapper>
     )
   }
