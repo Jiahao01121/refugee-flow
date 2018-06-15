@@ -13,6 +13,7 @@ export default class RefugeeRoute_map extends React.Component {
 
   constructor(props){
     super(props);
+    this.passRemoveClickedPointManager = props.passRemoveClickedPointManager;
     this.passClickedPointManager = props.passClickedPointManager;
     this.currentRouteName = props.currentRouteName;
     this.data = _.groupBy(props.data,d => d.route);
@@ -86,7 +87,6 @@ export default class RefugeeRoute_map extends React.Component {
   }
 
   handleClick(e){
-    this.state.mouseover_toggle;
     let p = this.tree.find(e.point.x, e.point.y);
     if(p && this.state.mouseover_toggle) this.passClickedPointManager(p);
     this.setState({mouseover_toggle: !this.state.mouseover_toggle},() =>{
@@ -98,8 +98,8 @@ export default class RefugeeRoute_map extends React.Component {
       !this.state.mouseover_toggle
         ? this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:10, offset:[-500,0]}))
         : this.canvas_overlay_render(() => this.map.flyTo({center: [this.currentMapParams.center_lng,this.currentMapParams.center_lat],zoom:this.currentMapParams.zoom}));
-
-
+      // inform cancel selected points
+      this.state.mouseover_toggle && this.passRemoveClickedPointManager();
     });
   }
 
@@ -168,7 +168,7 @@ export default class RefugeeRoute_map extends React.Component {
     let size = this.sizeScaler(+d.dead_and_missing) * this.size_change;
     var color =  _.find(color_map,_d =>_d.key === d.cause_of_death).value;
 
-    if(this.intersected_id && d.id === this.intersected_id) var color =  '#FFFFFF';
+    if(this.intersected_id && d.id === this.intersected_id) var color =  '#FFFFFFDE';
 
     this.ctx.beginPath();
     this.ctx.moveTo(d.map_coord_x + size , d.map_coord_y);
@@ -191,7 +191,6 @@ export default class RefugeeRoute_map extends React.Component {
     const style = {
       position: 'absolute',
       width: '100%',
-      height: '835px',
       height: window.innerHeight - 60 + 'px',
     };
     return <div style={style} ref={el => this.mapContainer = el} />
