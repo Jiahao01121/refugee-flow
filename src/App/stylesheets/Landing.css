@@ -50,8 +50,9 @@ section{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-height: 100vh;
 
-	padding: 125px 100px;
+	padding: 200px 100px;
 }
 
 @media (max-width: 1000px){
@@ -110,7 +111,6 @@ ul.grid{
 	top: 0;
 	left: 0;
 	width: 100%;
-	/*height: 100%;*/
 	background-size: cover;
 	/*background-color: #2196F3;*/
 	z-index: -1;
@@ -179,45 +179,6 @@ ul.grid{
 
 	.hero a.btn{
 		padding: 15px 40px;
-	}
-
-}
-
-/*--------------------
- 	Reviews Section
---------------------*/
-
-.reviews{
-	background-color: #fff;
-}
-
-.reviews .quote{
-	text-align: center;
-	width: 80%;
-    font-size: 22px;
-    font-weight: 300;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    padding: 0;
-}
-
-.reviews .author{
-    font-size: 18px;
-    margin-bottom: 50px;
-}
-
-.reviews .author:last-child{
-    margin-bottom: 0;
-}
-
-@media (max-width: 1000px){
-
-	.reviews .quote{
-		font-size: 20px;
-	}
-
-	.reviews .author{
-	    font-size: 16px;
 	}
 
 }
