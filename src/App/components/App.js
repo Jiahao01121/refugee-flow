@@ -20,7 +20,7 @@ class App extends React.Component {
         margin: 0;
         background-color: #1b1f3a;
         font-size: 100%;
-        overflow-y: hidden;
+        ${'' /* overflow-y: hidden; */}
         overflow-x: hidden;
       }
     `;
