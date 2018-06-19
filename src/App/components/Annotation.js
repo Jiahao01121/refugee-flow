@@ -44,7 +44,7 @@ const RegionAnnotation = styled.p`
     left: -50px;
   }
   &:before{
-    content: 'Click to view conflict data from a regional perspective';
+    content: 'Click to view conflict data regionally';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -75,7 +75,7 @@ const FilterAnnotation = styled.p`
     left: -50px;
   }
   &:before{
-    content: 'Click to view only conflicts against civilians';
+    content: 'Click to view conflicts only against civilians';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -110,7 +110,7 @@ const TimelineAnnotation = styled.p`
     left: -30px;
   }
   &:before{
-    content: 'Click the year to view conflict data by chosen year';
+    content: 'Click on the year to view conflict data by chosen year';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -246,7 +246,7 @@ const MapNavAnnotation = styled.p`
     left: 0px;
   }
   &:before{
-    content: 'Click to zoom in and out on points of interest on the globe';
+    content: 'Click to zoom in/out on points of interest on the globe';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
