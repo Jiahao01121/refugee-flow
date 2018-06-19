@@ -2,16 +2,6 @@
  	General
 -------------*/
 
-*{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-html{
-	font: normal 16px sans-serif;
-	color: #555;
-}
 
 ul, nav{
 	list-style: none;
@@ -36,6 +26,8 @@ a.btn{
 	background-color: #2196F3;
 	font-weight: 800;
 	text-align: center;
+	color: white;
+	font: normal 16px sans-serif;
 }
 
 hr{
@@ -52,7 +44,7 @@ section{
 	align-items: center;
 	min-height: 100vh;
 
-	padding: 200px 100px;
+	padding: 100px 100px;
 }
 
 @media (max-width: 1000px){
@@ -85,6 +77,8 @@ section p{
 	margin-bottom: 35px;
 	padding: 0 20px;
 	line-height: 2;
+	color: #555;
+	font: normal 16px sans-serif;
 }
 
 ul.grid{

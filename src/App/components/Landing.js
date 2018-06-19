@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 import '../stylesheets/Landing.css';
-import '../stylesheets/styles.scss';
 import Video from './Video';
 import Introduction from './Introduction';
 import * as _ from 'underscore';
