@@ -71,16 +71,6 @@ section h3.title{
 	text-align: center;
 }
 
-section p{
-	max-width: 800px;
-	text-align: center;
-	margin-bottom: 35px;
-	padding: 0 20px;
-	line-height: 2;
-	color: #555;
-	font: normal 16px sans-serif;
-}
-
 ul.grid{
 	width: 100%;
 	display: flex;
