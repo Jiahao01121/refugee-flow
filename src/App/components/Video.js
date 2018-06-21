@@ -7,7 +7,7 @@ export default class Video extends Component {
 
   render() {
     return(
-      <div>
+      <div id="video">
         <section className="hero">
           <video className="background-video" autoPlay loop muted style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}>
             <source src="http://www.markhillard.com/sandbox/media/polina.mp4" />

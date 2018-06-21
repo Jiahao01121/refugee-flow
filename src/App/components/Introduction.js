@@ -68,11 +68,22 @@ const TextBottomRightCorner = styled.div`
 class Introduction extends React.Component {
   constructor(props){
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const projectExplanation = document.getElementById("section05");
+    const introductionWrapper = document.getElementById("introductionWrapper");
+    introductionWrapper.scrollTo({
+      top: projectExplanation.offsetHeight,
+      behavior: 'smooth'
+    })
   }
 
   render(){
     return (
-      <Wrapper className='introduction-wrapper'>
+      <Wrapper className='introduction-wrapper' id="introductionWrapper">
         <ProjectIntroduction id="section04" className="demo">
           <Title>Refugee Flow</Title>
           <IntroParagraph>To leave one’s home country, community and loved ones to become a stranger in a strange land
@@ -88,9 +99,9 @@ class Introduction extends React.Component {
                 each refugee surrenders to the hardship of leaving their old lives and the lives they could have
                 lived to find peace and safety elsewhere.</IntroParagraph>
             <IntroParagraph>Every refugee is an example of a world that failed to use its common strength for the common good.</IntroParagraph>
-            <a href="#launch"><span></span>Scroll</a>
+            <a onClick={this.handleClick}><span></span>Scroll</a>
         </ProjectIntroduction>
-        <ProjectExplanation>
+        <ProjectExplanation id="section05">
           <TextTopLeftCorner>
             <p>Refugee Flow gathers data from multiple reliable sources to construct a compelling account
                on how persons become refugees.The project examines one of the direct fundamental causes

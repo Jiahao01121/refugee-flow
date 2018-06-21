@@ -42,7 +42,7 @@ section{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	min-height: 100vh;
+	min-height: 70vh;
 
 	padding: 100px 100px;
 }
