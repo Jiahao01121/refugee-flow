@@ -26,7 +26,7 @@ class Navbar extends React.Component {
       }
 
       > a:first-child:before{
-        content: 'A Comparitive Study on Conflicts and Refugee Flows';
+        content: 'A Comparitive Study on Conflicts and Refugee Movement';
         font-family: 'Roboto';
         font-weight: 400;
         color: white;
