@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 width: 100%;
 height: 100%;
 position: absolute;
-background-color: #1b1f3a;
+background-color: #000;
 z-index: 20;
 ${'' /* display: none; */}
 transition: all 5000ms;
@@ -49,20 +49,20 @@ const ProjectExplanation = styled.section`
 
 const TextTopLeftCorner = styled.div`
   color: #414a4f;
-  max-width: 30%;
+  max-width: 550px;
+  top: 60px;
   align-self: flex-start;
-  color:
-  left: 0;
-  top: 0;
   position: absolute;
+  line-height: 25px;
 `
-const TextBottomRightCorner = styled.div`
-  max-width: 30%;
-  background-color: green;
+const CornerImage = styled.div`
+  background-image: url(./assets/globe/world.jpg);
   align-self: flex-end;
   right: 0;
   bottom: 0;
   position: absolute;
+  height: 70%;
+  width: 50%;
 `
 
 class Introduction extends React.Component {
@@ -73,7 +73,7 @@ class Introduction extends React.Component {
   }
 
   handleClick() {
-    const projectExplanation = document.getElementById("section05");
+    const projectExplanation = document.getElementById("projectExplanation");
     const introductionWrapper = document.getElementById("introductionWrapper");
     introductionWrapper.scrollTo({
       top: projectExplanation.offsetHeight,
@@ -84,7 +84,7 @@ class Introduction extends React.Component {
   render(){
     return (
       <Wrapper className='introduction-wrapper' id="introductionWrapper">
-        <ProjectIntroduction id="section04" className="demo">
+        <ProjectIntroduction id="projectIntroduction" className="demo">
           <Title>Refugee Flow</Title>
           <IntroParagraph>To leave one’s home country, community and loved ones to become a stranger in a strange land
             is a difficult prospect even in times of peace. As violence, persecution and terror surge like the
@@ -101,7 +101,7 @@ class Introduction extends React.Component {
             <IntroParagraph>Every refugee is an example of a world that failed to use its common strength for the common good.</IntroParagraph>
             <a onClick={this.handleClick}><span></span>Scroll</a>
         </ProjectIntroduction>
-        <ProjectExplanation id="section05">
+        <ProjectExplanation id="projectExplanation">
           <TextTopLeftCorner>
             <p>Refugee Flow gathers data from multiple reliable sources to construct a compelling account
                on how persons become refugees.The project examines one of the direct fundamental causes
@@ -118,28 +118,12 @@ class Introduction extends React.Component {
                on their journey never make it to their intended destination.The data collected presents the
                cause of these deaths along their chosen routes.
              </p>
+             <a href="/conflict" className="btn">Launch Visualization</a>
           </TextTopLeftCorner>
-          <TextBottomRightCorner id="launch">
-            <p>Refugee Flow gathers data from multiple reliable sources to construct a compelling account
-               on how persons become refugees.The project examines one of the direct fundamental causes
-               of the global refugee crisis, the collapse of order and stability in todays international
-               landscape.
-             </p>
-             <p>This visualization examines the impact conflict, persecution and violence has on the lives of
-               persons in their home countries and communities.The dataset delves into exploring what drives
-               people to flee their homes and bear the burden of a life as a refugee.
-             </p>
-             <p>
-               The project further explores the possible routes taken by refugees.The dataset examines the
-               dangers those forcibly displaced face in their search for safety. Many refugees who depart
-               on their journey never make it to their intended destination.The data collected presents the
-               cause of these deaths along their chosen routes.
-             </p>
-          </TextBottomRightCorner>
-          <a href="/conflict" className="btn">Launch Visualization</a>
+          <CornerImage id="launch">
+          </CornerImage>
         </ProjectExplanation>
-
-            </Wrapper>
+      </Wrapper>
           )
         }
       }
