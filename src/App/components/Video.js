@@ -3,6 +3,27 @@ import styled from 'styled-components';
 import '../stylesheets/Landing.css';
 import '../stylesheets/styles.scss';
 
+const Quote = styled.p`
+text-align: center;
+position: absolute;
+top: 35%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 60%;
+font-size: 45px;
+font-weight: 300;
+line-height: 1.5;
+margin-bottom: 20px;
+padding: 0;
+`
+
+const Author = styled.p `
+  position: absolute;
+  top: 60%
+  left: 35%
+  font-size: 18px;
+`
+
 export default class Video extends Component {
 
   render() {
@@ -10,12 +31,12 @@ export default class Video extends Component {
       <div id="video">
         <section className="video-container">
           <video className="background-video" autoPlay loop muted style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}>
-            <source src="http://www.markhillard.com/sandbox/media/polina.mp4" />
-          </video>
-          <h1 className="quote">Mauris sit amet mauris a arcu eleifend ultricies eget ut dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</h1>
-          <h3 className="author">— Patrick Farrell</h3>
-        </section>
-      </div>
+          <source src="http://www.markhillard.com/sandbox/media/polina.mp4" />
+        </video>
+        <Quote>"At sea, a frightening number of refugees and migrants are dying each year. On land, people fleeing war are finding their way blocked by closed borders."</Quote>
+        <Author>— UN High Commissioner for Refugees Filippo Grandi</Author>
+      </section>
+    </div>
     )
   }
 }

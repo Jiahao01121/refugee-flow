@@ -64,7 +64,7 @@ section h3.title{
 .video-container{
 	position: relative;
 	justify-content: center;
-	min-height: 100vh;
+	min-height: 70vh;
 	color: #fff;
 	text-align: center;
 }
