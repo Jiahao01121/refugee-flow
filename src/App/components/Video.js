@@ -7,6 +7,7 @@ const Quote = styled.p`
 text-align: center;
 position: absolute;
 top: 35%;
+font-family: 'Roboto';
 left: 50%;
 transform: translate(-50%, -50%);
 width: 60%;
@@ -19,7 +20,8 @@ padding: 0;
 
 const Author = styled.p `
   position: absolute;
-  top: 60%
+  font-family: 'Roboto';
+  top: 65%
   left: 35%
   font-size: 18px;
 `
@@ -33,7 +35,7 @@ export default class Video extends Component {
           <video className="background-video" autoPlay loop muted style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}>
           <source src="http://www.markhillard.com/sandbox/media/polina.mp4" />
         </video>
-        <Quote>"At sea, a frightening number of refugees and migrants are dying each year. On land, people fleeing war are finding their way blocked by closed borders."</Quote>
+        <Quote>"At sea, a frightening number of refugees and migrants are dying each year. On land, people fleeing war are finding their way blocked by closed borders. Closing borders does not solve the problem"</Quote>
         <Author>— UN High Commissioner for Refugees Filippo Grandi</Author>
       </section>
     </div>

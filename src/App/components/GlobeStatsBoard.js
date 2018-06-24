@@ -130,8 +130,9 @@ class GlobeStatsBoard extends React.Component {
               }else{
                 return '12px';
               }
-            })()}
-            >{ <p id ={'stats_'+i}>{ Math.floor(data[keys[i]]) }</p> }</BoardItem>
+            })()}>
+            { <p id ={'stats_'+i}>{ Math.floor(data[keys[i]]) }</p> }
+          </BoardItem>
         )
       }
         return jsxArr;

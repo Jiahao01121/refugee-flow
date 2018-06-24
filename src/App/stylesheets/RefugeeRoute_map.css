@@ -12,7 +12,7 @@
 }
 
 .mapboxgl-ctrl-top-right {
-  top: 50px;
+  top: 30px;
   right: 57%;
   transition: all cubic-bezier(0.63, 0.13, 0.01, 0.99) 500ms;
 }

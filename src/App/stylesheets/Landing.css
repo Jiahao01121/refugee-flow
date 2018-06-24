@@ -14,14 +14,15 @@ a.btn{
 	color: #fff;
 	border-radius: 4px;
 	text-transform: uppercase;
-	background-color: #2196F3;
+	background-color: #1b1f3a;
 	font-weight: 800;
 	text-align: center;
 	color: white;
 	font: normal 16px sans-serif;
 	position: absolute;
-	bottom: 200px;
-	left: 100px;
+	top: 450px;
+	left: 25%;
+	padding: 14px;
 }
 
 section{

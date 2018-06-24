@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 width: 100%;
 height: 100%;
 position: absolute;
-background-color: #000;
+background-color: #121117;
 z-index: 20;
 ${'' /* display: none; */}
 transition: all 5000ms;
@@ -26,7 +26,7 @@ const ProjectIntroduction = styled.section`
 const Title = styled.h3`
   color: #414a4f;
   text-transform: capitalize;
-  font: bold 32px 'Open Sans', sans-serif;
+  font: bold 32px 'Roboto';
   margin-bottom: 35px;
   text-align: center;
 `
@@ -34,6 +34,7 @@ const Title = styled.h3`
 const IntroParagraph = styled.p`
   max-width: 800px;
   text-align: center;
+  font-family: 'Roboto';
   padding: 0 20px;
   line-height: 2;
   color: #555;
@@ -56,13 +57,16 @@ const TextTopLeftCorner = styled.div`
   line-height: 25px;
 `
 const CornerImage = styled.div`
-  background-image: url(./assets/globe/world.jpg);
+  background-image: url(./assets/globe/ConflictGLobe.png);
+  background-size: 750px 600px;
+  background-repeat: no-repeat;
   align-self: flex-end;
   right: 0;
   bottom: 0;
   position: absolute;
   height: 70%;
   width: 50%;
+  z-index: 0;
 `
 
 class Introduction extends React.Component {
@@ -86,9 +90,9 @@ class Introduction extends React.Component {
       <Wrapper className='introduction-wrapper' id="introductionWrapper">
         <ProjectIntroduction id="projectIntroduction" className="demo">
           <Title>Refugee Flow</Title>
-          <IntroParagraph>To leave one’s home country, community and loved ones to become a stranger in a strange land
-            is a difficult prospect even in times of peace. As violence, persecution and terror surge like the
-            rains of a monsoon the only option for survival and security is to become the stranger.</IntroParagraph>
+          <IntroParagraph>To leave one’s home country, community and loved ones is a difficult prospect
+            even in times of peace. As violence, persecution and terror surge the only option for
+            survival and security is to become the stranger.</IntroParagraph>
             <IntroParagraph>The United Nations High Commissioner for Refugees reports that as of 2017, 65.6 million
               people were forcibly displaced worldwide due to persecution, conflict, violence and human
               rights violations.</IntroParagraph>
@@ -104,24 +108,23 @@ class Introduction extends React.Component {
         <ProjectExplanation id="projectExplanation">
           <TextTopLeftCorner>
             <p>Refugee Flow gathers data from multiple reliable sources to construct a compelling account
-               on how persons become refugees.The project examines one of the direct fundamental causes
+               on how persons become refugees. This project examines one of the direct fundamental causes
                of the global refugee crisis, the collapse of order and stability in todays international
                landscape.
              </p>
              <p>This visualization examines the impact conflict, persecution and violence has on the lives of
-               persons in their home countries and communities.The dataset delves into exploring what drives
+               persons in their home countries and communities. The dataset delves into exploring what drives
                people to flee their homes and bear the burden of a life as a refugee.
              </p>
              <p>
-               The project further explores the possible routes taken by refugees.The dataset examines the
+               The project further explores the possible routes taken by refugees. The dataset examines the
                dangers those forcibly displaced face in their search for safety. Many refugees who depart
-               on their journey never make it to their intended destination.The data collected presents the
+               on their journey never make it to their intended destination. The data collected presents the
                cause of these deaths along their chosen routes.
              </p>
              <a href="/conflict" className="btn">Launch Visualization</a>
           </TextTopLeftCorner>
-          <CornerImage id="launch">
-          </CornerImage>
+          <CornerImage></CornerImage>
         </ProjectExplanation>
       </Wrapper>
           )

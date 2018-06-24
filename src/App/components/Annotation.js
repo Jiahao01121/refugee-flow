@@ -22,6 +22,7 @@ const Title = styled.p`
   margin-left: 310px;
   position: absolute;
   top: 22px;
+  left: 100px;
 `
 const RegionAnnotation = styled.p`
   position: absolute;
@@ -43,7 +44,7 @@ const RegionAnnotation = styled.p`
     left: -50px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Click to view conflict data regionally';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -74,7 +75,7 @@ const FilterAnnotation = styled.p`
     left: -50px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Click to view conflicts only against civilians';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -109,7 +110,7 @@ const TimelineAnnotation = styled.p`
     left: -30px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Click on the year to view conflict data by chosen year';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -152,7 +153,7 @@ const Stats1Annotation = styled.p`
     left: 0px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Total fatalities for the selected year';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -183,7 +184,7 @@ const Stats2Annotation = styled.p`
     left: 0px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Total civilian fatalities during the selected year';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -214,7 +215,7 @@ const Stats3Annotation = styled.p`
     left: 0px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Total number of armed conflicts during the selected year';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -245,7 +246,7 @@ const MapNavAnnotation = styled.p`
     left: 0px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Click to zoom in/out on points of interest on the globe';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -276,7 +277,7 @@ const ChartAnnotation = styled.p`
     left: 0px;
   }
   &:before{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.';
+    content: 'Total number of submitted asylum applicatons';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -295,13 +296,13 @@ class Annotation extends React.Component{
   render(){
     return (
       <Wrapper className='annotation-wrapper' onClick={() => {d3.select('.annotation-wrapper').style('opacity','0'); _.delay(() => d3.select('.annotation-wrapper').style('display','none'), 400 )}}>
-        <Title>Instructions - Click anywhere to begin</Title>
-        <RegionAnnotation> Region Selector </RegionAnnotation>
+        <Title>Click anywhere to explore Refugee Flow</Title>
+        <RegionAnnotation>Regions</RegionAnnotation>
         <FilterAnnotation>Filter</FilterAnnotation>
         <TimelineAnnotation>Timeline Controller</TimelineAnnotation>
-        <Stats1Annotation>Asylum Accepted Rate</Stats1Annotation>
-        <Stats2Annotation>Fake annotation name</Stats2Annotation>
-        <Stats3Annotation>Fake annotation name</Stats3Annotation>
+        <Stats1Annotation>Total Fatality</Stats1Annotation>
+        <Stats2Annotation>Total Civilian Fatality</Stats2Annotation>
+        <Stats3Annotation>Total Armed Conflicts</Stats3Annotation>
         <MapNavAnnotation>Map Navigation</MapNavAnnotation>
         <ChartAnnotation>Asylum Application Data</ChartAnnotation>
       </Wrapper>
