@@ -1,0 +1,30 @@
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100vw;
+    height: 150vh; // this should be dynamic, right now it's fixed based on a min max offset
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-children {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 6vw;
+}
