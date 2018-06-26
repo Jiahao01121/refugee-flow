@@ -25,10 +25,11 @@ class App extends React.Component {
       }
     `;
 
+    let path = window.location.pathname;
     return (
             <Router>
               <div>
-                <Navbar />
+                {path === '/' ? "" : <Navbar /> }
                 <Switch>
                   <Route exact path='/' component={Landing} />
                   <Route path='/conflict' component={Conflict} />
