@@ -17,9 +17,6 @@ var dataRoutes = require('./routes/dataRoute');
 // app.set('view engine', 'jade');
 
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://will:will@ds145118.mlab.com:45118/refugee-flow');
-
 app.use('/static',express.static(path.join(__dirname, '/build/static/')));
 app.use('/assets',express.static(path.join(__dirname, '/build/assets/')));
 app.use('*',function(req, res, next) {
@@ -30,8 +27,9 @@ app.use('*',function(req, res, next) {
 
 app.use('/', index);
 app.use('/conflict', index);
-// app.use('/route', index);
-app.use('/data',dataRoutes)
+app.use('/route/:id', index);
+app.use('/about',dataRoutes);
+app.use('/data',dataRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {next(404)});

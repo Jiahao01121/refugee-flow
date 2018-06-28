@@ -1,5 +1,8 @@
 //mongoose interface
 const mongoose = require('mongoose');
+const production = 'production';
+const dev = 'will';
+mongoose.connect('mongodb://' + dev + ':'+ dev +'@ds145118.mlab.com:45118/refugee-flow');
 const fs = require('fs');
 const lodash = require('lodash');
 // const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json') );
@@ -44,7 +47,6 @@ const reducedWarData = warAllData.map(year => {
   }
 })
 
-mongoose.connect('mongodb://will:will@ds145118.mlab.com:45118/refugee-flow');
 const db = mongoose.connection;
 db.on('error', console.log.bind(console,'connectinon error') );
 

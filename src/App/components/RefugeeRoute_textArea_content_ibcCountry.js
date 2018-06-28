@@ -2,11 +2,25 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 80%;
+  left: 20%;
   position: relative;
-  background: red;
+  background: #161423;
   height: ${() => window.innerHeight -60 - 90 + 'px'};
   top: 90px;
+`
+const PlaceHolder = styled.p`
+  font-family: 'Roboto';
+  font-size: 60px;
+  padding-right: 10px;
+  font-style: normal;
+  font-weight: 500;
+  color: #ffffff0f;
+  transition: all 800ms;
+  cursor: pointer;
+  &:hover{
+    color: #ffffff82;
+  }
 `
 
 export default class RefugeeRoute_textArea_content_ibcCountry extends React.Component {
@@ -22,7 +36,7 @@ export default class RefugeeRoute_textArea_content_ibcCountry extends React.Comp
   render(){
     return(
       <Wrapper>
-
+        <PlaceHolder>section currently under construction...</PlaceHolder>
       </Wrapper>
     )
   }

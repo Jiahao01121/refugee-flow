@@ -97,7 +97,7 @@ export default class RefugeeRoute_map extends React.Component {
       // fly
       !this.state.mouseover_toggle
         ? this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:10, offset:[-500,0]}))
-        : this.canvas_overlay_render(() => this.map.flyTo({center: [this.currentMapParams.center_lng,this.currentMapParams.center_lat],zoom:this.currentMapParams.zoom}));
+        : this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:9, offset:[-500,0]}));
       // inform cancel selected points
       this.state.mouseover_toggle && this.passRemoveClickedPointManager();
     });

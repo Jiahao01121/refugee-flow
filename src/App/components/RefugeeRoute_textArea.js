@@ -115,9 +115,15 @@ export default class RefugeeRoute_textArea extends React.Component {
     }
     this.handleTabClick = this.handleTabClick.bind(this);
     this.clickedPointRemoved = props.clickedPointRemoved;
+
+    this.currentRouteName = props.currentRouteName;
+    this.route_death_data = this.props.route_death;
+    this.IBC_data = this.props.route_IBC;
   }
 
   componentWillReceiveProps(nextProps){
+    this.currentRouteName = nextProps.currentRouteName;
+
     this.selected_dataPoint = nextProps.selected_data;
     this.clickedPointRemoved = nextProps.clickedPointRemoved;
     if(this.selected_dataPoint != null) this.setState({currentTab: 3});
@@ -146,6 +152,7 @@ export default class RefugeeRoute_textArea extends React.Component {
           <TabItem onClick={()=> this.handleTabClick(3)} tabIndex={3} currentTab={this.state.currentTab}><TabText>Current Select Point</TabText></TabItem>
         </TabWrapper>
         <RefugeeRoute_textArea_contentManager
+          currentRouteName = {this.currentRouteName}
           currentTab={this.state.currentTab}
           selected_dataPoint={this.selected_dataPoint}/>
       </Wrapper>
