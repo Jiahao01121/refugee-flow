@@ -6,7 +6,7 @@ const mapboxgl = require('mapbox-gl');
 const Wrapper = styled.div`
   width: 83%;
   position: relative;
-  height: 811px;
+  height: ${() => window.innerHeight-60-90 + 'px'};
   top: 90px;
   left: 50%;
   transform: translateX(-50%);
@@ -97,7 +97,7 @@ const Location = styled.h1`
   font-weight: 500;
   color: white;
   margin: 0;
-  top: 110px;
+  top: 100px;
   position: relative;
 `
 const Route = styled.h1`
@@ -108,7 +108,7 @@ const Route = styled.h1`
   font-weight: 400;
   color: white;
   margin: 0;
-  top: 110px;
+  top: 100px;
   right: 0;
   position: absolute;
 `
@@ -121,12 +121,13 @@ const LocationDesc = styled.p`
   font-style: italic;
   position: absolute;
   margin: 0;
-  top: 150px;
+  top: 134px;
+  line-height: 2;
 `
 const StatsBoardWrapper = styled.div`
   width: 100%;
   height: 40px;
-  top: 410px;
+  top: 395px;
   position: relative;
 `
 const StatsBoardItem = styled.div`
@@ -180,6 +181,12 @@ const StatsBoardItem = styled.div`
     }
   }
 `
+const MediaSectionWrapper = styled.div`
+  position: absolute;
+  top: 490px;
+  width: 100%;
+  height: ${() => window.innerHeight -60-90-490 + 'px'};
+`
 const MediaCoverage = styled.h1`
   font-family: 'Roboto';
   font-size: 16px;
@@ -189,7 +196,7 @@ const MediaCoverage = styled.h1`
   color: white;
   margin: 0;
   position: relative;
-  top: 468px;
+  ${'' /* top: 438px; */}
 `
 const MediaCoverageDesc = styled.p`
   font-family: 'Roboto';
@@ -199,18 +206,20 @@ const MediaCoverageDesc = styled.p`
   font-style: italic;
   position: absolute;
   margin: 0;
-  top: 600px;
+  ${'' /* top: 30px; */}
+  top: 50%;
+  transform: translateY(-50%);
   left: 30px;
 
   &>em{
-    font-size: 60px;
+    font-size: 40px;
     font-style: italic;
     position: absolute;
     font-family: cursive;
   }
   &>em:first-child{
-    top: -47px;
-    left: -50px;
+    top: -20px;
+    left: -30px;
   }
 `
 const Source = styled.p`
@@ -222,10 +231,10 @@ const Source = styled.p`
   color: white;
   margin: 0;
   position: absolute;
-  bottom: 25px;
+  bottom: 10px;
   right: 0;
   cursor: pointer;
-
+  padding: 0;
   &>em{
     text-decoration: underline;
     font-weight: 800;
@@ -246,6 +255,7 @@ export default class RefugeeRoute_textArea_content_currentSelectedPoint extends 
 
     const map_lng = this.selected_dataPoint ? this.selected_dataPoint.lng : 0;
     const map_lat = this.selected_dataPoint? this.selected_dataPoint.lat: 0;
+    console.log("new props");
     this.mapFly(map_lng,map_lat);
   }
 
@@ -270,7 +280,7 @@ export default class RefugeeRoute_textArea_content_currentSelectedPoint extends 
         "source": "point",
         "type": "circle",
         "paint": {
-          "circle-radius": 3,
+          "circle-radius": 5,
           "circle-color": "#fff",
           "circle-opacity": .8,
           "circle-pitch-scale": "map"}
@@ -298,7 +308,7 @@ export default class RefugeeRoute_textArea_content_currentSelectedPoint extends 
       position: 'absolute',
       width: '100%',
       height: '230px',
-      top: '180px',
+      top: '170px',
     };
 
     return(
@@ -373,11 +383,12 @@ export default class RefugeeRoute_textArea_content_currentSelectedPoint extends 
           <StatsBoardItem index={3} name='Dead and Missing: '><p>{this.selected_dataPoint && this.selected_dataPoint.dead_and_missing}</p></StatsBoardItem>
         </StatsBoardWrapper>
 
-        <Delimiter offset={'500px'}/>
-        <MediaCoverage>Media coverage</MediaCoverage>
-        <MediaCoverageDesc><em>“</em>{this.selected_dataPoint && this.selected_dataPoint.description}<em>”</em></MediaCoverageDesc>
-
-        <Source onClick={() => window.open(this.selected_dataPoint && this.selected_dataPoint.source_url, '_blank')}>Source: <em>{this.selected_dataPoint && this.selected_dataPoint.source}</em></Source>
+        <Delimiter offset={'485px'}/>
+        <MediaSectionWrapper>
+          <MediaCoverage>Media coverage</MediaCoverage>
+          <MediaCoverageDesc><em>“</em>{this.selected_dataPoint && this.selected_dataPoint.description}<em>”</em></MediaCoverageDesc>
+          <Source onClick={() => window.open(this.selected_dataPoint && this.selected_dataPoint.source_url, '_blank')}>Source: <em>{this.selected_dataPoint && this.selected_dataPoint.source}</em></Source>
+        </MediaSectionWrapper>
       </Wrapper>
     )
   }

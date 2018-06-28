@@ -18,6 +18,7 @@ export default class RefugeeRoute extends React.Component {
         clicked_datapoint: null,
         clickedPointRemoved: false,
     }
+    this.fetchRefugeeRoutes = this.fetchRefugeeRoutes.bind(this);
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);
     this.changeRouteManager = this.changeRouteManager.bind(this);
     this.passBannedCategoryManager = this.passBannedCategoryManager.bind(this);
@@ -30,7 +31,7 @@ export default class RefugeeRoute extends React.Component {
     this.fetchRefugeeRoutes();
   }
 
-  fetchRefugeeRoutes = () => {
+  fetchRefugeeRoutes () {
     get_routeDeath().then( d => {
       get_routeIBC().then( _d => {
         this.setState({route_death : d,route_IBC : _d,loading: false});
@@ -71,8 +72,7 @@ export default class RefugeeRoute extends React.Component {
 
   passRemoveClickedPointManager(){
     console.log('removed point manager called');
-    this.setState({clickedPointRemoved: true},()=>{
-    })
+    this.setState({clickedPointRemoved: true});
   }
 
   render() {
@@ -93,6 +93,9 @@ export default class RefugeeRoute extends React.Component {
     />
 
     const textArea = <RefugeeRoute_textArea
+      currentRouteName = {this.state.currentRouteName}
+      route_death = {this.state.route_death}
+      route_IBC = {this.state.route_IBC}
       selected_data = {this.state.clicked_datapoint}
       clickedPointRemoved = {this.state.clickedPointRemoved}
     />
