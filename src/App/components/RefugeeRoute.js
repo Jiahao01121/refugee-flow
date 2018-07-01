@@ -16,7 +16,7 @@ export default class RefugeeRoute extends React.Component {
         currentRouteName: _.find(["Eastern Mediterranean","Central Mediterranean","Western Mediterranean","Western Balkans","Eastern Land Borders","Western African","Others" ],d => d.replace(' ','') === props.match.params.arg),
         banned_category: null,
         clicked_datapoint: null,
-        clickedPointRemoved: false,
+        clickedPointRemoved: true,
     }
     this.fetchRefugeeRoutes = this.fetchRefugeeRoutes.bind(this);
     this.checkCurrentRouteName = this.checkCurrentRouteName.bind(this);

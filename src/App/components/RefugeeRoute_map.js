@@ -74,7 +74,7 @@ export default class RefugeeRoute_map extends React.Component {
     this.map.on('move', () => this.canvas_overlay_render());
 
     // traverse data points
-    this.map.on('mousemove',this.handleMousemove);
+    this.map.on('mousemove',this.handleMousemove); // check moseovered point;
     this.map.on('click',this.handleClick)
     this.canvas_overlay_render();
   }
@@ -105,26 +105,24 @@ export default class RefugeeRoute_map extends React.Component {
 
   canvas_overlay_render(cb){
     this.data_filtered = [];
-    this.ctx.save();
+    // this.ctx.save();
     this.ctx.clearRect(0, 0, this.mapContainer_width, this.mapContainer_height);
-    this.ctx.translate(this.mapContainer_width/2, this.mapContainer_height/2);
-    this.ctx.scale((512) * 0.5 / Math.PI * Math.pow(2, this.map.getZoom()),(512) * 0.5 / Math.PI * Math.pow(2, this.map.getZoom()));
+    // this.ctx.translate(this.mapContainer_width/2, this.mapContainer_height/2);
+    // this.ctx.scale((2) * 0.5 / Math.PI * Math.pow(2, this.map.getZoom()),(2) * 0.5 / Math.PI * Math.pow(2, this.map.getZoom()));
 
     if(this.currentRouteName){
-      // console.log('current route: '+ this.currentRouteName);
-      // console.log(d3.extent(this.data[this.currentRouteName], d => +d.dead_and_missing));
 
       this.sizeScaler = d3.scaleLinear()
         .domain(d3.extent(this.data[this.currentRouteName], d => +d.dead_and_missing))
         .range([2,50]);
-
+      // individual cases
       if(this.currentRouteName === 'Others'){
         // max > 500
         this.sizeScaler = d3.scaleLinear()
           .domain(d3.extent(this.data[this.currentRouteName], d => +d.dead_and_missing))
           .range([2,200]);
       }
-
+      // individual cases
       if(this.currentRouteName === 'Central Mediterranean'){
         // max > 500
         this.sizeScaler = d3.scaleLinear()
@@ -145,7 +143,7 @@ export default class RefugeeRoute_map extends React.Component {
         this.canvas_overlay_drawCall(d);
       }
     })
-
+    // this.ctx.restore();
     // quadtree optimized mouseover
     this.tree = d3.quadtree()
       .extent([0,0], [this.mapContainer_width,this.mapContainer_height])
@@ -159,6 +157,7 @@ export default class RefugeeRoute_map extends React.Component {
 
   canvas_overlay_drawCall(d){
     if(-90 > d.lat || d.lat > 90){
+      // data corruption on raw data part
       var ready = this.map.project(new mapboxgl.LngLat(d.lng,90));
     }else{
       var ready = this.map.project(new mapboxgl.LngLat(d.lng,d.lat));
@@ -170,6 +169,7 @@ export default class RefugeeRoute_map extends React.Component {
 
     if(this.intersected_id && d.id === this.intersected_id) var color =  '#FFFFFFDE';
 
+    //set up new path & required method after clear method
     this.ctx.beginPath();
     this.ctx.moveTo(d.map_coord_x + size , d.map_coord_y);
     this.ctx.arc(d.map_coord_x, d.map_coord_y, size  , 0, Math.PI*2);
@@ -180,7 +180,7 @@ export default class RefugeeRoute_map extends React.Component {
     }
     this.ctx.fillStyle = color;
     this.ctx.fill();
-    this.ctx.restore();
+    // this.ctx.restore();
   }
 
   componentWillUnmount() {

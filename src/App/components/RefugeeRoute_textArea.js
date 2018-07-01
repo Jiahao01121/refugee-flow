@@ -76,7 +76,14 @@ const TabItem = styled.div`
   width: 30%;
   margin: 0 5px;
   text-align: center;
-  cursor: pointer;
+  cursor: ${props => props.tabIndex === 3 ? 'default':'pointer'};
+  opacity: ${props => {
+    if(props.clickedPointRemoved && props.tabIndex === 3){
+      return 0
+    }else{
+      return 1
+    }
+  }};
   border-radius: 4px;
   transition: all 400ms;
 
@@ -149,12 +156,15 @@ export default class RefugeeRoute_textArea extends React.Component {
         <TabWrapper>
           <TabItem onClick={()=> this.handleTabClick(1)} tabIndex={1} currentTab={this.state.currentTab}><TabText>Basic Info</TabText></TabItem>
           <TabItem onClick={()=> this.handleTabClick(2)} tabIndex={2} currentTab={this.state.currentTab}><TabText>IBC Invoved Country</TabText></TabItem>
-          <TabItem onClick={()=> this.handleTabClick(3)} tabIndex={3} currentTab={this.state.currentTab}><TabText>Current Select Point</TabText></TabItem>
+          <TabItem  tabIndex={3} clickedPointRemoved ={this.clickedPointRemoved} currentTab={this.state.currentTab}><TabText>Current Select Point</TabText></TabItem>
         </TabWrapper>
         <RefugeeRoute_textArea_contentManager
           currentRouteName = {this.currentRouteName}
           currentTab={this.state.currentTab}
-          selected_dataPoint={this.selected_dataPoint}/>
+          selected_dataPoint={this.selected_dataPoint}
+          route_death_data = {this.route_death_data}
+          IBC_data = {this.IBC_data}
+        />
       </Wrapper>
     )
   }

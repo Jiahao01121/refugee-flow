@@ -86,6 +86,31 @@ const LegendItem = styled.p`
   }
 `
 
+const Instructions = styled.div`
+  left: 30px;
+  top: ${() => window.innerHeight - 130 + 'px'};
+  position: absolute;
+  background: #f5f5ff21;
+  border-radius: 2px;
+  transition: all 400ms;
+  cursor: default;
+  &>p{
+    color: #ffffff78;
+    font-size: 12px;
+    font-family: 'Roboto';
+    font-weight: 300;
+    padding: 0 10px;
+    margin: 5px 0;
+  }
+
+  &:hover{
+    background: #2a467d54;
+    &>p{
+      color: #ffffff;
+    }
+  }
+`
+
 export default class RefugeeRoute_titleGroup extends React.Component {
 
   constructor(props){
@@ -193,6 +218,11 @@ export default class RefugeeRoute_titleGroup extends React.Component {
           </div>
         </Router>
         <Legend>{this.legendGenerator()}</Legend>
+
+        <Instructions>
+          <p>* Click up/down arrow to switch refugee route</p>
+          <p>* Click mouseovered point to access detail information about accident/event</p>
+        </Instructions>
       </Wrapper>
     )
   }
