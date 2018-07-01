@@ -10,9 +10,13 @@ export default class RefugeeRoute_textArea_contentManager extends React.Componen
     this.state = {
       selected_dataPoint : props.selected_dataPoint
     }
+
     this.currentRouteName = props.currentRouteName;
     this.currentTab = props.currentTab;
     this.switchingContent = this.switchingContent.bind(this);
+
+    this.route_death_data = props.route_death_data;
+    this.IBC_data = props.IBC_data;
   }
 
   componentWillReceiveProps(nextProps){
@@ -23,11 +27,15 @@ export default class RefugeeRoute_textArea_contentManager extends React.Componen
   switchingContent(){
     if(this.currentTab === 1){
       return <RefugeeRoute_textArea_content_basicInfo
+        route_death_data= {this.route_death_data}
         currentRouteName = {this.currentRouteName}
       />
     }
     else if(this.currentTab === 2){
-      return <RefugeeRoute_textArea_content_ibcCountry/>
+      return <RefugeeRoute_textArea_content_ibcCountry
+        IBC_data= {this.IBC_data}
+        currentRouteName = {this.currentRouteName}
+      />
     }
     else if(this.currentTab === 3){
       return <RefugeeRoute_textArea_content_currentSelectedPoint selected_dataPoint={this.state.selected_dataPoint}/>
