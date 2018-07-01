@@ -63,6 +63,7 @@ const DataSource = styled.div`
 `
 const CardContainer = styled.div`
   overflow-y: scroll;
+  overflow-x: hidden;
   height: ${() => window.innerHeight-60-90 -100+ 'px'};
 
   &::-webkit-scrollbar{

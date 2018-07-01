@@ -1,14 +1,15 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import * as d3 from 'd3';
-import { countryList } from '../data/warDictionary';
+import { countryList, year } from '../data/warDictionary';
 import * as _ from 'underscore';
+import $ from "jquery";
 
 const Wrapper = styled.div`
   height: 150px;
   width: 98%
   background: #1e1e33;
-  box-shadow: 10px 13px 58px -15px rgba(0,0,0,0.75);
+  box-shadow: 4px 7px 58px -15px rgba(0,0,0,0.75);
   border-radius: 5px;
   margin-top: 15px;
 `
@@ -22,7 +23,7 @@ const CountryName = styled.p`
   left: 30px;
   margin: 0;
   position: relative;
-  width: 0;
+  width: 100%;
 `
 const Region = styled.p`
   font-size: 14px;
@@ -135,7 +136,7 @@ const BorderLocation = styled.div`
 const ChartContainer = styled.div`
   width: 60%;
   position: relative;
-  left: 35%;
+  left: 39%;
   height: 150px;
   margin-top: -73px;
   &>p{
@@ -147,6 +148,10 @@ const ChartContainer = styled.div`
     font-size:  16px;
   }
 
+  &>svg{
+    position: absolute;
+    bottom: 5px;
+  }
 
 `
 export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.Component {
@@ -154,12 +159,88 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
   constructor(props){
     super(props);
     this.data = props.data;
+    this.margin = {top: 20, right: 20, bottom: 30, left: 30};
+  }
+
+  componentDidMount() {
+
+    this.width = $(this.svg).width() - this.margin.left - this.margin.right;
+    this.height = $(this.svg).height() - this.margin.top - this.margin.bottom;
+
+    let arr = [];
+    year.forEach(key => {
+
+      let yearlyTotal = this.data[key];
+      let res = Object.values(yearlyTotal).reduce((a,c) => a+c);
+
+      arr.push({
+        value: res,
+        key: key
+      })
+    })
+
+    this.xScale = d3.scaleTime()
+      .domain(d3.extent(year, d => new Date(d) ))
+      .range([0,this.width]);
+
+    this.yScale = d3.scaleLinear()
+      .domain(d3.extent(arr,d => d.value))
+      .range([this.height,0]).nice();
+
+    // points
+    d3.select(this.g).selectAll('.cardChart__points')
+      .data(arr)
+      .enter()
+      .append('circle')
+      .attr('class','cardChart__points')
+      .attr('r',4)
+      .attr('cx',d => this.xScale(new Date(d.key)))
+      .attr('cy',d => this.yScale( +d.value ))
+      .style("fill", '#41edb8')
+      .style("stroke", 'rgb(27, 31, 58)')
+      .style("stroke-width", '3')
+
+    // axis
+    d3.select(this.svg).append("g").attr('class','cardChart__xAxis')
+      .attr("transform", "translate(30,"+ (+this.height + +this.margin.top) +")")
+      .call(d3.axisBottom(this.xScale));
+
+    d3.selectAll(".cardChart__xAxis .tick text")
+      .attr("dy", 8)
+      .attr('fill','#ffffff')
+      .style('font-family','Roboto')
+      .style('font-weight',200)
+      .style('font-size','10px')
+
+    d3.selectAll(".cardChart__xAxis path")
+      .attr('stroke','white')
+    d3.selectAll(".cardChart__xAxis line")
+      .attr('stroke','white')
+
+    d3.select(this.svg).append("g").attr('class','cardChart__yAxis')
+      .attr("transform", "translate("+ this.margin.left + ","+ +this.margin.top +")")
+      .call(g => {
+        g.call(d3.axisLeft(this.yScale).tickFormat(d3.format(".2s")));
+
+        g.selectAll("path").attr('stroke','white');
+        g.selectAll(".tick line").remove();
+
+
+        g.selectAll(".tick text")
+          .attr("x", -8)
+          .attr('fill','#ffffff')
+          .style('font-family','Roboto')
+          .style('font-weight',400)
+          .style('font-size','10px')
+
+      g.selectAll(".tick:not(:last-of-type)").remove()
+      });
+
   }
 
 
 
   render(){
-    console.log(this.data);
     return(
       <div>
         <Wrapper>
@@ -171,6 +252,14 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
 
           <ChartContainer>
             <p>Illegal Border Crossing by Year</p>
+            <svg width='100%' height='90px'
+              ref={(svg) => {return this.svg = svg }}>
+
+              <g width='100%' height= '100%'
+                ref={(g) => {return this.g = g }}
+                transform = {"translate("+this.margin.left+","+ this.margin.top + ")" }
+              ></g>
+            </svg>
           </ChartContainer>
         </Wrapper>
       </div>
