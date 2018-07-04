@@ -90,7 +90,7 @@ const TabItem = styled.div`
   &::before{
     content: '';
     transition: all 400ms;
-    width: ${props => props.tabIndex === props.currentTab? '98%' : Math.random()*100+'%'};
+    width: ${props => props.tabIndex === props.currentTab? '98%' : '0%'};
     ${props => props.tabIndex === props.currentTab && css`
       position: absolute;
       height: 4px;
