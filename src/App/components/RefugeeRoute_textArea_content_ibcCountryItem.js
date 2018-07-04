@@ -7,11 +7,12 @@ import $ from "jquery";
 
 const Wrapper = styled.div`
   height: 150px;
-  width: 98%
+  width: 98%;
   background: #1e1e33;
   box-shadow: 4px 7px 58px -15px rgba(0,0,0,0.75);
   border-radius: 5px;
-  margin-top: 15px;
+  margin-top: 10px;
+  transition: opacity 400ms;
 `
 
 const CountryName = styled.p`
@@ -24,6 +25,7 @@ const CountryName = styled.p`
   margin: 0;
   position: relative;
   width: 100%;
+  transition: all 400ms;
 `
 const Region = styled.p`
   font-size: 14px;
@@ -167,29 +169,41 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
     this.width = $(this.svg).width() - this.margin.left - this.margin.right;
     this.height = $(this.svg).height() - this.margin.top - this.margin.bottom;
 
-    let arr = [];
-    year.forEach(key => {
-
-      let yearlyTotal = this.data[key];
-      let res = Object.values(yearlyTotal).reduce((a,c) => a+c);
-
-      arr.push({
-        value: res,
-        key: key
-      })
-    })
 
     this.xScale = d3.scaleTime()
-      .domain(d3.extent(year, d => new Date(d) ))
-      .range([0,this.width]);
+      .domain(d3.extent((() =>{
+        let temp = year.slice();
+        temp.shift();
+        return temp;
+      })(), d => new Date(d) ))
+      .range([0,this.width]).nice();
 
     this.yScale = d3.scaleLinear()
-      .domain(d3.extent(arr,d => d.value))
+      .domain(d3.extent(this.data.chartData,d => d.value))
       .range([this.height,0]).nice();
 
+    // line
+    d3.select(this.g)
+      .append("path")
+      .datum(this.data.chartData)
+      .attr("fill", "none")
+      .style("stroke", "rgb(65, 237, 184)")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+        .x(d => this.xScale(new Date(d.key)) )
+        .y(d =>  this.yScale( +d.value ) )
+        .curve(d3.curveMonotoneX)
+      );
+
     // points
-    d3.select(this.g).selectAll('.cardChart__points')
-      .data(arr)
+    const gPoint = d3.select(this.g);
+    const x_Scale = this.xScale;
+    const y_Scale = this.yScale;
+
+    gPoint.selectAll('.cardChart__points')
+      .data(this.data.chartData)
       .enter()
       .append('circle')
       .attr('class','cardChart__points')
@@ -197,33 +211,84 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
       .attr('cx',d => this.xScale(new Date(d.key)))
       .attr('cy',d => this.yScale( +d.value ))
       .style("fill", '#41edb8')
+      .style('cursor','pointer')
       .style("stroke", 'rgb(27, 31, 58)')
       .style("stroke-width", '3')
+      .on('mouseover',function(){
+        // point transition
+        d3.select(this)
+          .transition()
+          .duration(500)
+          .attr('r',10)
+          .on('interrupt',function(){ d3.select(this).attr('r',4) });
+
+          // draw text
+          gPoint.append('text')
+            .attr('class','IBC_tooltips')
+            .attr('x',x_Scale(new Date( d3.select(this).datum()['key'] )))
+            .attr('y',y_Scale( +d3.select(this).datum()['value'] ) - 10)
+            .attr('text-anchor','middle')
+            .style('font-family','Roboto')
+            .style('font-weight',400)
+            .style('font-size','10px')
+            .style("fill", '#41edb8')
+            .text(d3.format(".2s")( +d3.select(this).datum()['value'] ));
+
+      })
+      .on('mouseout',function(){
+
+        d3.selectAll('.IBC_tooltips').transition()
+          .style('opacity',1)
+          .duration(200)
+          .style('opacity',0)
+          .on('end',() => d3.selectAll('.IBC_tooltips').remove() )
+
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('r',4)
+          .on('interrupt',function(){
+            d3.select(this).attr('r',4)
+          });
+      })
+
+
 
     // axis
+    // x axis
     d3.select(this.svg).append("g").attr('class','cardChart__xAxis')
       .attr("transform", "translate(30,"+ (+this.height + +this.margin.top) +")")
       .call(d3.axisBottom(this.xScale));
 
+
+    // .remove();
     d3.selectAll(".cardChart__xAxis .tick text")
       .attr("dy", 8)
       .attr('fill','#ffffff')
       .style('font-family','Roboto')
       .style('font-weight',200)
-      .style('font-size','10px')
-
-    d3.selectAll(".cardChart__xAxis path")
-      .attr('stroke','white')
+      .style('font-size','12px')
+    d3.selectAll(".cardChart__xAxis path").remove()
+    d3.selectAll(".cardChart__xAxis line").attr('y2',3);
     d3.selectAll(".cardChart__xAxis line")
       .attr('stroke','white')
+      .style('opacity',.6)
 
+    // y axis
     d3.select(this.svg).append("g").attr('class','cardChart__yAxis')
       .attr("transform", "translate("+ this.margin.left + ","+ +this.margin.top +")")
       .call(g => {
         g.call(d3.axisLeft(this.yScale).tickFormat(d3.format(".2s")));
 
-        g.selectAll("path").attr('stroke','white');
-        g.selectAll(".tick line").remove();
+        g.selectAll("path").remove();
+        g.selectAll(".tick line:not(:last-of-type)").remove();
+        g.selectAll('.tick line')
+          .attr('x2',1000)
+          .style('opacity',.4)
+          .style('stroke','white')
+          .style('stroke-dasharray','2 13')
+
+
 
 
         g.selectAll(".tick text")
@@ -247,7 +312,7 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
           <CountryName>{this.data['NationalityLong']}</CountryName>
           <Region>{_.find(countryList, d => d[0] === this.data['NationalityLong'].toUpperCase())[1]} Region</Region>
 
-          <Stats><p>{'10000'}</p></Stats>
+          <Stats><p>{d3.format(",")(this.data['totalCross'])}</p></Stats>
           <BorderLocation><p>{this.data['BorderLocation']}</p></BorderLocation>
 
           <ChartContainer>
