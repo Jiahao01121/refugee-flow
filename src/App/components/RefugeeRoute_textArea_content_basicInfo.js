@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
+import $ from "jquery";
 
 const routeDescDict = require('../data/route_desc.json');
 
@@ -123,11 +124,18 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
     this.calculateDeathTotal = this.calculateDeathTotal.bind(this);
   }
 
+  componentDidMount(){
+
+  }
+
   componentWillReceiveProps(nextProps){
     console.log('update');
-    const trans = d3.select('.route-map-titleGroup__basic');
 
-    trans && trans
+    $('#CurrentSituation__text').stop(true,true);
+    $('#CurrentSituation__text').scrollTop(0);
+    $('#CurrentSituation__text').animate({scrollTop: $('#CurrentSituation__text')[0].scrollHeight}, 25000);
+
+    d3.select('.route-map-titleGroup__basic') && d3.select('.route-map-titleGroup__basic')
       .style('opacity',0)
       .transition()
       .duration(400)
@@ -146,12 +154,12 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
 
     return d3.format(',')(total);
   }
+
   render(){
-
-
     return(
       <Wrapper className='route-map-titleGroup__basic'>
-        <CurrentSituation currentRouteName = {this.currentRouteName}>
+        <CurrentSituation currentRouteName = {this.currentRouteName} id="CurrentSituation__text"
+          onClick={()=> $('#CurrentSituation__text').stop(true,true).scrollTop(0)}>
           {this.description(_.find(routeDescDict,d => d.route === this.currentRouteName).desc)}
         </CurrentSituation>
 

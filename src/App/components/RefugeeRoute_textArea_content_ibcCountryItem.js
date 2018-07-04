@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   box-shadow: 4px 7px 58px -15px rgba(0,0,0,0.75);
   border-radius: 5px;
   margin-top: 10px;
-  transition: opacity 400ms;
+  transition: opacity 200ms;
 `
 
 const CountryName = styled.p`
@@ -206,7 +206,7 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
       .data(this.data.chartData)
       .enter()
       .append('circle')
-      .attr('class','cardChart__points')
+      .attr('class',d => 'cardChart__points '+ "points_year_" +d.key)
       .attr('r',4)
       .attr('cx',d => this.xScale(new Date(d.key)))
       .attr('cy',d => this.yScale( +d.value ))
@@ -215,35 +215,44 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
       .style("stroke", 'rgb(27, 31, 58)')
       .style("stroke-width", '3')
       .on('mouseover',function(){
-        // point transition
-        d3.select(this)
+
+        // point transitions
+        d3.selectAll('.points_year_'+ d3.select(this).datum().key)
           .transition()
           .duration(500)
           .attr('r',10)
           .on('interrupt',function(){ d3.select(this).attr('r',4) });
 
-          // draw text
-          gPoint.append('text')
-            .attr('class','IBC_tooltips')
-            .attr('x',x_Scale(new Date( d3.select(this).datum()['key'] )))
-            .attr('y',y_Scale( +d3.select(this).datum()['value'] ) - 10)
-            .attr('text-anchor','middle')
-            .style('font-family','Roboto')
-            .style('font-weight',400)
-            .style('font-size','10px')
-            .style("fill", '#41edb8')
-            .text(d3.format(".2s")( +d3.select(this).datum()['value'] ));
+        // draw text
+        let currentYear = '.points_year_'+ d3.select(this).datum().key;
+        d3.selectAll('.IBC_chart_dataLayer')
+          .each(function(d,i){
+
+            let datum = d3.selectAll( currentYear ).filter((d,_i) => _i === i).datum()
+
+            d3.select(this)
+              .append('text')
+              .attr('class','IBC_tooltips')
+              .attr('x',x_Scale(new Date( datum['key'] )))
+              .attr('y',y_Scale( +datum['value'] ) - 10)
+              .attr('text-anchor','middle')
+              .style('font-family','Roboto')
+              .style('font-weight',400)
+              .style('font-size','10px')
+              .style("fill", '#41edb8')
+              .text(d3.format(".2s")( +datum['value'] ));
+
+
+
+
+          })
 
       })
       .on('mouseout',function(){
 
-        d3.selectAll('.IBC_tooltips').transition()
-          .style('opacity',1)
-          .duration(200)
-          .style('opacity',0)
-          .on('end',() => d3.selectAll('.IBC_tooltips').remove() )
+        d3.selectAll('.IBC_tooltips').remove()
 
-        d3.select(this)
+        d3.selectAll('.points_year_'+ d3.select(this).datum().key)
           .transition()
           .duration(200)
           .attr('r',4)
@@ -321,6 +330,7 @@ export default class RefugeeRoute_textArea_content_ibcCountryItem extends React.
               ref={(svg) => {return this.svg = svg }}>
 
               <g width='100%' height= '100%'
+                className="IBC_chart_dataLayer"
                 ref={(g) => {return this.g = g }}
                 transform = {"translate("+this.margin.left+","+ this.margin.top + ")" }
               ></g>
