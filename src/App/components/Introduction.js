@@ -100,13 +100,13 @@ class Introduction extends React.Component {
         <ProjectIntroduction id="projectIntroduction" className="demo">
           <Title>Refugee Flow</Title>
           <IntroParagraph>
-            To leave one’s home country, community and loved ones is a difficult prospect
-            even in times of peace. As violence, persecution and terror surge the only option for
-            survival and security is to become the stranger.
+            To leave one’s home country, community, and loved ones is a difficult prospect
+            even in times of peace. As violence, persecution, and terror surge the only option for
+            survival and security is to flee one's home.
           </IntroParagraph>
           <IntroParagraph>
             The United Nations High Commissioner for Refugees reports that as of 2017, 65.6 million
-            people were forcibly displaced worldwide due to persecution, conflict, violence and human
+            people were forcibly displaced worldwide due to persecution, conflict, violence, and human
             rights violations.
           </IntroParagraph>
           <IntroParagraph>
