@@ -232,7 +232,7 @@ const CardContainer = styled.div`
   transition: all 400ms;
 
   &::before{
-    content: '*Ranked by: Highest crossing';
+    content: '* Ranked by: Highest crossings';
     text-decoration: underline;
     position: fixed;
     color: #f5f6fb;

@@ -77,7 +77,7 @@ const Stats = styled.div`
   }
 
   &>p::after{
-    content: 'total acrossing';
+    content: 'total crossings';
     font-family: 'Roboto';
     font-size: 13px;
     color: #ffffff;
