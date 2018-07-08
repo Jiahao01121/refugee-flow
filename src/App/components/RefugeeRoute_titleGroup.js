@@ -220,8 +220,8 @@ export default class RefugeeRoute_titleGroup extends React.Component {
         <Legend>{this.legendGenerator()}</Legend>
 
         <Instructions>
-          <p>* Click up/down arrow to switch refugee route</p>
-          <p>* Click mouseovered point to access detail information about accident/event</p>
+          <p>* Click the up/down arrow to switch the refugee route</p>
+          <p>* Click the circles to access detail information about the accident/event</p>
         </Instructions>
       </Wrapper>
     )

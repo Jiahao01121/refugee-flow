@@ -12,19 +12,22 @@ export default class Landing extends Component {
     super(props);
   }
 
-  evokePrompt = _.once(() => {
-    _.delay(() => {
-      d3.select('.introduction-wrapper').style('display','block').style('opacity','1');
-      setTimeout( () => {
-        document.getElementById("video").remove();
-      }, 6000)
-    }, 5000 )
-  })
+    evokePrompt = _.once(() => {
+      _.delay(() => {
+        d3.select('.introduction-wrapper').style('display','block').style('opacity','1');
+        setTimeout( () => {
+          let video = document.getElementById("video")
+          if(video != null) {
+            video.remove();
+          }
+        }, 6000)
+      }, 5000 )
+    })
 
   render() {
     return(
       <div>
-        { (() => this.evokePrompt() )() }
+        { (() => this.evokePrompt() )()}
         <Introduction />
         <Video />
       </div>
