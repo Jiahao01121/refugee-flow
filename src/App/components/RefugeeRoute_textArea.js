@@ -6,7 +6,7 @@ import $ from "jquery";
 import RefugeeRoute_textArea_contentManager from './RefugeeRoute_textArea_contentManager';
 
 const Wrapper = styled.div`
-  height: ${window.innerHeight - 60 + 'px'};
+  height: ${window.innerHeight - 40 + 'px'};
   position: relative;
   float: right;
   width: 55%;

@@ -191,7 +191,7 @@ export default class RefugeeRoute_map extends React.Component {
     const style = {
       position: 'absolute',
       width: '100%',
-      height: window.innerHeight - 60 + 'px',
+      height: window.innerHeight - 40 + 'px',
     };
     return <div style={style} ref={el => this.mapContainer = el} />
   }
