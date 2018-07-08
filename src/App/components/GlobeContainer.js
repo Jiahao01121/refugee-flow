@@ -26,14 +26,14 @@ const TitleContainer = styled.div`
   ${'' /* background: #0000ff61; */}
   width: ${window.innerWidth - 30 - (0.25 * window.innerWidth) + 'px'};
   left: 30px;
-  top: 110px;
+  top: 40px;
 `
 const TitleText = styled.p`
   font-family: 'Roboto';
   font-size: 25px;
   font-weight: 100;
   color: white;
-  margin-top: 0;
+  margin-top: 25px;
   cursor: pointer;
   position: absolute;
 

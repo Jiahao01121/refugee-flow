@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   z-index: 1;
   height: 0;
   box-shadow: 1px 10px 950px 180px rgba(0,0,0,0.82);
-  top: 40px;
+  top: 10px;
 `
 const Title = styled.p`
   color: white;
@@ -23,6 +23,7 @@ const Title = styled.p`
   left: 60px;
   position: relative;
   width: 400px;
+  cursor: default;
 
   &:after{
     content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut';
@@ -88,7 +89,7 @@ const LegendItem = styled.p`
 
 const Instructions = styled.div`
   left: 30px;
-  top: ${() => window.innerHeight - 130 + 'px'};
+  top: ${() => window.innerHeight - 100 + 'px'};
   position: absolute;
   background: #f5f5ff21;
   border-radius: 2px;
@@ -183,12 +184,23 @@ export default class RefugeeRoute_titleGroup extends React.Component {
     let output = new Array(color_map.length);
 
     color_map.forEach((d,i) => {
+      let text = '';
+
+      if(d.key === 'malicious intent related death / manslaughter'){
+        text = 'Malicious intent related death / Manslaughter';
+      }
+      else if(d.key === 'unknown - supposedly exhaustion related death'){
+        text = 'Unknown - Supposedly exhaustion related death';
+      }else{
+        text = d.key.charAt(0).toUpperCase() + d.key.substr(1)
+      }
+
       output[i] = <LegendItem
         key={'mapLegend_'+i}
         color={d.value}
         hide={this.state['mapLegend_hide_'+i]}
         onClick={() => this.handleLegendClick(d.key,i)}
-      >{d.key}</LegendItem>
+      >{text}</LegendItem>
     })
 
     return output;

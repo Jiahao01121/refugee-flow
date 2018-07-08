@@ -117,7 +117,7 @@ class Timeline extends React.Component {
         <div
           className = 'TimelineWrapper'
           style ={{
-            height: (window.innerHeight- 60 - 300) + 'px',
+            height: (window.innerHeight - 300) + 'px',
             zIndex: 1
            }}>
           {TimelineItems}

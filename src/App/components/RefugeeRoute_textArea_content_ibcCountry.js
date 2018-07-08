@@ -251,12 +251,14 @@ const Page = styled.p`
   font-weight: 300;
   margin: 0;
   margin-top: 5px;
-  position: relative;
+  width: 100%;
+  position: absolute;
   transform: translateX(50%);
+  bottom: 20px;
 `
 const PageUp = styled.p`
   position: absolute;
-  bottom: 20px;
+  bottom: 4px;
   color: white;
   opacity: .6;
   cursor: pointer;
@@ -267,7 +269,7 @@ const PageUp = styled.p`
 `
 const PageDown = styled.p`
   position: absolute;
-  bottom: 20px;
+  bottom: 4px;
   color: white;
   right: 20px;
   opacity: .6;
@@ -348,21 +350,22 @@ export default class RefugeeRoute_textArea_content_ibcCountry extends React.Comp
       });
 
     this.cardItemAll = _.sortBy(cardItemAll,d => d.props.data['totalCross']).reverse();
-    const cardItemSub = (() =>{
 
-      if(cardItemAll.length > 10){
+    const cardItemSub = (() =>{
+      if(this.cardItemAll.length > 10){
 
         const temp = new Map();
         let pageCounter = 1;
-        for (var i = 0; i < cardItemAll.length; i+=10) {
-          temp.set(pageCounter,cardItemAll.slice(i,i+10));
+
+        for (var i = 0; i < this.cardItemAll.length; i+=10) {
+          temp.set(pageCounter,this.cardItemAll.slice(i,i+10));
           pageCounter++;
         }
         return temp;
       }
       else {
         const temp = new Map();
-        temp.set(1,cardItemAll);
+        temp.set(1,this.cardItemAll);
         return temp;
       }
     })();

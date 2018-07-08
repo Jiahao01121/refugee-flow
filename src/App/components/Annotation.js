@@ -26,7 +26,7 @@ const Title = styled.p`
 `
 const RegionAnnotation = styled.p`
   position: absolute;
-  top: 140px;
+  top: 90px;
   left: 310px;
   font-family: 'Roboto';
   font-size: 16px;
@@ -56,7 +56,7 @@ const RegionAnnotation = styled.p`
 `
 const FilterAnnotation = styled.p`
   position: absolute;
-  top: 191px;
+  top: 143px;
   left: 180px;
   font-family: 'Roboto';
   font-size: 16px;
@@ -88,7 +88,7 @@ const FilterAnnotation = styled.p`
 const TimelineAnnotation = styled.p`
   position: absolute;
   top: ${() =>{
-    return $($('.years')[2]).position() ? $($('.years')[2]).position().top + 125 + 'px' : '1000000px';
+    return $($('.years')[2]).position() ? $($('.years')[2]).position().top + 125 - 37 + 'px' : '1000000px';
     }};
   left: ${() =>{
     return $($('.years')[2]).position() ? $($('.years')[2]).position().left + 130 + 'px' : '100000px';
@@ -120,6 +120,37 @@ const TimelineAnnotation = styled.p`
     top: 30px;
   }
 `
+const RoutePopupAnnotation = styled.p`
+  position: absolute;
+  top: 263px;
+  left: 235px;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+  color: white;
+
+  &:after{
+    content: '';
+    width: 20px;
+    position: absolute;
+    height: 1px;
+    border-radius: 20px;
+    background-color: #fff;
+    top: 12px;
+    left: -30px;
+  }
+  &:before{
+    content: 'Click to see associated refugee flee route';
+    font-family: 'Roboto';
+    font-size: 12px;
+    font-weight: 200;
+    color: white;
+    position: absolute;
+    width: 90px;
+    top: 30px;
+  }
+`
 
 const statsBoardAnnotationPositioning = (num) =>{
   const containerWidth = (window.innerWidth*.75) - 165 - 90;
@@ -132,9 +163,10 @@ const statsBoardAnnotationPositioning = (num) =>{
       return marginWidth + 255 + statsBoardWidth*num +( (containerWidth - (statsBoardWidth*3 + marginWidth*2) )/2 )*num + 'px'
   }
 }
+
 const Stats1Annotation = styled.p`
   position: absolute;
-  bottom: 240px;
+  bottom: 205px;
   left: ${statsBoardAnnotationPositioning(0)};
   font-family: 'Roboto';
   font-size: 16px;
@@ -160,12 +192,12 @@ const Stats1Annotation = styled.p`
     color: white;
     position: absolute;
     width: 150px;
-    top: 30px;
+    top: 25px;
   }
 `
 const Stats2Annotation = styled.p`
   position: absolute;
-  bottom: 240px;
+  bottom: 205px;
   left: ${statsBoardAnnotationPositioning(1)};
   font-family: 'Roboto';
   font-size: 16px;
@@ -191,12 +223,12 @@ const Stats2Annotation = styled.p`
     color: white;
     position: absolute;
     width: 150px;
-    top: 30px;
+    top: 25px;
   }
 `
 const Stats3Annotation = styled.p`
   position: absolute;
-  bottom: 240px;
+  bottom: 205px;
   left: ${statsBoardAnnotationPositioning(2)};
   font-family: 'Roboto';
   font-size: 16px;
@@ -222,12 +254,12 @@ const Stats3Annotation = styled.p`
     color: white;
     position: absolute;
     width: 150px;
-    top: 30px;
+    top: 25px;
   }
 `
 const MapNavAnnotation = styled.p`
   position: absolute;
-  top: 155px;
+  top: 170px;
   right: 29%;
   font-family: 'Roboto';
   font-size: 16px;
@@ -258,7 +290,7 @@ const MapNavAnnotation = styled.p`
 `
 const ChartAnnotation = styled.p`
   position: absolute;
-  top: 300px;
+  top: 240px;
   right: ${() => (window.innerWidth*.25 - window.innerWidth*.25*0.05 - 190) + 'px'};
   font-family: 'Roboto';
   font-size: 16px;
@@ -266,16 +298,6 @@ const ChartAnnotation = styled.p`
   font-style: italic;
   color: white;
 
-  &:after{
-    content: '';
-    width: 1px;
-    position: absolute;
-    height: 30px;
-    border-radius: 20px;
-    background-color: #fff;
-    top: -35px;
-    left: 0px;
-  }
   &:before{
     content: 'Total number of submitted asylum applicatons';
     font-family: 'Roboto';
@@ -300,6 +322,7 @@ class Annotation extends React.Component{
         <RegionAnnotation>Regions</RegionAnnotation>
         <FilterAnnotation>Filter</FilterAnnotation>
         <TimelineAnnotation>Timeline Controller</TimelineAnnotation>
+        <RoutePopupAnnotation>Associated Refugee Route</RoutePopupAnnotation>
         <Stats1Annotation>Total Fatality</Stats1Annotation>
         <Stats2Annotation>Total Civilian Fatality</Stats2Annotation>
         <Stats3Annotation>Total Armed Conflicts</Stats3Annotation>

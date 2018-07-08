@@ -10,9 +10,9 @@ const Chart = styled.div`
     width: 90%;
     left: 5%;
     ${'' /* background: #0000ff1f; */}
-    height: 75%;
+    height: 80%;
     position: absolute;
-    bottom: 11%;
+    bottom: 7%;
 
     &:after{
       background-image: url(./assets/chartLegend_icon.png);

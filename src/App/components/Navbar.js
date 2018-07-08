@@ -3,19 +3,26 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavbarContainer = styled.div`
-  line-height: 60px;
-  background: #0C0C14;
+  height: 40px;
+  background: #2d2d4a;
   position: relative;
-  box-shadow: 0px 5px 90px -1px rgba(0,0,0,1);
+  box-shadow: inset 1px 12px 100px -1px rgb(13, 19, 25);
   z-index: 2;
-  > a{
-    font-family: 'Miller-DisplaySC';
-    font-size: 20px;
+  > a:first-child{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 100;
+    font-size: 15px;
     color: white;
     text-decoration: none;
     padding-left: 30px;
     position: relative;
-    top: -10px;
+    transition: all 200ms;
+    top: 12px;
+    &:hover{
+      font-size: 20px;
+      top: 9px;
+      font-weight: 900;
+    }
   }
 
   > a:first-child:before{
@@ -23,13 +30,14 @@ const NavbarContainer = styled.div`
     font-family: 'Roboto';
     font-weight: 400;
     color: white;
-    opacity: .5;
+    opacity: ${props => props.hovered? 1: 0};
+    transition: 400ms all;
     font-size: 10px;
     position: absolute;
     left: 30px;
     bottom: -38px;
     /* letter-spacing: 1.1px; */
-    width: 900%;
+    width: 50px;
     word-spacing: 3px;
   }
 
@@ -37,28 +45,38 @@ const NavbarContainer = styled.div`
 
 const Nav = styled.nav`
   position: relative;
-  right: 40px;
+  right: -20px;
   float: right;
+  top: 50%;
+  transform: translateY(-50%);
   > a {
-      font-family: 'Roboto';
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: white;
-      padding: 0 10px;
-      text-decoration: none;
-    }
+    margin-right: 50px;
+    font-family: 'Ubuntu';
+    box-shadow: 0px 11px 21px -2px rgb(13, 19, 25);
+    font-size: 10px;
+    font-weight: 100;
+    color: white;
+    text-decoration: underline;
+  }
 `
 
 
 class Navbar extends React.Component {
   constructor(props){
-    super(props)
+    super(props);
+    this.state = {
+      hovered: false
+    }
   }
 
   render(){
     return (
-      <NavbarContainer>
-          <Link to='/'>Refugee Flow</Link>
+      <NavbarContainer hovered={this.state.hovered}>
+          <Link to='/'
+            onMouseOver={() => this.setState({hovered: true})}
+            onMouseOut={() => this.setState({hovered: false})}>
+            Refugee Flow
+          </Link>
           <Nav>
             <Link to='/conflict'>Conflict</Link>
             <Link to='/route/EasternMediterranean'>Route</Link>

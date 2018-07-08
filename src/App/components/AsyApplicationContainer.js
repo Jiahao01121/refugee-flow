@@ -14,7 +14,7 @@ const Background = styled.div`
   height: 100%;
   position: absolute;
   right: 0;
-  top: 60px;
+  top: 40px;
   box-shadow: 5px 0px 78px -6px rgba(0,0,0,0.62);
   display: flex;
   flex-direction: column;
@@ -29,6 +29,10 @@ const Title = styled.p`
   display: inherit;
   cursor: pointer;
   z-index: 5;
+
+  @media (max-width: 1245px) {
+    font-size: 16px;
+  }
   &:after{
     background-image: url(./assets/title_icon.png);
     background-size: 14px 14px;
@@ -36,8 +40,7 @@ const Title = styled.p`
     width: 14px;
     height: 14px;
     content: "";
-    bottom: 10px;
-    right: 0px;
+    right: -5px;
     position: relative;
   }
 
@@ -52,9 +55,23 @@ const Title = styled.p`
 `
 const ButtonWrapper = styled.div`
   display: inherit;
-  margin: 10px 0 0 5%;
   justify-content: flex-start;
   height: 40px;
+
+  @media (max-height: 599px) {
+    margin: -5px 0 0 5%;
+  }
+  @media (max-height:749px) and (min-height: 600px) {
+    margin: 10px 0 0 5%;
+  }
+  @media (min-height: 750px) {
+    margin: 10px 0 0 5%;
+  }
+  @media (max-width: 1210px) {
+    margin: 20px 0 0 5%;
+  }
+
+
 `
 const CurrentYearButton = styled.button`
   display: inherit;
@@ -78,6 +95,10 @@ const CurrentYearButton = styled.button`
     margin-left: 7px;
     text-decoration: underline;
     text-decoration-color: #0f1015f7;
+  }
+
+  @media (max-width: 1210px) {
+    width: 70%;
   }
 `
 const AllYearButton = styled.button`

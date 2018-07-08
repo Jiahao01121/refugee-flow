@@ -6,7 +6,7 @@ const mapboxgl = require('mapbox-gl');
 const Wrapper = styled.div`
   width: 83%;
   position: relative;
-  height: ${() => window.innerHeight-60-90 + 'px'};
+  height: ${() => window.innerHeight-40-90 + 'px'};
   top: 90px;
   left: 50%;
   transform: translateX(-50%);
@@ -138,7 +138,7 @@ const StatsBoardItem = styled.div`
   float: left;
   transition: all 300ms;
   margin: ${props => props.index === 2 && '0 10px'};
-  width: ${() => ((window.innerWidth*0.55)*0.83)/3 - 20/3 + 'px' }
+  width: ${() => ((window.innerWidth*0.55)*0.83)/3 - 20/3 -1 + 'px' }
 
   &:hover{
     background: #2f2f4a;
@@ -231,7 +231,7 @@ const Source = styled.p`
   color: white;
   margin: 0;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   right: 0;
   cursor: pointer;
   padding: 0;
