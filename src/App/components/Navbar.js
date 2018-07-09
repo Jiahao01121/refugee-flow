@@ -6,57 +6,78 @@ const NavbarContainer = styled.div`
   height: 40px;
   background: #2d2d4a;
   position: relative;
-  box-shadow: inset 1px 12px 100px -1px rgb(13, 19, 25);
+  box-shadow: inset 0px 11px 40px -11px rgba(0, 0, 0, 0.97);
   z-index: 2;
+  transition: all 2000ms;
+
+  &::before{
+    content: '';
+    width: ${props => props.loadBar ? '100%':'0%'};
+    height: 2px;
+    background: #41edb8bd;
+  ${'' /* second color choise:
+          #bf4211
+          #41edb8bd
+          */}
+    position: absolute;
+    top: 0;
+    transition: inherit;
+  }
+
   > a:first-child{
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: 100;
-    font-size: 15px;
+    font-family: 'Ubuntu',sans-serif;
+    font-weight: 900;
+    font-size: 18px;
     color: white;
     text-decoration: none;
     padding-left: 30px;
     position: relative;
     transition: all 200ms;
-    top: 12px;
+    top: 9px;
     &:hover{
-      font-size: 20px;
-      top: 9px;
-      font-weight: 900;
+      filter: drop-shadow(0px 2px 5px #a2a2c9);
+
     }
   }
 
-  > a:first-child:before{
+  > a:first-child:after{
     content: 'A Comparitive Study on Conflicts and Refugee Movement';
-    font-family: 'Roboto';
-    font-weight: 400;
+    font-family: 'Ubuntu';
+    font-weight: 100;
     color: white;
-    opacity: ${props => props.hovered? 1: 0};
+    opacity: 0.4;
     transition: 400ms all;
-    font-size: 10px;
-    position: absolute;
-    left: 30px;
-    bottom: -38px;
-    /* letter-spacing: 1.1px; */
-    width: 50px;
+    font-size: 11px;
+    position: relative;
+    left: 20px;
+    bottom: 1px;
+    width: 300px;
     word-spacing: 3px;
+    filter: drop-shadow(0px 0px 0px #000) !important;
   }
-
 `
 
 const Nav = styled.nav`
   position: relative;
-  right: -20px;
+  right: -5px;
   float: right;
   top: 50%;
   transform: translateY(-50%);
+  transition: all 400ms;
   > a {
     margin-right: 50px;
     font-family: 'Ubuntu';
-    box-shadow: 0px 11px 21px -2px rgb(13, 19, 25);
-    font-size: 10px;
+    font-size: 15px;
     font-weight: 100;
     color: white;
-    text-decoration: underline;
+    box-shadow: 0px 5px 21px -2px rgb(13,19,25);
+    transition: all 300ms;
+  }
+  > a:hover{
+    box-shadow: 0px 10px 15px -5px rgb(104, 110, 150);
+    background: #a1a1db;
+    padding: 3px 0px;
+    border-radius: 3px;
   }
 `
 
@@ -65,13 +86,20 @@ class Navbar extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      hovered: false
+      hovered: false,
+      loadBar: false,
     }
+  }
+
+  componentDidMount(){
+    this.setState({loadBar: true});
   }
 
   render(){
     return (
-      <NavbarContainer hovered={this.state.hovered}>
+      <NavbarContainer
+        loadBar={this.state.loadBar}
+        hovered={this.state.hovered} id="nav-show">
           <Link to='/'
             onMouseOver={() => this.setState({hovered: true})}
             onMouseOut={() => this.setState({hovered: false})}>

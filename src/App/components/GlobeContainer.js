@@ -74,6 +74,7 @@ const GlobeControllerButton = styled.button`
   margin: 0px;
   z-index: 10;
   transition: all 300ms;
+  cursor: pointer;
 
   &:before{
     background-image: url(./assets/globe_icon.png);

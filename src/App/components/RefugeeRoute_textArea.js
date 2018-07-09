@@ -86,7 +86,6 @@ const TabItem = styled.div`
   }};
   border-radius: 4px;
   transition: all 400ms;
-
   &::before{
     content: '';
     transition: all 400ms;

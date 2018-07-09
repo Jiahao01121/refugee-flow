@@ -1,81 +1,106 @@
 import React from 'react';
-import styled, { css }from 'styled-components';
+import styled, { css , keyframes }from 'styled-components';
 import $ from "jquery";
 import * as _ from 'underscore';
 import * as d3 from 'd3';
-import '../stylesheets/Introduction.css'
+
+
 
 const Wrapper = styled.div`
-width: 100%;
-height: 100%;
-position: absolute;
-background-color: #121117;
-z-index: 20;
-${'' /* display: none; */}
-transition: all 5000ms;
-opacity: 0;
-overflow-y: scroll;
-${'' /* max-width: 2000px; */}
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #121117;
+  z-index: 20;
+  transition: all 5000ms;
+  opacity: 1;
+  overflow-y: hidden;
 `
 
 const ProjectIntroduction = styled.section`
-display: flex;
-flex-direction: column;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &>a>span{
+    position: absolute;
+    top: 0;
+    width: 15px;
+    height: 15px;
+    border-left: 1px solid #fff;
+    border-bottom: 4px solid #fff;
+    transform: rotate(-45deg);
+    box-sizing: border-box;
+    left: 17px;
+  }
+
+  &>a{
+    padding-top: 60px;
+    opacity: 1;
+    position: absolute;
+    bottom: 40px;
+    color: #fff;
+    letter-spacing: .1em;
+    transition: opacity .3s;
+  }
+
+  &>a:hover{
+    opacity: .5;
+  }
 `
 
 const Title = styled.h3`
-color: #fff;
-text-transform: capitalize;
-font: bold 32px 'Roboto';
-margin-bottom: 35px;
-text-align: center;
+  color: #fff;
+  text-transform: capitalize;
+  font: 25px 'Roboto';
+  font-weight: 100;
+  margin-bottom: 35px;
 `
 
 const IntroParagraph = styled.p`
-max-width: 800px;
-font-family: 'Roboto';
-padding: 0 20px;
-line-height: 2;
-color: #fff;
-font: normal 16px 'Roboto';
+  max-width: 480px;
+  font-family: 'Roboto';
+  color: #fff;
+  font: 14px 'Roboto';
+  font-weight: 300;
+  text-align: center;
+  line-height: 2;
 `
 
 const ProjectExplanation = styled.section`
-display: flex;
-align-items: center;
-justify-content: center;
-position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 `
 
 const TextTopLeftCorner = styled.div`
-color: #414a4f;
-max-width: 550px;
-top: 60px;
-align-self: flex-start;
-position: absolute;
-line-height: 25px;
+  color: #414a4f;
+  max-width: 550px;
+  top: 60px;
+  align-self: flex-start;
+  position: absolute;
+  line-height: 25px;
 `
 
 const ExplanationParagraph = styled.p`
-max-width: 800px;
-font-family: 'Roboto';
-line-height: 2;
-color: #fff;
-font: normal 16px sans-serif;
-
+  max-width: 800px;
+  font-family: 'Roboto';
+  line-height: 2;
+  color: #fff;
+  font: normal 16px sans-serif;
 `
 const CornerImage = styled.div`
-background-image: url(./assets/globe/ConflictGLobe.png);
-background-size: 750px 600px;
-background-repeat: no-repeat;
-align-self: flex-end;
-right: 0;
-bottom: 0;
-position: absolute;
-height: 70%;
-width: 50%;
-z-index: 0;
+  background-image: url(./assets/globe/ConflictGLobe.png);
+  background-size: 750px 600px;
+  background-repeat: no-repeat;
+  align-self: flex-end;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 70%;
+  width: 50%;
+  z-index: 0;
 `
 
 class Introduction extends React.Component {
@@ -97,7 +122,7 @@ class Introduction extends React.Component {
   render(){
     return (
       <Wrapper className='introduction-wrapper' id="introductionWrapper">
-        <ProjectIntroduction id="projectIntroduction" className="demo">
+        <ProjectIntroduction>
           <Title>Refugee Flow</Title>
           <IntroParagraph>
             To leave one’s home country, community, and loved ones is a difficult prospect

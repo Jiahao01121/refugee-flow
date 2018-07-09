@@ -73,8 +73,29 @@ const SearchBar = styled.div`
   height: 20px;
   right: 0;
   cursor: pointer;
+  opacity: 0.8;
+  transition: all 400ms;
   &>svg{
-    fill: white;
+    fill: rgba(255,255,255,1);
+    opacity: 0.8;
+    transition: all 400ms;
+  }
+
+  &::before{
+    content: 'Search by Country';
+    position: absolute;
+    color: #fff;
+    right: 10px;
+    bottom: 0;
+    font-family: 'Roboto';
+    font-size: 12px;
+    font-weight: 300;
+    width: 116px;
+    opacity: ${props => props.inputOn ? 0 : 0.8};
+    transition: all 400ms;
+  }
+  &:hover{
+    opacity: 1;
   }
 `
 const SearchBarInput = styled.input`
@@ -436,12 +457,14 @@ export default class RefugeeRoute_textArea_content_ibcCountry extends React.Comp
           </svg>
         </DataSource>
 
-        <SearchBar onClick={() => this.setState({inputOn: !this.state.inputOn },() =>{
+        <SearchBar
+          onClick={() => this.setState({inputOn: !this.state.inputOn },() =>{
             if(!this.state.inputOn){
               this.setState({searchedItem: [],dropDownItem: []});
               this.searchBar.value = '';
             }
-          })}>
+          })}
+          inputOn={this.state.inputOn}>
           {this.state.inputOn
             ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path d="M19 13H5v-2h14v2z"/>
