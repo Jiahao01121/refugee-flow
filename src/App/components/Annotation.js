@@ -8,21 +8,40 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  background-color: #101014b5;
+  background-color: #12121fb5;
   z-index: 20;
   ${'' /* display: none; */}
   transition: all 400ms;
   opacity: 0;
+  bottom: 0;
+`
+const TextWrapper = styled.div`
+  margin-top: 40px;
+  height: 100%;
+  position: relative;
 `
 const Title = styled.p`
+  opacity: .8;
+  transition: all 400ms;
   font-family: 'Roboto';
-  font-size: 25px;
-  font-weight: 500;
-  color: white;
-  margin-left: 310px;
+  font-size: 20px;
+  font-weight: 400;
+  color: #c5d3ff;
   position: absolute;
-  top: 22px;
-  left: 100px;
+  top: 33px;
+  left: 30px;
+  background: #2b3dba;
+  border-radius: 3px;
+  padding: 15px 15px;
+  box-shadow: 7px 9px 71px 5px rgb(29, 37, 82);
+  cursor: pointer;
+  width: 95%;
+  text-align: center;
+  z-index: 100;
+  &:hover{
+    opacity: 1;
+    font-weight: 800;
+  }
 `
 const RegionAnnotation = styled.p`
   position: absolute;
@@ -87,9 +106,7 @@ const FilterAnnotation = styled.p`
 `
 const TimelineAnnotation = styled.p`
   position: absolute;
-  top: ${() =>{
-    return $($('.years')[2]).position() ? $($('.years')[2]).position().top + 125 - 37 + 'px' : '1000000px';
-    }};
+  top: 406px;
   left: ${() =>{
     return $($('.years')[2]).position() ? $($('.years')[2]).position().left + 130 + 'px' : '100000px';
     }};
@@ -319,15 +336,17 @@ class Annotation extends React.Component{
     return (
       <Wrapper className='annotation-wrapper' onClick={() => {d3.select('.annotation-wrapper').style('opacity','0'); _.delay(() => d3.select('.annotation-wrapper').style('display','none'), 400 )}}>
         <Title>Click anywhere to explore Refugee Flow</Title>
-        <RegionAnnotation>Regions</RegionAnnotation>
-        <FilterAnnotation>Filter</FilterAnnotation>
-        <TimelineAnnotation>Timeline Controller</TimelineAnnotation>
-        <RoutePopupAnnotation>Associated Refugee Route</RoutePopupAnnotation>
-        <Stats1Annotation>Total Fatality</Stats1Annotation>
-        <Stats2Annotation>Total Civilian Fatality</Stats2Annotation>
-        <Stats3Annotation>Total Armed Conflicts</Stats3Annotation>
-        <MapNavAnnotation>Map Navigation</MapNavAnnotation>
-        <ChartAnnotation>Asylum Application Data</ChartAnnotation>
+        <TextWrapper>
+          <RegionAnnotation>Regions</RegionAnnotation>
+          <FilterAnnotation>Filter</FilterAnnotation>
+          <TimelineAnnotation>Timeline Controller</TimelineAnnotation>
+          <RoutePopupAnnotation>Associated Refugee Route</RoutePopupAnnotation>
+          <Stats1Annotation>Total Fatality</Stats1Annotation>
+          <Stats2Annotation>Total Civilian Fatality</Stats2Annotation>
+          <Stats3Annotation>Total Armed Conflicts</Stats3Annotation>
+          <MapNavAnnotation>Map Navigation</MapNavAnnotation>
+          <ChartAnnotation>Asylum Application Data</ChartAnnotation>
+        </TextWrapper>
       </Wrapper>
     )
   }

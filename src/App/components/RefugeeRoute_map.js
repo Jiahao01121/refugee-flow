@@ -89,17 +89,21 @@ export default class RefugeeRoute_map extends React.Component {
   handleClick(e){
     let p = this.tree.find(e.point.x, e.point.y);
     if(p && this.state.mouseover_toggle) this.passClickedPointManager(p);
+
     this.setState({mouseover_toggle: !this.state.mouseover_toggle},() =>{
-      // register/cancel mousemove listener
-      !this.state.mouseover_toggle
-        ? this.map.off('mousemove',this.handleMousemove)
-        : this.map.on('mousemove',this.handleMousemove);
-      // fly
-      !this.state.mouseover_toggle
-        ? this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:10, offset:[-500,0]}))
-        : this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:9, offset:[-500,0]}));
-      // inform cancel selected points
-      this.state.mouseover_toggle && this.passRemoveClickedPointManager();
+
+      if(p){
+        // register/cancel mousemove listener
+        !this.state.mouseover_toggle
+          ? this.map.off('mousemove',this.handleMousemove)
+          : this.map.on('mousemove',this.handleMousemove);
+        // fly
+        !this.state.mouseover_toggle
+          ? this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:10, offset:[-500,0]}))
+          : this.canvas_overlay_render(() => this.map.flyTo({center: [p.lng,p.lat],zoom:9, offset:[-500,0]}));
+        // inform cancel selected points
+        this.state.mouseover_toggle && this.passRemoveClickedPointManager();
+      }
     });
   }
 

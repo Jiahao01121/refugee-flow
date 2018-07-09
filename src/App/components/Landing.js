@@ -11,7 +11,9 @@ export default class Landing extends Component {
   constructor(props){
     super(props);
   }
-
+  componentDidMount(){
+    d3.select('#nav-show').style('display','none');
+  }
     evokePrompt = _.once(() => {
       _.delay(() => {
         d3.select('.introduction-wrapper').style('display','block').style('opacity','1');
