@@ -14,7 +14,7 @@ const NavbarContainer = styled.div`
     content: '';
     width: ${props => props.loadBar ? '100%':'0%'};
     height: 2px;
-    background: #a1a6d7bd;
+    background: #41edb8bd;
   ${'' /* second color choise:
           #bf4211
           #41edb8bd
@@ -59,7 +59,7 @@ const NavbarContainer = styled.div`
 
 const Nav = styled.nav`
   position: relative;
-  right: -20px;
+  right: -5px;
   float: right;
   top: 50%;
   transform: translateY(-50%);
