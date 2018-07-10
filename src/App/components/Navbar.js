@@ -72,6 +72,7 @@ const Nav = styled.nav`
     color: white;
     box-shadow: 0px 5px 21px -2px rgb(13,19,25);
     transition: all 300ms;
+    text-decoration: none;
   }
   > a:hover{
     box-shadow: 0px 10px 15px -5px rgb(104, 110, 150);
@@ -92,7 +93,10 @@ class Navbar extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({loadBar: true});
+    console.log('aa');
+    this.setState({loadBar: !this.state.loadBar},() =>{
+      setTimeout(() => this.setState({loadBar: !this.state.loadBar}), 8000);
+    });
   }
 
   render(){

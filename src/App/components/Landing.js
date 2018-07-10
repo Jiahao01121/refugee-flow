@@ -17,7 +17,7 @@ export default class Landing extends Component {
     return(
       <div>
         <Video />
-        <Introduction />
+        {/* <Introduction /> */}
       </div>
     )
   }
