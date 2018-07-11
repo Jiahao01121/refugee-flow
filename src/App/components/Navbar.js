@@ -13,12 +13,12 @@ const NavbarContainer = styled.div`
   &::before{
     content: '';
     width: ${props => props.loadBar ? '100%':'0%'};
-    height: 2px;
-    background: #41edb8bd;
+    height: 4px;
+    background: #00ffb0bd;
   ${'' /* second color choise:
           #bf4211
           #41edb8bd
-          */}
+  */}
     position: absolute;
     top: 0;
     transition: inherit;
