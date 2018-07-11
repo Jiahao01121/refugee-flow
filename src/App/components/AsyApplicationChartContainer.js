@@ -7,9 +7,8 @@ import * as d3 from 'd3';
 import $ from "jquery";
 
 const Chart = styled.div`
-    width: 90%;
+    width: 95%;
     left: 5%;
-    ${'' /* background: #0000ff1f; */}
     height: 80%;
     position: absolute;
     bottom: 7%;
