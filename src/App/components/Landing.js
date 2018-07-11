@@ -402,7 +402,7 @@ export default class Landing extends Component {
           </IntroParagraph>
         </IntroWrapper>
 
-        <Copyright>Build by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
+        <Copyright>Built by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
       </IntroPage>
       <div id="video">{/* onClick={()=> this.removeVideo()} */}
       <BoxShadow/>
