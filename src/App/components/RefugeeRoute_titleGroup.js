@@ -26,7 +26,7 @@ const Title = styled.p`
   cursor: default;
 
   &:after{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut';
+    content: 'Toggle the above arrow to switch between migrant routes. Click on the text bubbles below to add and remove filters on the map';
     left: -30px;
     color: white;
     position: absolute;
