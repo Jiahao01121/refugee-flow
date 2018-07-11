@@ -158,7 +158,7 @@ const RoutePopupAnnotation = styled.p`
     left: -30px;
   }
   &:before{
-    content: 'Click to see associated refugee flee route';
+    content: 'Click to see associated refugee routes';
     font-family: 'Roboto';
     font-size: 12px;
     font-weight: 200;
@@ -340,7 +340,7 @@ class Annotation extends React.Component{
           <RegionAnnotation>Regions</RegionAnnotation>
           <FilterAnnotation>Filter</FilterAnnotation>
           <TimelineAnnotation>Timeline Controller</TimelineAnnotation>
-          <RoutePopupAnnotation>Associated Refugee Route</RoutePopupAnnotation>
+          <RoutePopupAnnotation>Refugee Routes</RoutePopupAnnotation>
           <Stats1Annotation>Total Fatality</Stats1Annotation>
           <Stats2Annotation>Total Civilian Fatality</Stats2Annotation>
           <Stats3Annotation>Total Armed Conflicts</Stats3Annotation>
