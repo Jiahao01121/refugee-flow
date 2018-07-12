@@ -109,6 +109,12 @@ const TabText = styled.p`
   position: relative;
   top: 45%;
   transform: translateY(-50%);
+
+  &::selection {
+    text-shadow: none;
+    background: none;
+    color: none;
+  }
 `
 
 export default class RefugeeRoute_textArea extends React.Component {
