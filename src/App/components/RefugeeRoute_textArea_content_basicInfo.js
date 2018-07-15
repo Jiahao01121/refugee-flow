@@ -206,6 +206,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
       - margin.top - margin.bottom;
 
     this.g = d3.select(this.chartContainer).append('svg')
+      .attr('overflow',"visible")
       .attr('width',width+ margin.left + margin.right +'px')
       .attr('height',height + margin.top + margin.bottom+'px')
       .append('g')
@@ -285,6 +286,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
 
       this.totalFat
       .on('mouseenter',function(d){
+
           d3.select(this).style('fill','#9292efad')
           const x = d3.mouse(this)[0];
           const y = d3.mouse(this)[1];
@@ -293,7 +295,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
           d3.select(this.parentNode).append('rect')
             .attr('id','chartTooltip')
             .attr('rx',3)
-            .attr("x",x)
+            .attr("x",x + 15)
             .attr("y",y)
             .attr('width',tooltopW)
             .attr('height',0)
@@ -309,7 +311,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
 
           d3.select(this.parentNode).append('text')
           .attr('id','chartTooltip__text')
-          .attr("x",x + 10)
+          .attr("x",x + 10 + 15)
           .attr("y",y+(tooltopH/2) + 5)
           .style('opacity',0)
           .transition()
@@ -340,7 +342,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
         .selectAll("rect")
         .data(d=>d)
         .enter().append("rect")
-        .attr('rx',3)
+        .attr('rx','.2%')
         .attr("y",d=>  yScale(d.data.year) )
         .attr("x",d=> xScale(d[0]) )
         .attr("height",yScale.bandwidth());
@@ -352,6 +354,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
         .attr("width",d=> xScale(d[1]) - xScale(d[0]) )
 
       this.incidentType
+
         .on('mouseenter',function(d){
 
           const x = d3.mouse(this)[0];
@@ -359,7 +362,8 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
           const tooltopW = 370;
           const tooltopH = 200;
 
-          const text_g = d3.select(this.parentNode.parentNode).append('g').attr('id','chartTooltip__text');
+          const text_g = d3.select(this.parentNode.parentNode)
+          .append('g').attr('id','chartTooltip__text')
 
           text_g.append('rect')
             .attr('rx',3)
@@ -429,6 +433,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
                 .text(d3.format(',')(d.data[ele]))
           })
         })
+
         .on('mouseout',function(){
           d3.select('#chartTooltip__text').remove()
         })
@@ -436,17 +441,21 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
     }
     else if(this.state.mode == 3){
       // death/missing ratio
+      const colorCode = {
+        0: `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`,
+        1: `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`
+      }
       this.d_m_ratio = this.g.selectAll('g.ratio_series').data(ratio)
         .enter().append("g")
         .attr("class","series")
         .attr('transform',d => yScale(d[1]) )
-        .style("fill",(d,i)=> `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`)
+        .style("fill",(d,i)=> colorCode[i])
         .selectAll("rect")
         .data(d=>d)
         .enter().append("rect")
         .attr("x",d=> xScale(d[0]) )
         .attr("y",d=>  yScale(d.data.year) )
-        .attr('rx',3)
+        .attr('rx','.2%')
         .attr("height",yScale.bandwidth());
 
       this.d_m_ratio
@@ -525,6 +534,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
             .style('font-size','15px')
             .style('font-family','Roboto')
             .style('font-weight','600')
+            .style('fill',colorCode['0'])
             .text(d3.format(',')(d.data['dead']) +' ('+ d3.format('.1%')( d.data['dead']/d.data['total'] )+')')
 
           // missing text
@@ -557,6 +567,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
               .style('font-size','15px')
               .style('font-family','Roboto')
               .style('font-weight','600')
+              .style('fill',colorCode['1'])
               .text(d3.format(',')(d.data['missing'])  +' ('+ d3.format('.1%')( d.data['missing']/d.data['total'] )+ ')')
       })
       .on('mouseout',function(){
