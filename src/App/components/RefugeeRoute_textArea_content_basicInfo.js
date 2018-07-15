@@ -609,7 +609,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
         </CurrentSituation>
 
         <DeathSummary>
-          <p>Death Summary - {this.currentRouteName}</p>
+          <p>Incident Summary - {this.currentRouteName}</p>
           <Stats innerRef={(stats) => {return this.stats = stats }}><p>{this.calculateDeathTotal()}</p></Stats>
           <ChartController innerRef={(ChartController) => {return this.ChartController = ChartController }}>
             <ChartControllerButton
