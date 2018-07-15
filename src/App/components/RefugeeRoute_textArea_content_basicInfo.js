@@ -408,7 +408,8 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
               .style('font-size','12px')
               .style('font-family','Roboto')
               .style('font-weight','400')
-              .text(ele+' - ')
+              .style('text-transform', 'capitalize')
+              .text(ele +':')
 
               text_g
                 .append('text')
@@ -509,7 +510,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
             .style('font-size','12px')
             .style('font-family','Roboto')
             .style('font-weight','400')
-            .text('death')
+            .text('Death')
           // death num
           text_g
             .append('text')
@@ -540,7 +541,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
             .style('font-size','12px')
             .style('font-family','Roboto')
             .style('font-weight','400')
-            .text('missing')
+            .text('Missing')
 
             // missing num
             text_g

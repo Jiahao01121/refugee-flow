@@ -3,7 +3,6 @@ import styled, { css }from 'styled-components';
 import * as d3 from 'd3';
 import $ from "jquery";
 import _ from 'underscore';
-import * as emojiFlags from 'emoji-flags';
 import {countryCode} from '../data/warDictionary';
 import { ScaleLoader } from 'react-spinners';
 import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
@@ -66,6 +65,7 @@ const SectionTitle = styled.p`
   font-size: 15px;
   font-weight: 100;
   text-align: center;
+  text-transform: capitalize;
   top: 290px;
   position: absolute;
   left: 50%;
@@ -219,7 +219,7 @@ class Region extends Component {
               }
               return mouseOverButtonGroup
             })()}
-            <SectionTitle>{ flag_code && emojiFlags.countryCode(flag_code).emoji + d[i].country.charAt(0).toUpperCase() + d[i].country.toLowerCase().slice(1)}</SectionTitle>
+            <SectionTitle>{ d[i].country.charAt(0).toUpperCase() + d[i].country.toLowerCase().slice(1)}</SectionTitle>
             <Bubble size ={ this.state.mv ? scaler(d[i].fat_year['201'+this.state.mv_year]) : scaler(d[i].total_fat) }></Bubble>
             <Fat_num textChange = {this.state.mv ? '201'+this.state.mv_year : false}>{d3.format(",")(
               this.state.mv ? d[i].fat_year['201'+this.state.mv_year] : d[i].total_fat
