@@ -164,7 +164,7 @@ const Introtitle = styled.p`
   color: white;
   position: fixed;
   &::after{
-    content: 'Read before you leave!';
+    content: 'Read before you explore!';
     font-size: 12px;
     font-weight: 500;
     font-family: 'Roboto';
@@ -184,7 +184,7 @@ const Copyright = styled.p`
   border-radius: 3px;
   font-size: 12px;
   position: absolute;
-  bottom: 5%;
+  bottom: 0;
   right: 15px;
   padding-right: 30px;
 
@@ -339,30 +339,7 @@ export default class Landing extends Component {
         <Exit onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>x</Exit>
 
         <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Introtitle>Approach</Introtitle>
-          <IntroInnerWrapper>
-            <IntroParagraph>
-              Refugee Flow gathers data from multiple reliable sources to construct a compelling account
-              on how persons become refugees. This project examines one of the direct fundamental causes
-              of the global refugee crisis, the collapse of order and stability in todays international
-              landscape.
-            </IntroParagraph>
-            <IntroParagraph>
-              This visualization examines the impact conflict, persecution and violence has on the lives of
-              persons in their home countries and communities. The dataset delves into exploring what drives
-              people to flee their homes and bear the burden of a life as a refugee.
-            </IntroParagraph>
-            <IntroParagraph>
-              The project further explores the possible routes taken by refugees. The dataset examines the
-              dangers those forcibly displaced face in their search for safety. Many refugees who depart
-              on their journey never make it to their intended destination. The data collected presents the
-              cause of these deaths along their chosen routes.
-            </IntroParagraph>
-          </IntroInnerWrapper>
-        </IntroWrapper>
-
-        <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Introtitle>Context</Introtitle>
+          <Introtitle>Introduction</Introtitle>
           <IntroInnerWrapper>
             <IntroParagraph>
               To leave one’s home country, community, and loved ones is a difficult prospect
@@ -384,6 +361,29 @@ export default class Landing extends Component {
             </IntroParagraph>
             <IntroParagraph>
               Every refugee is an example of a world that failed to use its common strength for the common good.
+            </IntroParagraph>
+          </IntroInnerWrapper>
+        </IntroWrapper>
+
+        <IntroWrapper wikiOn ={this.state.wikiOn}>
+          <Introtitle>The Approach</Introtitle>
+          <IntroInnerWrapper>
+            <IntroParagraph>
+              Refugee Flow gathers data from multiple reliable sources to construct a compelling account
+              on how persons become refugees. This project examines one of the direct fundamental causes
+              of the global refugee crisis, the collapse of order and stability in todays international
+              landscape.
+            </IntroParagraph>
+            <IntroParagraph>
+              This visualization examines the impact conflict, persecution and violence has on the lives of
+              persons in their home countries and communities. The dataset delves into exploring what drives
+              people to flee their homes and bear the burden of a life as a refugee.
+            </IntroParagraph>
+            <IntroParagraph>
+              The project further explores the possible routes taken by refugees. The dataset examines the
+              dangers those forcibly displaced face in their search for safety. Many refugees who depart
+              on their journey never make it to their intended destination. The data collected presents the
+              cause of these deaths along their chosen routes.
             </IntroParagraph>
           </IntroInnerWrapper>
         </IntroWrapper>
