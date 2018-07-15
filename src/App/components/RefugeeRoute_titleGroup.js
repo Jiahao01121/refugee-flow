@@ -26,7 +26,7 @@ const Title = styled.p`
   cursor: default;
 
   &:after{
-    content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut';
+    content: 'An exploration of the causes of death and injury faced by migrants on their chosen routes.';
     left: -30px;
     color: white;
     position: absolute;
@@ -232,8 +232,9 @@ export default class RefugeeRoute_titleGroup extends React.Component {
         <Legend>{this.legendGenerator()}</Legend>
 
         <Instructions>
-          <p>* Click the up/down arrow to switch the refugee route</p>
-          <p>* Click the circles to access detail information about the accident/event</p>
+          <p>* Click the up/down arrow to switch between refugee route</p>
+          <p>* Click on the text bubbles to add and remove filters on the map</p>
+          <p>* Click the circles to access detailed information about the accident/event</p>
         </Instructions>
       </Wrapper>
     )

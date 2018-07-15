@@ -400,8 +400,31 @@ export default class Landing extends Component {
             </IntroParagraph>
           </IntroInnerWrapper>
         </IntroWrapper>
+        {/* <DashLine wikiOn ={this.state.wikiOn}></DashLine> */}
+        <IntroWrapper wikiOn ={this.state.wikiOn}>
+          <Introtitle  videoLoop={this.state.videoLoop}>The Approach</Introtitle>
+          <br/>
 
-        <Copyright>Build by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
+          <IntroParagraph>
+            Refugee Flow gathers data from multiple reliable sources to construct a compelling account
+            on how persons become refugees. This project examines one of the direct fundamental causes
+            of the global refugee crisis, the collapse of order and stability in todays international
+            landscape.
+          </IntroParagraph>
+          <IntroParagraph>
+            This visualization examines the impact conflict, persecution and violence has on the lives of
+            persons in their home countries and communities. The dataset delves into exploring what drives
+            people to flee their homes and bear the burden of a life as a refugee.
+          </IntroParagraph>
+          <IntroParagraph>
+            The project further explores the possible routes taken by refugees. The dataset examines the
+            dangers those forcibly displaced face in their search for safety. Many refugees who depart
+            on their journey never make it to their intended destination. The data collected presents the
+            cause of these deaths along their chosen routes.
+          </IntroParagraph>
+        </IntroWrapper>
+
+        <Copyright>Built by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
       </IntroPage>
       <div id="video">
         <BoxShadow/>
