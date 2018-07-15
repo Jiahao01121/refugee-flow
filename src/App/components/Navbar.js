@@ -112,7 +112,7 @@ class Navbar extends React.Component {
           <Nav>
             <Link to='/conflict'>Conflict</Link>
             <Link to='/route/EasternMediterranean'>Route</Link>
-            <Link to='/about'>About</Link>
+            <Link to='/about'>Donate</Link>
           </Nav>
         </NavbarContainer>
     )
