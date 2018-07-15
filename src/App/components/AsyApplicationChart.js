@@ -152,6 +152,7 @@ class AsyApplicationChart extends React.Component {
   drawDataontoChart(chartD){
 
     const svg_width = this.width;
+    const svg_height = this.height;
     let currentDomain = this.quaterList;
     //hard coded year list for x axis
     let allDomain = ['2010Q1','2010Q2','2010Q3','2010Q4',
@@ -256,7 +257,14 @@ class AsyApplicationChart extends React.Component {
                   return +d3.select(this).attr('cx');
                 }
               })
-              .attr('y',() => +d3.select(this).attr('cy') + 15 )
+              .attr('y',() => {
+                if(svg_height - +d3.select(this).attr('cy') < h){
+                  return +d3.select(this).attr('cy') - h - 15
+                }else{
+                  return +d3.select(this).attr('cy') + 15
+                }
+
+              })
               .style('fill','#26242bb8')
               .attr('height',0)
               .transition()
@@ -276,7 +284,13 @@ class AsyApplicationChart extends React.Component {
                   return +d3.select(this).attr('cx') + 20;
                 }
               })
-              .attr('y',() => +d3.select(this).attr('cy') + 15 + 40 )
+              .attr('y',() =>{
+                if(svg_height - +d3.select(this).attr('cy') < h){
+                  return +d3.select(this).attr('cy') - h - 15 + 40
+                }else{
+                  return +d3.select(this).attr('cy') + 15 + 40
+                }
+              })
               .text('Total application: '+ d3.format(".5s")(d3.select(this).datum()))
               .attr("fill", "#b9b7b7")
               .style('font-family','Roboto')
@@ -286,7 +300,6 @@ class AsyApplicationChart extends React.Component {
               .transition()
               .duration(600)
               .style('opacity',1)
-
             g.append('text')
               .attr('x',() => {
                 if(svg_width - +d3.select(this).attr('cx') < w/2){
@@ -300,12 +313,20 @@ class AsyApplicationChart extends React.Component {
                 }
               })
 
-              .attr('y',() => +d3.select(this).attr('cy') + 15 + 20 )
-              .text( "Year/Quarter: " +(
-                  chartD.indexOf(d3.select(this).datum()) > 4
-                  ? allDomain[chartD.indexOf(d3.select(this).datum())].toUpperCase()
-                  : currentDomain[chartD.indexOf(d3.select(this).datum())].toUpperCase()
-                )
+              .attr('y',() => {
+                if(svg_height - +d3.select(this).attr('cy') < h){
+                  return +d3.select(this).attr('cy') - h - 15 + 20
+                }else{
+                  return +d3.select(this).attr('cy') + 15 + 20
+                }
+              })
+              .text( () =>{
+                return "Year/Quarter: " +(
+                    // chartD.indexOf(d3.select(this).datum()) > 4
+                     allDomain[chartD.indexOf(d3.select(this).datum())].toUpperCase()
+                    // : currentDomain[chartD.indexOf(d3.select(this).datum())]
+                  )
+              }
               )
 
               .attr("fill", "#b9b7b7")
