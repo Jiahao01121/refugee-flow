@@ -343,7 +343,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
         .data(d=>d)
         .enter().append("rect")
         .attr('rx','.2%')
-        .attr("y",d=>  yScale(d.data.year) )
+        .attr("y",d=>  yScale(d.data.year))
         .attr("x",d=> xScale(d[0]) )
         .attr("height",yScale.bandwidth());
 
@@ -366,6 +366,7 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
           .append('g').attr('id','chartTooltip__text')
 
           text_g.append('rect')
+            .attr('id','chartTooltip__text__rect')
             .attr('rx',3)
             .attr("x",width - tooltopW)
             .attr("y",height - tooltopH - 20)
@@ -435,7 +436,23 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
         })
 
         .on('mouseout',function(){
-          d3.select('#chartTooltip__text').remove()
+          const xStart = d3.select('#chartTooltip__text__rect').attr('x');
+          const yStart = d3.select('#chartTooltip__text__rect').attr('y');
+          const xEnd = +d3.select('#chartTooltip__text__rect').attr('x') + +d3.select('#chartTooltip__text__rect').attr('width');
+          const yEnd = +d3.select('#chartTooltip__text__rect').attr('y') + +d3.select('#chartTooltip__text__rect').attr('height');
+
+          const mx = d3.mouse(this)[0];
+          const my = d3.mouse(this)[1];
+
+          if((mx > xStart && mx < xEnd) && (my > yStart && my < yEnd)){
+            d3.select('#chartTooltip__text').on('mouseout',() => {
+              console.log('ssa');
+              d3.select('#chartTooltip__text').remove()
+            })
+          }
+          else{
+            d3.select('#chartTooltip__text').remove()
+          }
         })
 
     }
