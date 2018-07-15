@@ -96,7 +96,7 @@ const Instructions = styled.div`
   transition: all 400ms;
   cursor: default;
   &>p{
-    color: #ffffff78;
+    color: #ffffffde;
     font-size: 12px;
     font-family: 'Roboto';
     font-weight: 300;
