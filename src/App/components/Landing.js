@@ -55,19 +55,28 @@ const Intro = styled.div`
   opacity: ${props => props.animation?1:0};
   ${props => !props.wikiOn
   ? css`
-    transition: top 1200ms, opacity 2500ms, filter 200ms, right 400ms;
+    transition: top 1200ms, opacity 2500ms, filter 1500ms, right 400ms;
     right: 50px;
     font-weight: 500;
     font-size: 12px;
   `
   : css`
-    transition: top 200ms, opacity 2500ms, filter 200ms, right cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms;
+    transition: top 200ms, opacity 2500ms, filter 1500ms, right cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms;
     right: ${() => window.innerWidth - 60 +'px'};
     top: 54px;
     font-weight: 900;
     font-size: 18px;
   `}
 
+  filter: ${props =>{
+    if(!props.wikiOn){
+      return props.videoLoop
+        ? 'drop-shadow(0px 2px 11px #ff8b38) contrast(700%)'
+        : 'drop-shadow(0px 2px 30px #08081b)'
+    }else{
+      return 'drop-shadow(0px 2px 30px #08081b)'
+    }
+  }};
 
 
   &:hover{
@@ -327,14 +336,14 @@ export default class Landing extends Component {
   componentDidMount(){
     d3.select('#nav-show').style('display','none');
     window.setTimeout(() => this.setState({animation: true}) ,1000);
-    // window.setInterval(() => this.setState({videoLoop: !this.state.videoLoop}),1650);
+    window.setInterval(() => this.setState({videoLoop: !this.state.videoLoop}),1650);
   }
 
   render() {
     return(
     <Wrapper animation={this.state.animation}>
       <Link to='/'>Refugee Flow</Link>
-      <Intro wikiOn ={this.state.wikiOn} animation={this.state.animation} onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>INFO<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/><g><path d="M80 376h288v48H80z"/></g></svg></Intro>
+      <Intro videoLoop={this.state.videoLoop} wikiOn ={this.state.wikiOn} animation={this.state.animation} onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>INFO<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/><g><path d="M80 376h288v48H80z"/></g></svg></Intro>
       <IntroPage wikiOn ={this.state.wikiOn}>
         <Exit onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>x</Exit>
 
