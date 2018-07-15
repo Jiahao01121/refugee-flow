@@ -112,7 +112,8 @@ class Navbar extends React.Component {
           <Nav>
             <Link to='/conflict'>Conflict</Link>
             <Link to='/route/EasternMediterranean'>Route</Link>
-            <Link to='/about'>Donate</Link>
+            <Link to='/about'>About</Link>
+            <a href='http://www.google.com'>Donate</a>
           </Nav>
         </NavbarContainer>
     )
