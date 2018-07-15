@@ -53,7 +53,6 @@ const Intro = styled.div`
   z-index: 1000;
   top: ${props => props.animation?'14px':'-300px'};
   opacity: ${props => props.animation?1:0};
-
   ${props => !props.wikiOn
   ? css`
     transition: top 1200ms, opacity 2500ms, filter 200ms, right 400ms;
@@ -62,7 +61,7 @@ const Intro = styled.div`
     font-size: 12px;
   `
   : css`
-    transition: top 200ms, opacity 2500ms, filter 200ms, right cubic-bezier(0.73, 0.02, 0.58, 0.78) 800ms;
+    transition: top 200ms, opacity 2500ms, filter 200ms, right cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms;
     right: ${() => window.innerWidth - 60 +'px'};
     top: 54px;
     font-weight: 900;
@@ -74,7 +73,6 @@ const Intro = styled.div`
   &:hover{
     filter: drop-shadow(0px 2px 8px #bebee4);
   }
-
   &>svg{
     ${props => !props.wikiOn
     ? css`
@@ -85,7 +83,6 @@ const Intro = styled.div`
       top: 0;
       left: 42px;
     `}
-
     fill: white;
     position: absolute;
     width: 20px;
@@ -98,10 +95,118 @@ const IntroPage = styled.div`
   right: 0;
   z-index: 998;
   opacity: ${props => props.wikiOn ? '0.98' : '0'};
-  transition: width cubic-bezier(0.73, 0.02, 0.58, 0.78) 800ms, opacity 400ms, background 1600ms;
+  transition: width cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms, opacity 400ms, background 1600ms;
   position: absolute;
-  background: ${props => props.videoLoop?'rgba(30, 30, 47,'+  d3.randomUniform(0.95, 1)()+ ')':'rgba(30,'+d3.randomUniform(30,36)() +', 47,'+  d3.randomUniform(0.945, 1)()+ ')'};
+  background: rgba(30, 30, 47, 0.98);
 `
+const Exit = styled.div`
+  color: white;
+  position: absolute;
+  right: 50px;
+  top: 10px;
+  font-size: 30px;
+  font-weight: 500;
+  font-family: 'Ubuntu';
+  cursor: pointer;
+  &:hover{
+    opacity: 1;
+    transition: filter 200ms, opacity 800ms;
+    filter:drop-shadow(0px 2px 8px #bebee4);
+  }
+`
+const IntroWrapper = styled.div`
+  position: relative;
+  bottom: -120px;
+  width: 40%;
+  height: 80%;
+  float: left;
+  margin: 0px 5%;
+  overflow-y: hidden;
+  opacity: ${props => props.wikiOn ? '0.98' : '0'};
+  transition: opacity cubic-bezier(0.96, 0.03, 0.4, 1.3) 2000ms;
+  &::after{
+    content: '';
+    width: 130%;
+    bottom: -20px;
+    height: 0px;
+    box-shadow: 0px 0px 140px 70px rgb(29, 28, 45);
+    position: absolute;
+  }
+`
+const IntroParagraph = styled.p`
+  color: white;
+  font-family: 'Ubuntu';
+  font-size: 15px;
+  font-weight: 100;
+  line-height: 2;
+  letter-spacing: 0.7px;
+  text-align: left;
+`
+const IntroInnerWrapper = styled.div`
+  height: 80%;
+  overflow-y: scroll;
+  bottom: 0;
+  position: absolute;
+
+  &::-webkit-scrollbar{width: 1px}
+  &::-webkit-scrollbar-thumb {
+    background-color: #2a2a42;
+    -webkit-border-radius: 4px;
+  }
+`
+const Introtitle = styled.p`
+  transition: all 1500ms;
+  font-family: 'Ubuntu';
+  font-size: 35px;
+  font-weight: 700;
+  margin-top: 0;
+  color: white;
+  position: fixed;
+  &::after{
+    content: 'Read before you leave!';
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Roboto';
+    color: #f3f5ff;
+    position: absolute;
+    left: 0;
+    top: 50px;
+  }
+`
+const DashLine = styled.hr`
+  position: absolute;
+  height: 80%;
+  left: 47.5%;
+  transform: translateX(-50%);
+  top: 10%;
+  border: 5px #eb5d5d inset;
+  border-radius: 100%;
+  opacity: ${props => props.wikiOn ? '0.98' : '0'};
+  transition: all cubic-bezier(0.96, 0.03, 0.4, 1.3) 2000ms;
+`
+const Copyright = styled.p`
+  font-family: 'Roboto';
+  font-weight: 480;
+  letter-spacing: 0.5px;
+  color: white;
+  background-color: #254852;
+  padding: 5px 20px;
+  border-radius: 3px;
+  font-size: 12px;
+  position: absolute;
+  bottom: 5%;
+  right: 15px;
+  padding-right: 30px;
+
+  &>a{
+    transition: all 400ms;
+    color: #abb1d0;
+  }
+  &>a:hover{
+    color: #1e1e2f;
+  }
+`
+
 const Quote = styled.p`
   position: absolute;
   font-family: 'Playfair Display', serif;
@@ -154,19 +259,19 @@ const Quote = styled.p`
 `
 const Section = styled.section`
   height: 100vh;
-  &>video{
+`
+const Video = styled.video.attrs({
+  opacity: props => props.animation?1:0,
+  filter: props => props.videoLoop ? 'blur('+ Math.abs(d3.randomNormal(0,10)()) +'px'+') hue-rotate(0deg) contrast(1.2) saturate(0.8) brightness(0.5);': 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
+})`
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     background-size: cover;
-    transition: opacity 5500ms, filter 1500ms;
-    opacity: ${props => props.animation?1:0};
-    filter: ${props =>
-      props.videoLoop
-        ? 'blur('+ Math.abs(d3.randomNormal(0,10)()) +'px'+') hue-rotate(0deg) contrast(1.2) saturate(0.8) brightness(0.5);'
-        : 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
-    };
+    transition: opacity 5500ms, filter 1550ms;
+    opacity: ${props => props.opacity};
+    filter: ${props => props.filter};
 
     @media (max-width:1590px) and (min-width: 1270px) {
       width: 140%;
@@ -187,8 +292,6 @@ const Section = styled.section`
     @media (max-width:650px){
       width: 500%;
     };
-
-  }
 `
 const BoxShadow = styled.div`
   position: absolute;
@@ -203,14 +306,13 @@ const Launch = styled.a`
   position: absolute;
   left: 50%;
   bottom: ${props => props.animation?'70px':'200px'};
-
   opacity: ${props => props.animation?1:0};
   transition: background 2000ms, bottom 3000ms,opacity cubic-bezier(1, 0.03, 0.48, 1.01) 3500ms;
   transform: translateX(-50%);
   font-family: 'Ubuntu';
   font-size: 17px;
   color: white;
-  background: ${props => props.videoLoop?'rgba(234,86,0,.95)':'rgba(234, 86, 0,.75)'};
+  background:rgba(234,86,0,.80);
   padding: 15px 45px;
   border-radius: 100px;
   border: 0px;
@@ -219,98 +321,6 @@ const Launch = styled.a`
     background: rgba(234,86,0,1);
     border: 2px #231f419c solid;
     bottom: 72px;
-  }
-`
-const Exit = styled.div`
-  color: white;
-  position: absolute;
-  right: 50px;
-  top: 10px;
-  font-size: 30px;
-  font-weight: 500;
-  font-family: 'Ubuntu';
-  cursor: pointer;
-  &:hover{
-    opacity: 1;
-    transition: filter 200ms, opacity 800ms;
-    filter:drop-shadow(0px 2px 8px #bebee4);
-  }
-`
-
-const IntroWrapper = styled.div`
-  position: relative;
-  top: 130px;
-  width: 40%;
-  height: 80%;
-  float: left;
-  margin: 0px 5%;
-  overflow-y: scroll;
-  opacity: ${props => props.wikiOn ? '0.98' : '0'};
-  transition: all cubic-bezier(0.96, 0.03, 0.4, 1.3) 2000ms;
-  &::-webkit-scrollbar{width: 1px}
-  &::-webkit-scrollbar-thumb {
-    background-color: #2a2a42;
-    -webkit-border-radius: 4px;
-  }
-`
-const IntroParagraph = styled.p`
-  color: white;
-  font-family: 'Ubuntu';
-  font-size: 15px;
-  font-weight: 100;
-  line-height: 2;
-  letter-spacing: 0.7px;
-  text-align: left;
-`
-const Title = styled.p`
-  color: ${props => props.videoLoop?`rgb(${+d3.randomUniform(150, 255)()}, ${+d3.randomUniform(200, 255)()} , ${+d3.randomUniform(200,260)()})`:`rgb(${+d3.randomUniform(220, 240)()}, ${+d3.randomUniform(220, 240)()} , ${+d3.randomUniform(230,260)()})`};
-  transition: all 1500ms;
-  font-family: 'Ubuntu';
-  font-size: 35px;
-  font-weight: 700;
-  margin-top: 0;
-  &::after{
-    content: 'Read before you leave!';
-    font-size: 12px;
-    font-weight: 500;
-    font-family: 'Roboto';
-    color: #f3f5ff;
-    position: absolute;
-    left: 0;
-    top: 50px;
-  }
-`
-const DashLine = styled.hr`
-  position: absolute;
-  height: 80%;
-  left: 47.5%;
-  transform: translateX(-50%);
-  top: 10%;
-  border: 5px #eb5d5d inset;
-  border-radius: 100%;
-  opacity: ${props => props.wikiOn ? '0.98' : '0'};
-  transition: all cubic-bezier(0.96, 0.03, 0.4, 1.3) 2000ms;
-`
-const Copyright = styled.p`
-  font-family: 'Roboto';
-  font-weight: 480;
-  letter-spacing: 0.5px;
-  color: white;
-  background-color: #254852;
-  padding: 5px 20px;
-  border-radius: 3px;
-  font-size: 12px;
-  position: absolute;
-  bottom: 5%;
-  right: 15px;
-  padding-right: 30px;
-
-  &>a{
-    transition: all 400ms;
-    color: #abb1d0;
-  }
-  &>a:hover{
-    color: #1e1e2f;
   }
 `
 
@@ -328,93 +338,79 @@ export default class Landing extends Component {
   componentDidMount(){
     d3.select('#nav-show').style('display','none');
     window.setTimeout(() => this.setState({animation: true}) ,1000);
-    window.setInterval(() => this.setState({videoLoop: !this.state.videoLoop}) ,1550);
+    // window.setInterval(() => this.setState({videoLoop: !this.state.videoLoop}),1650);
   }
-
-  removeVideo = _.once(() =>{
-    d3.select('#video')
-      .transition()
-      .duration(1500)
-      .style('opacity',0)
-      .on('end',function(){
-        d3.select(this).remove();
-      })
-    })
 
   render() {
     return(
     <Wrapper animation={this.state.animation}>
       <Link to='/'>Refugee Flow</Link>
-      <Intro wikiOn ={this.state.wikiOn} animation={this.state.animation} onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>INFO
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/><g><path d="M80 376h288v48H80z"/></g></svg>
-      </Intro>
-      <IntroPage
-        wikiOn ={this.state.wikiOn}
-        videoLoop={this.state.videoLoop}>
+      <Intro wikiOn ={this.state.wikiOn} animation={this.state.animation} onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>INFO<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/><g><path d="M80 376h288v48H80z"/></g></svg></Intro>
+      <IntroPage wikiOn ={this.state.wikiOn}>
         <Exit onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>x</Exit>
 
         <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Title  videoLoop={this.state.videoLoop}>Approach</Title>
-          <br/>
-
-          <IntroParagraph>
-            Refugee Flow gathers data from multiple reliable sources to construct a compelling account
-            on how persons become refugees. This project examines one of the direct fundamental causes
-            of the global refugee crisis, the collapse of order and stability in todays international
-            landscape.
-          </IntroParagraph>
-          <IntroParagraph>
-            This visualization examines the impact conflict, persecution and violence has on the lives of
-            persons in their home countries and communities. The dataset delves into exploring what drives
-            people to flee their homes and bear the burden of a life as a refugee.
-          </IntroParagraph>
-          <IntroParagraph>
-            The project further explores the possible routes taken by refugees. The dataset examines the
-            dangers those forcibly displaced face in their search for safety. Many refugees who depart
-            on their journey never make it to their intended destination. The data collected presents the
-            cause of these deaths along their chosen routes.
-          </IntroParagraph>
+          <Introtitle>Approach</Introtitle>
+          <IntroInnerWrapper>
+            <IntroParagraph>
+              Refugee Flow gathers data from multiple reliable sources to construct a compelling account
+              on how persons become refugees. This project examines one of the direct fundamental causes
+              of the global refugee crisis, the collapse of order and stability in todays international
+              landscape.
+            </IntroParagraph>
+            <IntroParagraph>
+              This visualization examines the impact conflict, persecution and violence has on the lives of
+              persons in their home countries and communities. The dataset delves into exploring what drives
+              people to flee their homes and bear the burden of a life as a refugee.
+            </IntroParagraph>
+            <IntroParagraph>
+              The project further explores the possible routes taken by refugees. The dataset examines the
+              dangers those forcibly displaced face in their search for safety. Many refugees who depart
+              on their journey never make it to their intended destination. The data collected presents the
+              cause of these deaths along their chosen routes.
+            </IntroParagraph>
+          </IntroInnerWrapper>
         </IntroWrapper>
-        {/* <DashLine wikiOn ={this.state.wikiOn}></DashLine> */}
-        <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Title  videoLoop={this.state.videoLoop}>Context</Title>
-          <br/>
 
-          <IntroParagraph>
-            To leave one’s home country, community, and loved ones is a difficult prospect
-            even in times of peace. As violence, persecution, and terror surge the only option for
-            survival and security is to flee one's home.
-          </IntroParagraph>
-          <IntroParagraph>
-            The United Nations High Commissioner for Refugees reports that as of 2017, 65.6 million
-            people were forcibly displaced worldwide due to persecution, conflict, violence, and human
-            rights violations.
-          </IntroParagraph>
-          <IntroParagraph>
-            To become a refugee is to subject a person to the most pervasive form of cruelty by removing
-            their basic need to lead a normal life. All aspects that make human life tolerable and meaningful
-            are lost to the refugee. Refugees are placed in inhospitable host countries that do not want them.
-            They face the brute indifference of the walls that people build between nations and cultures. Yet
-            each refugee surrenders to the hardship of leaving their old lives and the lives they could have
-            lived to find peace and safety elsewhere.
-          </IntroParagraph>
-          <IntroParagraph>
-            Every refugee is an example of a world that failed to use its common strength for the common good.
-          </IntroParagraph>
+        {/* <DashLine wikiOn ={this.state.wikiOn}></DashLine> */}
+
+        <IntroWrapper wikiOn ={this.state.wikiOn}>
+          <Introtitle>Context</Introtitle>
+          <IntroInnerWrapper>
+            <IntroParagraph>
+              To leave one’s home country, community, and loved ones is a difficult prospect
+              even in times of peace. As violence, persecution, and terror surge the only option for
+              survival and security is to flee one's home.
+            </IntroParagraph>
+            <IntroParagraph>
+              The United Nations High Commissioner for Refugees reports that as of 2017, 65.6 million
+              people were forcibly displaced worldwide due to persecution, conflict, violence, and human
+              rights violations.
+            </IntroParagraph>
+            <IntroParagraph>
+              To become a refugee is to subject a person to the most pervasive form of cruelty by removing
+              their basic need to lead a normal life. All aspects that make human life tolerable and meaningful
+              are lost to the refugee. Refugees are placed in inhospitable host countries that do not want them.
+              They face the brute indifference of the walls that people build between nations and cultures. Yet
+              each refugee surrenders to the hardship of leaving their old lives and the lives they could have
+              lived to find peace and safety elsewhere.
+            </IntroParagraph>
+            <IntroParagraph>
+              Every refugee is an example of a world that failed to use its common strength for the common good.
+            </IntroParagraph>
+          </IntroInnerWrapper>
         </IntroWrapper>
 
         <Copyright>Build by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
       </IntroPage>
-      <div id="video">{/* onClick={()=> this.removeVideo()} */}
-      <BoxShadow/>
-        <Section animation={this.state.animation} videoLoop={this.state.videoLoop}>
-          <video autoPlay loop muted style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}><source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" /></video>
-          <Quote videoLoop={this.state.videoLoop} animation={this.state.animation}>
-            "At <i>sea</i>, a frightening number of refugees and migrants are dying each year. On <i>land</i>, people fleeing war are finding their way blocked by closed <i>borders</i>. Closing borders does not solve the problem"
-          </Quote>
+      <div id="video">
+        <BoxShadow/>
+        <Section>
+          <Video animation={this.state.animation} videoLoop={this.state.videoLoop} autoPlay muted loop style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}><source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" /></Video>
+          <Quote videoLoop={this.state.videoLoop} animation={this.state.animation}>"At <i>sea</i>, a frightening number of refugees and migrants are dying each year. On <i>land</i>, people fleeing war are finding their way blocked by closed <i>borders</i>. Closing borders does not solve the problem"</Quote>
         </Section>
       </div>
-      <Launch animation={this.state.animation} videoLoop={this.state.videoLoop} href="/conflict">Launch Visualization</Launch>
+      <Launch animation={this.state.animation} href="/conflict">Launch Visualization</Launch>
     </Wrapper>
     )
   }
