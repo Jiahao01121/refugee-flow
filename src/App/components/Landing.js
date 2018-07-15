@@ -143,14 +143,15 @@ const IntroParagraph = styled.p`
   text-align: left;
 `
 const IntroInnerWrapper = styled.div`
-  height: 80%;
+
+  height: calc(80% - 20px);
   overflow-y: scroll;
-  bottom: 0;
+  bottom: 20px;
   position: absolute;
 
-  &::-webkit-scrollbar{width: 1px}
+  &::-webkit-scrollbar{width: 3px}
   &::-webkit-scrollbar-thumb {
-    background-color: #2a2a42;
+    background-color: #35354a;
     -webkit-border-radius: 4px;
   }
 `
@@ -172,17 +173,6 @@ const Introtitle = styled.p`
     left: 0;
     top: 50px;
   }
-`
-const DashLine = styled.hr`
-  position: absolute;
-  height: 80%;
-  left: 47.5%;
-  transform: translateX(-50%);
-  top: 10%;
-  border: 5px #eb5d5d inset;
-  border-radius: 100%;
-  opacity: ${props => props.wikiOn ? '0.98' : '0'};
-  transition: all cubic-bezier(0.96, 0.03, 0.4, 1.3) 2000ms;
 `
 const Copyright = styled.p`
   font-family: 'Roboto';
@@ -206,7 +196,6 @@ const Copyright = styled.p`
     color: #1e1e2f;
   }
 `
-
 const Quote = styled.p`
   position: absolute;
   font-family: 'Playfair Display', serif;
@@ -372,8 +361,6 @@ export default class Landing extends Component {
           </IntroInnerWrapper>
         </IntroWrapper>
 
-        {/* <DashLine wikiOn ={this.state.wikiOn}></DashLine> */}
-
         <IntroWrapper wikiOn ={this.state.wikiOn}>
           <Introtitle>Context</Introtitle>
           <IntroInnerWrapper>
@@ -400,29 +387,7 @@ export default class Landing extends Component {
             </IntroParagraph>
           </IntroInnerWrapper>
         </IntroWrapper>
-        {/* <DashLine wikiOn ={this.state.wikiOn}></DashLine> */}
-        <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Introtitle  videoLoop={this.state.videoLoop}>The Approach</Introtitle>
-          <br/>
 
-          <IntroParagraph>
-            Refugee Flow gathers data from multiple reliable sources to construct a compelling account
-            on how persons become refugees. This project examines one of the direct fundamental causes
-            of the global refugee crisis, the collapse of order and stability in todays international
-            landscape.
-          </IntroParagraph>
-          <IntroParagraph>
-            This visualization examines the impact conflict, persecution and violence has on the lives of
-            persons in their home countries and communities. The dataset delves into exploring what drives
-            people to flee their homes and bear the burden of a life as a refugee.
-          </IntroParagraph>
-          <IntroParagraph>
-            The project further explores the possible routes taken by refugees. The dataset examines the
-            dangers those forcibly displaced face in their search for safety. Many refugees who depart
-            on their journey never make it to their intended destination. The data collected presents the
-            cause of these deaths along their chosen routes.
-          </IntroParagraph>
-        </IntroWrapper>
 
         <Copyright>Built by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
       </IntroPage>
