@@ -6,12 +6,13 @@ import { injectGlobal } from 'styled-components';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import * as MobileDetect from 'mobile-detect';
 
-
 import Navbar from './Navbar'
 import ModalButton from './ModalButton'
 import Landing from './Landing'
 import Conflict from './Conflict'
 import RefugeeRoute from './RefugeeRoute'
+import AboutPage from './AboutPage'
+
 
 const MobileWarning = styled.p`
   color: white;
@@ -45,6 +46,7 @@ class App extends React.Component {
                 <Route exact path='/' component={Landing} />
                 <Route path='/conflict' component={Conflict} />
                 <Route path='/route/:arg' component={RefugeeRoute} />
+                <Route path='/about' component={AboutPage} />
               </Switch>
             </div>
           </Router>

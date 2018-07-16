@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const NavbarContainer = styled.div`
   height: 40px;
@@ -15,10 +15,6 @@ const NavbarContainer = styled.div`
     width: ${props => props.loadBar ? '100%':'0%'};
     height: 4px;
     background: #00ffb0bd;
-  ${'' /* second color choise:
-          #bf4211
-          #41edb8bd
-  */}
     position: absolute;
     top: 0;
     transition: inherit;
@@ -56,7 +52,6 @@ const NavbarContainer = styled.div`
     filter: drop-shadow(0px 0px 0px #000) !important;
   }
 `
-
 const Nav = styled.nav`
   position: relative;
   right: -5px;
@@ -73,6 +68,7 @@ const Nav = styled.nav`
     box-shadow: 0px 5px 21px -2px rgb(13,19,25);
     transition: all 300ms;
     text-decoration: none;
+    cursor: pointer;
   }
   > a:hover{
     box-shadow: 0px 10px 15px -5px rgb(104, 110, 150);
@@ -80,26 +76,83 @@ const Nav = styled.nav`
     padding: 3px 0px;
     border-radius: 3px;
   }
+
+  ${props => props.currentPage === "conflict" && css`
+
+    > a:first-child{
+      box-shadow: 0px 10px 15px -5px rgb(56, 64, 101);
+      background: #8e95ce;
+      padding: 3px 0px;
+      color: #1c1d21;
+      border-radius: 3px;
+    }
+  `}
+
+  ${props => props.currentPage === "route" && css`
+
+  > a:nth-child(2){
+    box-shadow: 0px 10px 15px -5px rgb(56, 64, 101);
+    background: #8e95ce;
+    padding: 3px 0px;
+    color: #1c1d21;
+    border-radius: 3px;
+  }
+  `}
+
+  ${props => props.currentPage === "about" && css`
+
+  > a:nth-child(3){
+    box-shadow: 0px 10px 15px -5px rgb(56, 64, 101);
+    background: #8e95ce;
+    padding: 3px 0px;
+    color: #1c1d21;
+    border-radius: 3px;
+  }
+  `}
+
+  > a:nth-child(4){
+    box-shadow: 0px 10px 15px -5px rgb(58, 64, 93);
+    background: #a4d0f9;
+    padding: 12px 15px 12px 10px;
+    color: #282846;
+    margin-right: 0px !important;
+    text-align: center;
+    border-radius: 0px;
+  }
 `
-
-
 class Navbar extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       hovered: false,
       loadBar: false,
+      currentPage:null
     }
   }
 
   componentDidMount(){
-    console.log('aa');
     this.setState({loadBar: !this.state.loadBar},() =>{
       setTimeout(() => this.setState({loadBar: !this.state.loadBar}), 8000);
     });
+
+    const regex_route = RegExp('route','gi');
+    const regex_conflict = RegExp('conflict','gi');
+    const regex_about = RegExp('about','gi');
+
+    if(regex_route.test(window.location.pathname)){
+      this.setState({currentPage: 'route'})
+    }
+    else if (regex_conflict.test(window.location.pathname)) {
+      this.setState({currentPage: 'conflict'})
+    }
+    else if (regex_about.test(window.location.pathname)) {
+      this.setState({currentPage: 'about'})
+    }
+
   }
 
   render(){
+
     return (
       <NavbarContainer
         loadBar={this.state.loadBar}
@@ -109,11 +162,12 @@ class Navbar extends React.Component {
             onMouseOut={() => this.setState({hovered: false})}>
             Refugee Flow
           </Link>
-          <Nav>
-            <Link to='/conflict'>Conflict</Link>
-            <Link to='/route/EasternMediterranean'>Route</Link>
-            <Link to='/about'>About</Link>
-            <a href='http://www.google.com'>Donate</a>
+          <Nav currentPage={this.state.currentPage}>
+            <Link to='/conflict' onClick={() => this.setState({currentPage: 'conflict'})}>Conflict</Link>
+            <Link to='/route/EasternMediterranean' onClick={() => this.setState({currentPage: 'route'})}>Route</Link>
+            <Link to='/about' onClick={() => this.setState({currentPage: 'about'})}>About</Link>
+
+            <a onClick={() => window.open('https://donate.unhcr.org/us-en/redirect')}>Donate</a>
           </Nav>
         </NavbarContainer>
     )

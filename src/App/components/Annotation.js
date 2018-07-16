@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css }from 'styled-components';
+import styled from 'styled-components';
 import $ from "jquery";
 import * as _ from 'underscore';
 import * as d3 from 'd3';

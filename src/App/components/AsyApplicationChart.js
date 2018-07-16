@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import * as warDict from '../data/warDictionary';
 
 import * as d3 from 'd3';
