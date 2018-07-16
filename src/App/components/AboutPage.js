@@ -268,7 +268,7 @@ export default class AboutPage extends Component {
         <Wrapper animate={this.state.animate}>
           <Video animation={this.state.animation} videoLoop={this.state.videoLoop} autoPlay muted loop style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}><source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" /></Video>
 
-          <Download onClick={() => window.open('https://drive.google.com/file/d/1IeIYVL4149zFXhsyax78iEwIt_0OYMzr/view?usp=sharing')}><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 199.5h-91.4V64H187.4v135.5H96l160 158.1 160-158.1zM96 402.8V448h320v-45.2H96z"/></svg></Download>
+          <Download onClick={() => window.open('https://drive.google.com/drive/folders/1hR2JjaMN8DzXA8VyixHJ5zAiolnpoTSF?usp=sharing')}><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 199.5h-91.4V64H187.4v135.5H96l160 158.1 160-158.1zM96 402.8V448h320v-45.2H96z"/></svg></Download>
 
           <Mission>
             <Title onClick={() => this.setState({missionOn: !this.state.missionOn})} animate={this.state.animate}>MISSION</Title>
