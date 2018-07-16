@@ -50,7 +50,7 @@ class App extends React.Component {
               </Switch>
             </div>
           </Router>
-        : <MobileWarning>Please bookmark</MobileWarning>
+        : <MobileWarning>Thanks for your interest in learning more about the refugee crisis. We designed Refugee Flow as an exploratory experience. Unfortunately mobile is not best suited for what we built. Instead, please bookmark the page and comeback and explore when you are on a laptop or desktop. </MobileWarning>
 
     );
   }
