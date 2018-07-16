@@ -28,7 +28,7 @@ app.use('*',function(req, res, next) {
 app.use('/', index);
 app.use('/conflict', index);
 app.use('/route/:id', index);
-app.use('/about',dataRoutes);
+app.use('/about',index);
 app.use('/data',dataRoutes);
 
 // catch 404 and forward to error handler
