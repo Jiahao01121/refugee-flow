@@ -43,9 +43,9 @@ const Wrapper = styled.div`
   margin: 0;
   width: 100%;
   overflow-x: scroll;
-  &::-webkit-scrollbar{width: 10px}
+  &::-webkit-scrollbar{width: 6px}
   &::-webkit-scrollbar-thumb {
-    background-color: #e4e4ec;
+    background-color: #91eae3;
     -webkit-border-radius: 16px;
   }
   transition: all 400ms;
@@ -115,7 +115,7 @@ const QNA = styled.div`
     filter: drop-shadow(0px 2px 5px #a2a2c9);
   }
 `
-const FactSheet = styled.div`
+const DataSources = styled.div`
   width: 100%;
   position: relative;
   float: left;
@@ -187,6 +187,23 @@ const Content = styled.p`
     }
   }
 
+  &>a{
+    transition: color 800ms;
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: 100;
+    font-style: normal;
+    text-decoration: underline;
+    color: #9cddf7;
+    letter-spacing: 1px;
+    cursor: pointer;
+    filter: drop-shadow(0px 2px 5px #a2a2c9);
+
+    &:hover{
+      color: #f2fbff;
+    }
+  }
+
   ${props => props.missionOn && css`
     display:  none;
   `}
@@ -199,7 +216,7 @@ const Content = styled.p`
   ${props => props.QNAOn && css`
     display:  none;
   `}
-  ${props => props.FactSheetOn && css`
+  ${props => props.DataSourcesOn && css`
     display:  none;
   `}
 `
@@ -258,7 +275,7 @@ export default class AboutPage extends Component {
     visionOn: true,
     bioOn: false,
     QNAOn: true,
-    FactSheetOn: true,
+    DataSourcesOn: true,
   }
   componentDidMount(){
     window.setTimeout(() => this.setState({animate: true}),300);
@@ -283,10 +300,13 @@ export default class AboutPage extends Component {
           </Vision>
 
           <Bio>
-            <Title onClick={() => this.setState({bioOn: !this.state.bioOn})} animate={this.state.animate}>CREATORS</Title>
+            <Title onClick={() => this.setState({bioOn: !this.state.bioOn})} animate={this.state.animate}>PROJECT TEAM</Title>
             <Toggle onClick={() => this.setState({bioOn: !this.state.bioOn})} last={true}>{this.state.bioOn? '+':'–'}</Toggle>
-            <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/will-su'>Will Su</a></em> rides the line between design and technology. His work focuses on presenting data efficiently and beautifully with fluid interactivity. He has received awards from Information is Beautiful, Awwwards and placed first at the MLB Advanced Media Hackathon. He was featured at New York Public Library and NYC Media Lab 2017 conf. He speaks regularly at UX Support Group Meetups and universities about his learning path and perspective on data visualization.</Content>
-            <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/abins'>Abin Abraham</a></em> is drawn to the intersection of technology, art, and policy. He is pursuing creative ways to understand the complex challenges facing the world today and believes that creativity is the key to effective policymaking. He works as a web developer at the United Nations Global Compact and has worked on UNGC Interactive and the SDG Blueprint.</Content>
+            <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/will-su'>Will Su - Co-Creator</a></em> rides the line between design and technology. His work focuses on presenting data efficiently and beautifully with fluid interactivity. He has received awards from <a href="https://www.informationisbeautifulawards.com/showcase/2348-nyc-foodiverse">Information is Beautiful</a>, <a href="https://www.awwwards.com/sites/nyc-foodiverse">Awwwards</a> and placed first at the <a href="https://medium.com/@nycmedialab/prototyping-teams-win-12-000-in-prizes-at-mlbam-hackathon-organized-by-nyc-media-lab-d9fee4c7ccaf">MLB Advanced Media Hackathon</a>. He was featured at <a href="https://www.nypl.org/events/exhibitions/nyc-foodiverse">New York Public Library</a> and NYC Media Lab 2017 conf. He speaks regularly at <a href="https://www.meetup.com/UX-Support-Group/events/248956066/">Meetups</a> and <a href="https://dnnsociety.org/2018/01/01/from-graphic-designer-to-data-visualisation-specialist-a-sharing-from-will-su/">universities</a> about his learning path and perspective on data visualization.</Content>
+
+            <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/abins'>Abin Abraham - Co-Creator</a></em> is drawn to the intersection of technology, art, and policy. He is pursuing creative ways to understand the complex challenges facing the world today and believes that creativity is the key to effective policymaking. He works as a web developer at the United Nations Global Compact and has worked on <a href="https://www.unglobalcompact.org/interactive">UNGC Interactive</a> and the <a href="http://blueprint.unglobalcompact.org/">SDG Blueprint</a>.</Content>
+
+            <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/jasperlo/'>Jasper Lo - Copywriter</a></em> is a US Army veteran and writer based in NYC. His creative work focuses on diaspora, violence, and masculinity. Find his articles on <a href="https://www.globalcitizen.org/en/authors/jasper-lo/">Global Citizen</a>, a nonprofit with the mission of ending extreme poverty, and his poems in <a href="https://flapperhouse.com/2015/04/08/the-burning-moon-poetry-by-jasper-lo/">Flapperhouse</a> and <a href="https://morningsidepost.com/articles/2018/3/15/-munchies-master-ng2ea-esztk-787gk-pm5zb-dpdbn">The Morningside Post</a>. Jasper will graduate in 2019 from the dual Master’s Degree Program in International Affairs and Journalism at Columbia University.</Content>
           </Bio>
 
           <QNA>
@@ -312,21 +332,26 @@ export default class AboutPage extends Component {
             <Content QNAOn={this.state.QNAOn} animate={this.state.animate}>Currently, UNHCR reports that 68.5 million people are forcibly displaced around the world. Funding to tackle the current challenge is decreasing, not increasing. By 2050 the continued impact of climate change will forcibly displace 1 billion people. The crisis is getting worse, not better. We must gain a greater understanding and we need to figure out better solutions to this crisis. Refugee Flow is a call to this action.</Content>
           </QNA>
 
-          <FactSheet>
-            <Title onClick={() => this.setState({FactSheetOn: !this.state.FactSheetOn})} animate={this.state.animate}>FACT SHEET</Title>
-            <Toggle last={true} onClick={() => this.setState({FactSheetOn: !this.state.FactSheetOn})}>{this.state.FactSheetOn? '+':'–'}</Toggle>
-            <Content FactSheetOn={this.state.FactSheetOn} animate={this.state.animate}>•	Based on current reported findings, drownings occur soon after leaving the initial port, far from the reach of the intended destination.</Content>
-            <Content FactSheetOn={this.state.FactSheetOn} animate={this.state.animate}>•	Izmir is the last major city for Syrian Refugees to collect supplies and contact smugglers before departing to Europe.</Content>
-            <Content FactSheetOn={this.state.FactSheetOn} animate={this.state.animate}>•	Many small Mediterranean Islands have become holding and rescue points for seafaring migrants. These Islands lack the resources and capacity to handle the current influx.</Content>
-            <Content FactSheetOn={this.state.FactSheetOn} animate={this.state.animate}>•	The Central Mediterranean route has the most missing or dead at 27,537.</Content>
-            <Content FactSheetOn={this.state.FactSheetOn} animate={this.state.animate}>•	The largest demographic of migrants using the Central Mediterranean route are Eritreans.</Content>
-            <Content FactSheetOn={this.state.FactSheetOn} animate={this.state.animate}>•	The largest demographic of migrants using the Western Mediterranean route are Algerians.</Content>
-          </FactSheet>
+          <DataSources>
+            <Title onClick={() => this.setState({DataSourcesOn: !this.state.DataSourcesOn})} animate={this.state.animate}>Data Sources</Title>
+            <Toggle last={true} onClick={() => this.setState({DataSourcesOn: !this.state.DataSourcesOn})}>{this.state.DataSourcesOn? '+':'–'}</Toggle>
+
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://www.acleddata.com/'>ACLED</a></em> (Armed Conflict Location & Event Data) is a disaggregated conflict analysis and crisis mapping project. ACLED is the highest quality, most widely used, realtime data and analysis source on political violence and protest in the developing world. Practitioners, researchers and governments depend on ACLED for the latest reliable information on current conflict and disorder patterns.</Content>
+
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://missingmigrants.iom.int/'>Missing Migrants Project</a></em> tracks deaths of migrants, including refugees and asylum-seekers, who have died or gone missing in the process of migration towards an international destination.</Content>
+
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='http://www.themigrantsfiles.com/'>The Migrants Files</a></em> is a consortium of journalists from over 10 EU countries. It is coordinated by Journalism++.</Content>
+
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://frontex.europa.eu/'>Frontex</a></em>, the European Border and Coast Guard Agency, promotes, coordinates and develops European border management in line with the EU fundamental rights charter and the concept of Integrated Border Management. To help identify migratory patterns as well as trends in cross-border criminal activities, Frontex analyses data related to the situation at and beyond EU’s external borders.</Content>
+
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='http://www.unhcr.org/en-us/data.html'>UNHCR Population Statistics Database</a></em> currently contains data about UNHCR's populations of concern from the year 1951 up to 2014 and you can use it to investigate different aspects of these populations: their general composition by location of residence or origin, their status (refugees, asylum seekers, internally displaced persons, etc.), their evolution over time, and so on.</Content>
+
+
+          </DataSources>
 
           <Footer></Footer>
 
         </Wrapper>
       )
     }
-
 }

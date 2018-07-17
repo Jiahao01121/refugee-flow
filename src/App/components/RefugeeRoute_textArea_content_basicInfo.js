@@ -596,20 +596,21 @@ export default class RefugeeRoute_textArea_content_basicInfo extends React.Compo
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('update');
-
     $('#CurrentSituation__text').stop(true,true);
     $('#CurrentSituation__text').scrollTop(0);
     $('#CurrentSituation__text').animate({scrollTop: $('#CurrentSituation__text')[0].scrollHeight}, 25000);
 
-    d3.select('.route-map-titleGroup__basic') && d3.select('.route-map-titleGroup__basic')
-      .style('opacity',0)
-      .transition()
-      .duration(400)
-      .style('opacity',1)
-
-    this.currentRouteName = nextProps.currentRouteName;
-    this.drawChart();
+    if(nextProps.currentRouteName != this.currentRouteName){
+      this.currentRouteName = nextProps.currentRouteName;
+      console.log(nextProps);
+      console.log('update');
+      d3.select('.route-map-titleGroup__basic') && d3.select('.route-map-titleGroup__basic')
+        .style('opacity',0)
+        .transition()
+        .duration(400)
+        .style('opacity',1)
+      this.drawChart();
+    }
   }
 
   description(textArr){

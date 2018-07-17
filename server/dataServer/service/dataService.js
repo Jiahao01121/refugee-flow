@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const production = 'production';
 const dev = 'will';
-mongoose.connect('mongodb://' + production + ':'+ production +'@ds145118.mlab.com:45118/refugee-flow');
+mongoose.connect('mongodb://' + dev + ':'+ dev +'@ds145118.mlab.com:45118/refugee-flow');
 const fs = require('fs');
 const lodash = require('lodash');
 // const war_all_data = JSON.parse( fs.readFileSync('./data/war_all.json') );
