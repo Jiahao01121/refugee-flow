@@ -356,7 +356,7 @@ export default class Landing extends Component {
               survival and security is to flee one's home.
             </IntroParagraph>
             <IntroParagraph>
-              The United Nations High Commissioner for Refugees reports that as of 2017, 65.6 million
+              The United Nations High Commissioner for Refugees reports that as of 2017, 68.5 million
               people were forcibly displaced worldwide due to persecution, conflict, violence, and human
               rights violations.
             </IntroParagraph>

@@ -199,7 +199,6 @@ class GlobeRouteButton extends React.Component {
     else if(this.state.popup_toggle) {
       d3.select('.route_popup').style('display','block')
       d3.select('.route_popup')
-        // .style('opacity',0)
         .style('width','250px')
         .style('height','200px')
         .transition()
@@ -216,16 +215,12 @@ class GlobeRouteButton extends React.Component {
     list_d.route.forEach((d,i) =>{
 
       jsx_arr[i] = (
-        <Individual_route_listItem
-          key={'route_item_' + i}
-          onClick={() => this.history.push('/route/'+d.replace(' ',''))}
-        >
-          {/* <Link to='/route' style={{
-            position: 'absolute',
-            width: '94%',
-            height: '50px',
-            zIndex: '10'
-          }}/> */}
+        <Individual_route_listItem key={'route_item_' + i}
+          onClick={() =>
+            {
+              // this.history.push('/route/'+d.replace(' ',''))
+              window.open('/route/'+d.replace(' ',''),'_self')
+            }}>
           <Individual_route_listItem_title>{d + ' Route'}</Individual_route_listItem_title>
           <Individual_route_listItem_crossCount>Total Corssing - <em>{ d3.format(',')(_.find(this.state.cross_count, _d => _d.route === d) && _.find(this.state.cross_count, _d => _d.route === d).total_cross) }</em> </Individual_route_listItem_crossCount>
           <Click_note>Click for more...</Click_note>

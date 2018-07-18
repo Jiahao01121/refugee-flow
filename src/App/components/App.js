@@ -1,5 +1,4 @@
 import React from 'react';
-import * as THREE from 'three';
 import * as d3 from 'd3';
 import styled from 'styled-components';
 import { injectGlobal } from 'styled-components';
@@ -12,11 +11,7 @@ import Landing from './Landing'
 import Conflict from './Conflict'
 import RefugeeRoute from './RefugeeRoute'
 import AboutPage from './AboutPage'
-
-
-const MobileWarning = styled.p`
-  color: white;
-`
+import MobileWarning from './MobileWarning'
 
 class App extends React.Component {
 
@@ -50,7 +45,7 @@ class App extends React.Component {
               </Switch>
             </div>
           </Router>
-        : <MobileWarning>Thanks for your interest in learning more about the refugee crisis. We designed Refugee Flow as an exploratory experience. Unfortunately mobile is not best suited for what we built. Instead, please bookmark the page and comeback and explore when you are on a laptop or desktop. </MobileWarning>
+        : <MobileWarning/>
 
     );
   }
