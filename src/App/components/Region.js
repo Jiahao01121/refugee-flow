@@ -163,7 +163,6 @@ class Region extends Component {
   }
 
   visualization(d){
-    // d = _.sortBy(d,d => this.state.mv? d.fat_year['201'+this.state.mv_year] : d.total_fat).reverse();
     d = _.sortBy(d,d => d.total_fat).reverse();
     const jsxArray = [];
     const minMax = d3.extent(d,d => d.total_fat);

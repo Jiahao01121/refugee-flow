@@ -2,8 +2,7 @@ import React from 'react';
 import styled, { keyframes , css } from 'styled-components';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
-
-const CountUp = require('countup.js');
+import * as CountUp from 'countup.js';
 
 const BoardWrapper = styled.div`
   width: ${props => props.container_width +'px'};
@@ -13,7 +12,6 @@ const BoardWrapper = styled.div`
   bottom: 50px;
   right: 25%;
 `
-
 const BoardItem = styled.div`
   width: ${props => props._width+ 'px'};
   height: 40px;
