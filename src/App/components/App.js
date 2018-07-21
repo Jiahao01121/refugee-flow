@@ -16,10 +16,12 @@ import MobileWarning from './MobileWarning'
 class App extends React.Component {
 
   render(){
+
+    let path = window.location.pathname;
     this.md = new MobileDetect(window.navigator.userAgent);
 
     injectGlobal`
-      html  body {
+      html body {
         width: 100%;
         height: 100%;
         margin: 0;
@@ -28,9 +30,8 @@ class App extends React.Component {
         overflow-y: hidden;
         overflow-x: hidden;
       }
+      button:focus {outline:0;}
     `;
-
-    let path = window.location.pathname;
 
     return (
       this.md.mobile() === null

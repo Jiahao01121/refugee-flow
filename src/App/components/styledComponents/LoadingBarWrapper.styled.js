@@ -16,7 +16,6 @@ const LoadingDivWrapper = styled.div`
     margin-top: ${props.marginTop + 'px'};
   `}
 `
-
 const LoaderGraphWrapper = styled.div`
   z-index: 10000000;
   position: absolute;
