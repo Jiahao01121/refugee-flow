@@ -1,13 +1,124 @@
 import React from 'react';
-
-import GlobeVisual from './GlobeVisual';
-
 import * as THREE from 'three';
 import * as d3 from 'd3';
+import styled, { css }from 'styled-components';
 
+import GlobeVisual from './GlobeVisual';
 import * as warDict from '../data/warDictionary';
 
-import styles from '../stylesheets/GlobeTimeline.css'
+const TimelineWrapper = styled.div`
+  position:absolute;
+  z-index: 1;
+  height: 300px;
+  width: 100px;
+  bottom:0;
+  overflow-y: scroll;
+  left: 30px;
+  box-shadow: 25px 69px 126px -11px rgba(0,0,0,0.75);
+  height: ${() => (window.innerHeight - 300) + 'px'};
+
+  &::-webkit-scrollbar{
+    width: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #5a5a61;
+    -webkit-border-radius: 4px;
+  }
+  &::before{
+    content: "Timeline";
+    position: fixed;
+    font-family: 'Roboto';
+    font-size: 15px;
+    font-weight: 300;
+    color: white;
+    margin-top: -30px;
+  }
+`
+const IndividualWrapper = styled.div`
+  width: 40px;
+  padding: 0px;
+  height: 1px;
+  background: white;
+  cursor: pointer;
+  margin-bottom: 150px;
+  &:first-child{
+    margin-top: 20px;
+  }
+`
+const YearButton = styled.button`
+  font-family: 'Roboto';
+  font-size: 11px;
+  font-weight: 400;
+  color: white;
+  border: 0;
+  background: transparent;
+  width: 50px;
+  left: 45px;
+  bottom: 6px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+
+  &:hover{
+    font-size: 13px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  ${props => props.isSelected && css`
+    color: #41edb8 !important;
+    font-size: 14px !important;
+    bottom: 4px !important;
+  `}
+`
+const QuarterButton = styled.button`
+  font-family: 'Roboto';
+  font-size: 10px;
+  font-weight: 200;
+  color: white;
+  border: 0;
+  background: transparent;
+  width: 50px;
+  left: 20px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 9px;
+
+  &::after{
+    content: '';
+    width: 10px;
+    position: absolute;
+    height: 1px;
+    border-radius: 20px;
+    background-color: #fff;
+    top: 6px;
+    left: -20px;
+  }
+
+  ${props => props.param === 'disabled' && css`
+    opacity: .2;
+  `}
+
+  ${props => props.param === 'currentYear' && css`
+    &:hover{
+      opacity: 0.7;
+      color: #41edb8;
+      transition: all 0.3s ease;
+    }
+  `}
+
+  ${props => props.param === 'currentYearSelected' && css`
+    color: #41edb8;
+    font-weight: 500;
+    &:hover{
+      opacity: 0.7;
+      color: #41edb8;
+      transition: all 0.3s ease;
+    }
+  `}
+`
 
 class Timeline extends React.Component {
 
@@ -23,12 +134,12 @@ class Timeline extends React.Component {
   quater_selected_check(num,year){
     if(year == this.props.currentYear){
       if(num === this.state.current_Selected_Quater){
-        return 'quaters quater_selected quater_currentYear'
+        return 'currentYearSelected'
       }else{
-        return 'quaters quater_currentYear'
+        return 'currentYear'
       }
     }else{
-      return 'quaters quaters_disabled'
+      return 'disabled'
     }
   }
 
@@ -36,9 +147,9 @@ class Timeline extends React.Component {
 
 
     return(
-      <div key= {year} className="individualWrapper">
-        <button
-          className = {this.checkYearClassName(year)}
+      <IndividualWrapper key= {year} className="individualWrapper">
+        <YearButton
+          isSelected = {this.checkYearClassName(year)}
           onClick= {() => {
             this.setState({current_Selected_Quater: null, selectedYear: year });
             this.props.onClickYear(year);
@@ -50,62 +161,60 @@ class Timeline extends React.Component {
                 this.props.onClickYear(year);
               }
             }
-          }}
-           >
-          {year}
-        </button>
+          }}>{year}
+        </YearButton>
 
-        <button className = {this.quater_selected_check(1,year)}
+        <QuarterButton
+          param = {this.quater_selected_check(1,year)}
           disabled = {this.checkQuaterDisabled(year)}
           onMouseOver= {() => {
             this.setState({current_Selected_Quater: 1 });
             this.props.onClickQuater(1)
           }}
           >
-          Quarter 1</button>
-        <button className = {this.quater_selected_check(2,year)}
+          Quarter 1</QuarterButton>
+        <QuarterButton
+          param = {this.quater_selected_check(2,year)}
           disabled = {this.checkQuaterDisabled(year)}
           onMouseOver= {() =>{
             this.setState({current_Selected_Quater: 2 });
             this.props.onClickQuater(2)
           }}
           >
-          Quarter 2</button>
-        <button className = {this.quater_selected_check(3,year)}
+          Quarter 2</QuarterButton>
+        <QuarterButton
+          param = {this.quater_selected_check(3,year)}
           disabled = {this.checkQuaterDisabled(year)}
           onMouseOver= {() => {
             this.setState({current_Selected_Quater: 3 });
             this.props.onClickQuater(3)
           }}
           >
-          Quarter 3</button>
-        <button className = {this.quater_selected_check(4,year)}
+          Quarter 3</QuarterButton>
+        <QuarterButton
+          param = {this.quater_selected_check(4,year)}
           disabled = {this.checkQuaterDisabled(year)}
           onMouseOver= {() => {
             this.setState({current_Selected_Quater: 4 });
             this.props.onClickQuater(4)
           }}
           >
-          Quarter 4</button>
-      </div>
+          Quarter 4</QuarterButton>
+      </IndividualWrapper>
     )
   }
 
   checkYearClassName(year){
     if(year == this.props.currentYear){
-      return 'years_selected years'
+      return true
     }else{
-      return 'years'
+      return false
     }
   }
 
   checkQuaterDisabled(year){
-    if(year != this.props.currentYear){
-      return true
-    } else{
-      return false
-    }
-
+    if(year != this.props.currentYear) return true
+    else return false
   }
 
   render(){
@@ -113,16 +222,9 @@ class Timeline extends React.Component {
     warDict.year.forEach( (d,i) => TimelineItems[i] = this.renderYearItem(d) );
 
     return(
-      <div>
-        <div
-          className = 'TimelineWrapper'
-          style ={{
-            height: (window.innerHeight - 300) + 'px',
-            zIndex: 1
-           }}>
+        <TimelineWrapper className = 'TimelineWrapper'>
           {TimelineItems}
-        </div>
-      </div>
+        </TimelineWrapper>
     )
   }
 }

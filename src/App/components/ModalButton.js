@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-
 import Modal from './Modal';
+
 import RegionNav from './RegionNav';
 import Region from './Region';
-import RegionNavBar from '../stylesheets/RegionNavBar.css'
 
 const SwitchCountryButton = styled.button`
   cursor: pointer;
@@ -94,6 +93,9 @@ const RegionTitle = styled.p`
     left: 0;
   }
 `
+const ModalInnerContainer = styled.div`
+  width: 100%;
+`
 
 class ModalButton extends Component {
   constructor(props) {
@@ -139,10 +141,10 @@ class ModalButton extends Component {
         <CurrentCountryTag currentCountry={this.currentCountry} onClick={this.removeCountryHandler} > {this.currentCountry} </CurrentCountryTag>
 
         <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
-          <div className='container'>
+          <ModalInnerContainer>
             <RegionTitle>Explore Regional Conflicts</RegionTitle>
             <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
-          </div>
+          </ModalInnerContainer>
           {(() => {if(this.state.visualizeSectionData.length>0){return <Region
             data={this.state.visualizeSectionData}
             clickHandler = {this.passhandler}

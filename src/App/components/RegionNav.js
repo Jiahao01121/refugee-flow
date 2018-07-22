@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as d3 from 'd3';
 import styled from 'styled-components';
 import {countryList} from '../data/warDictionary';
 import _ from 'underscore';
@@ -8,6 +7,26 @@ import _ from 'underscore';
 const RegionContainer = styled.div`
   top: 14%;
   position: relative;
+`
+const Regions = styled.ul`
+  display: flex;
+  justify-content: center;
+  padding: 0;
+
+  & > li{
+    list-style-type: none;
+    transition: all 300ms;
+    margin: 0 35px;
+    position: relative;
+    cursor: pointer;
+    color: #ffffff;
+    z-index: 1;
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+  }
 `
 function SelectRegion (props) {
 
@@ -18,7 +37,7 @@ function SelectRegion (props) {
   })()
 
   return (
-    <ul className='regions'>
+    <Regions>
       {regions.map((region) => {
         return (
           <li
@@ -35,7 +54,7 @@ function SelectRegion (props) {
           </li>
         )
       })}
-    </ul>
+    </Regions>
   )
 }
 

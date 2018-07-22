@@ -1,12 +1,9 @@
 import React from 'react';
 import styled, { css , keyframes } from 'styled-components';
-
-
 import * as THREE from 'three';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
 import { rgbToHsl } from '../utils/color-conversion-algorithms';
-
 
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
@@ -15,12 +12,17 @@ import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledC
 import ModalButton from './ModalButton';
 import { ScaleLoader } from 'react-spinners';
 import GlobeRouteButton from './GlobeRouteButton'
-
 import $ from "jquery";
-const Scroll = require('scroll-js');
 
+const Scroll = require('scroll-js');
 const cot_latLng = require('../data/cot_latLng.json');
 
+const Wrapper = styled.div`
+  & ::selection {
+    background: none;
+    color: none;
+    }
+`
 const TitleContainer = styled.div`
   position: absolute;
   ${'' /* background: #0000ff61; */}
@@ -134,19 +136,6 @@ const Conflict_Civilians = styled.button`
     font-weight: 600;
   `}
 `
-// const Heat_map = styled.button`
-//   cursor: pointer;
-//   font-family: 'Roboto';
-//   font-weight: 100;
-//   font-size: 12px;
-//   color: white;
-//   background: none;
-//   border: none;
-//   ${props => props.selectornot == 3 && css`
-//     font-weight: 600;
-//   `}
-// `
-
 const LegendWrapper = styled.div`
   position: absolute;
   bottom: 60px;
@@ -853,7 +842,8 @@ class GlobeContainer extends React.Component {
   render(){
 
     return(
-      <div className = 'globe'>
+
+      <Wrapper className = 'globe'>
         <TitleContainer>
           <TitleText onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1') }> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
           <ModalButton
@@ -926,7 +916,7 @@ class GlobeContainer extends React.Component {
           }
 
         }></GlobeStatsBoard>
-      </div>
+      </Wrapper>
     )
   }
 }
