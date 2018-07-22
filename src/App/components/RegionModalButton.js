@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import Modal from './Modal';
+import RegionModalCreator from './RegionModalCreator';
 
-import RegionNav from './RegionNav';
-import Region from './Region';
+import RegionModalNav from './RegionModalNav';
+import RegionModalContent from './RegionModalContent';
 
 const SwitchCountryButton = styled.button`
   cursor: pointer;
@@ -97,7 +97,7 @@ const ModalInnerContainer = styled.div`
   width: 100%;
 `
 
-class ModalButton extends Component {
+class RegionModalButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -140,27 +140,29 @@ class ModalButton extends Component {
         </SwitchCountryButton>
         <CurrentCountryTag currentCountry={this.currentCountry} onClick={this.removeCountryHandler} > {this.currentCountry} </CurrentCountryTag>
 
-        <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
+        <RegionModalCreator showModal={showModal} onCloseRequest={this.handleToggleModal}>
           <ModalInnerContainer>
             <RegionTitle>Explore Regional Conflicts</RegionTitle>
-            <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
+            <RegionModalNav data={this.data} pass = {this.passCountryToRegion}/>
           </ModalInnerContainer>
-          {(() => {if(this.state.visualizeSectionData.length>0){return <Region
-            data={this.state.visualizeSectionData}
-            clickHandler = {this.passhandler}
-            closeModal = {this.handleToggleModal}
-          />}})()}
-        </Modal>
+          {(() => {
+            if(this.state.visualizeSectionData.length>0)
+              return <RegionModalContent
+              data={this.state.visualizeSectionData}
+              clickHandler = {this.passhandler}
+              closeModal = {this.handleToggleModal}/>
+            })()}
+        </RegionModalCreator>
       </div>
     );
   }
 }
 
-ModalButton.propTypes = {
+RegionModalButton.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
 };
 
-export default ModalButton
+export default RegionModalButton

@@ -6,7 +6,7 @@ import * as warDict from '../data/warDictionary';
 import { ScaleLoader } from 'react-spinners';
 import AsyApplicationChartContainer from './AsyApplicationChartContainer';
 
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBar';
 
 const Background = styled.div`
   width: 25%;

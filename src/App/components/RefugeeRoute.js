@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { get_routeDeath, get_routeIBC } from './../api';
+import { get_routeDeath, get_routeIBC } from './../utils/api';
 import * as _ from 'underscore';
 import RefugeeRoute_titleGroup from './RefugeeRoute_titleGroup';
 import RefugeeRoute_textArea from './RefugeeRoute_textArea';

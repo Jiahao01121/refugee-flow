@@ -4,15 +4,15 @@ import * as THREE from 'three';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
 import { rgbToHsl } from '../utils/color-conversion-algorithms';
+import $ from "jquery";
 
 import GlobeVisual from './GlobeVisual'; //child component
 import Timeline from './GlobeTimeline'; //child component
 import GlobeStatsBoard from './GlobeStatsBoard'; //child component
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
-import ModalButton from './ModalButton';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBar';
+import RegionModalButton from './RegionModalButton';
 import { ScaleLoader } from 'react-spinners';
 import GlobeRouteButton from './GlobeRouteButton'
-import $ from "jquery";
 
 const Scroll = require('scroll-js');
 const cot_latLng = require('../data/cot_latLng.json');
@@ -846,7 +846,7 @@ class GlobeContainer extends React.Component {
       <Wrapper className = 'globe'>
         <TitleContainer>
           <TitleText onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1') }> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
-          <ModalButton
+          <RegionModalButton
              data={this.state.warData}
              countryChangeHandler = {this.countryChangeHandler}
              removeCountryHandler = {this.removeCountryHandler}

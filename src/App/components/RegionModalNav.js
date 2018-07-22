@@ -63,7 +63,7 @@ SelectRegion.propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-class RegionNav extends Component {
+class RegionModalNav extends Component {
   constructor(props) {
     super(props);
 
@@ -151,4 +151,4 @@ class RegionNav extends Component {
   }
 }
 
-export default RegionNav;
+export default RegionModalNav;

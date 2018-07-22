@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
-
 import ModalCreator from 'react-modal';
-import GlobalModal from '../stylesheets/GlobalModal.css'
+import GlobalModal from '../stylesheets/GlobeModal.css'
 
-class Modal extends Component {
+class RegionModalCreator extends Component {
 
   constructor(props) {
     super(props);
@@ -12,7 +11,6 @@ class Modal extends Component {
 
   render() {
     return (
-      <div>
         <ModalCreator
           isOpen={this.props.showModal}
           onRequestClose={this.props.onCloseRequest}
@@ -30,10 +28,9 @@ class Modal extends Component {
           </div>
           {this.props.children}
         </ModalCreator>
-      </div>
     );
 
   }
 }
 
-export default Modal;
+export default RegionModalCreator;

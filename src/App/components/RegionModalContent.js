@@ -5,7 +5,7 @@ import $ from "jquery";
 import _ from 'underscore';
 import {countryCode} from '../data/warDictionary';
 import { ScaleLoader } from 'react-spinners';
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBar';
 
 const RegionContainer = styled.div`
   display: flex;
@@ -48,12 +48,6 @@ const SectionItem = styled.div`
   background: #3535504d;
   position: relative;
   float: left;
-  ${'' /* ${props => props.index && css`
-    position: absolute;
-    display: inline-block;
-    top: ${ Math.floor(props.index/3) * 350 + 'px'};
-    left: ${ props.index%3 * ( $('.sectionItemWrapper').width() / 3 - 20 ) + 'px'};
-  `} */}
   transition: all 800ms;
   &:hover{
     background: #353550b3;
@@ -140,7 +134,7 @@ const MouseoverButton = styled.div`
 `
 
 
-class Region extends Component {
+class RegionModalContent extends Component {
   constructor(props) {
     super(props);
     this.visualization = this.visualization.bind(this);
@@ -251,4 +245,4 @@ class Region extends Component {
 
 }
 
-export default Region;
+export default RegionModalContent;

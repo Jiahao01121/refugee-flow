@@ -1,10 +1,7 @@
 let cached_routeDeath = null;
 let cached_routeCountryList = null;
 let cached_routeIBC = null;
-let cashed_routeCrossingCount = require('./data/IBC_crossingCountByCountry.json')
-// route_death
-// route_IBC_country_list
-// route_IBC
+let cashed_routeCrossingCount = require('../data/IBC_crossingCountByCountry.json')
 
 function get_routeDeath() {
   let url = 'http://' + window.location.hostname + ':2700' + '/data/route_death';
