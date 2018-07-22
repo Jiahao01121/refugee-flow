@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import RegionModalCreator from './RegionModalCreator';
 
-import Modal from './Modal';
-import RegionNav from './RegionNav';
-import Region from './Region';
-import RegionNavBar from '../stylesheets/RegionNavBar.css'
+import RegionModalNav from './RegionModalNav';
+import RegionModalContent from './RegionModalContent';
 
 const SwitchCountryButton = styled.button`
   cursor: pointer;
@@ -94,8 +93,11 @@ const RegionTitle = styled.p`
     left: 0;
   }
 `
+const ModalInnerContainer = styled.div`
+  width: 100%;
+`
 
-class ModalButton extends Component {
+class RegionModalButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -138,27 +140,29 @@ class ModalButton extends Component {
         </SwitchCountryButton>
         <CurrentCountryTag currentCountry={this.currentCountry} onClick={this.removeCountryHandler} > {this.currentCountry} </CurrentCountryTag>
 
-        <Modal showModal={showModal} onCloseRequest={this.handleToggleModal}>
-          <div className='container'>
+        <RegionModalCreator showModal={showModal} onCloseRequest={this.handleToggleModal}>
+          <ModalInnerContainer>
             <RegionTitle>Explore Regional Conflicts</RegionTitle>
-            <RegionNav data={this.data} pass = {this.passCountryToRegion}/>
-          </div>
-          {(() => {if(this.state.visualizeSectionData.length>0){return <Region
-            data={this.state.visualizeSectionData}
-            clickHandler = {this.passhandler}
-            closeModal = {this.handleToggleModal}
-          />}})()}
-        </Modal>
+            <RegionModalNav data={this.data} pass = {this.passCountryToRegion}/>
+          </ModalInnerContainer>
+          {(() => {
+            if(this.state.visualizeSectionData.length>0)
+              return <RegionModalContent
+              data={this.state.visualizeSectionData}
+              clickHandler = {this.passhandler}
+              closeModal = {this.handleToggleModal}/>
+            })()}
+        </RegionModalCreator>
       </div>
     );
   }
 }
 
-ModalButton.propTypes = {
+RegionModalButton.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
 };
 
-export default ModalButton
+export default RegionModalButton

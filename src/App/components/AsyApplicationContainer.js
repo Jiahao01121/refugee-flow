@@ -6,7 +6,7 @@ import * as warDict from '../data/warDictionary';
 import { ScaleLoader } from 'react-spinners';
 import AsyApplicationChartContainer from './AsyApplicationChartContainer';
 
-import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './styledComponents/LoadingBarWrapper.styled';
+import {LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator} from './LoadingBar';
 
 const Background = styled.div`
   width: 25%;
@@ -18,6 +18,11 @@ const Background = styled.div`
   box-shadow: 5px 0px 78px -6px rgba(0,0,0,0.62);
   display: flex;
   flex-direction: column;
+
+  & ::selection {
+    background: none;
+    color: none;
+    }
 `
 const Title = styled.p`
   font-family: 'Roboto';

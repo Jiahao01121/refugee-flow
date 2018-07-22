@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import * as MobileDetect from 'mobile-detect';
 
 import Navbar from './Navbar'
-import ModalButton from './ModalButton'
 import Landing from './Landing'
 import Conflict from './Conflict'
 import RefugeeRoute from './RefugeeRoute'
