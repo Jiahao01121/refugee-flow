@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 
 const Video = styled.video.attrs({
   opacity: props => props.animate ?0:.05,
-  filter: props => props.videoLoop ? 'blur('+ Math.abs(d3.randomNormal(0,10)()) +'px'+') hue-rotate(0deg) contrast(1.2) saturate(0.8) brightness(0.5);': 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
+  filter: 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
 })`
     position: fixed;
     top: 0;
@@ -43,7 +43,7 @@ const Wrapper = styled.div`
   margin: 0;
   width: 100%;
   overflow-x: scroll;
-  &::-webkit-scrollbar{width: 6px}
+  &::-webkit-scrollbar{width: 6px};
   &::-webkit-scrollbar-thumb {
     background-color: #91eae3;
     -webkit-border-radius: 16px;
@@ -283,7 +283,7 @@ export default class AboutPage extends Component {
     render(){
       return(
         <Wrapper animate={this.state.animate}>
-          <Video animation={this.state.animation} videoLoop={this.state.videoLoop} autoPlay muted loop style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}><source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" /></Video>
+          {/* <Video animation={this.state.animation} videoLoop={this.state.videoLoop} autoPlay muted loop style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}><source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" /></Video> */}
 
           <Download onClick={() => window.open('https://drive.google.com/drive/folders/1hR2JjaMN8DzXA8VyixHJ5zAiolnpoTSF?usp=sharing')}><svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 199.5h-91.4V64H187.4v135.5H96l160 158.1 160-158.1zM96 402.8V448h320v-45.2H96z"/></svg></Download>
 
@@ -307,6 +307,9 @@ export default class AboutPage extends Component {
             <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/abins'>Abin Abraham - Co-Creator</a></em> is drawn to the intersection of technology, art, and policy. He is pursuing creative ways to understand the complex challenges facing the world today and believes that creativity is the key to effective policymaking. He works as a web developer at the United Nations Global Compact and has worked on <a href="https://www.unglobalcompact.org/interactive">UNGC Interactive</a> and the <a href="http://blueprint.unglobalcompact.org/">SDG Blueprint</a>.</Content>
 
             <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/jasperlo/'>Jasper Lo - Copywriter</a></em> is a US Army veteran and writer based in NYC. His creative work focuses on diaspora, violence, and masculinity. Find his articles on <a href="https://www.globalcitizen.org/en/authors/jasper-lo/">Global Citizen</a>, a nonprofit with the mission of ending extreme poverty, and his poems in <a href="https://flapperhouse.com/2015/04/08/the-burning-moon-poetry-by-jasper-lo/">Flapperhouse</a> and <a href="https://morningsidepost.com/articles/2018/3/15/-munchies-master-ng2ea-esztk-787gk-pm5zb-dpdbn">The Morningside Post</a>. Jasper will graduate in 2019 from the dual Master’s Degree Program in International Affairs and Journalism at Columbia University.</Content>
+
+
+            <Content bioOn={this.state.bioOn} animate={this.state.animate} style={{fontSize: '17px',fontWeight: '800',margin: 0}}><em>If you have any questions or feedback, please contact </em> <a href="mailto:refugeeflow@gmail.com" style={{fontSize: '17px',fontWeight: '200',margin: 0, 'marginLeft':'8px','fontStyle':'italic'}}>refugeeflow@gmail.com</a></Content>
           </Bio>
 
           <QNA>
@@ -336,16 +339,15 @@ export default class AboutPage extends Component {
             <Title onClick={() => this.setState({DataSourcesOn: !this.state.DataSourcesOn})} animate={this.state.animate}>Data Sources</Title>
             <Toggle last={true} onClick={() => this.setState({DataSourcesOn: !this.state.DataSourcesOn})}>{this.state.DataSourcesOn? '+':'–'}</Toggle>
 
-            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://www.acleddata.com/'>ACLED</a></em> (Armed Conflict Location & Event Data) is a disaggregated conflict analysis and crisis mapping project. ACLED is the highest quality, most widely used, realtime data and analysis source on political violence and protest in the developing world. Practitioners, researchers and governments depend on ACLED for the latest reliable information on current conflict and disorder patterns.</Content>
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='http://popstats.unhcr.org/en/asylum_seekers_monthly'>UNHCR Population Statistics Database</a></em> currently contains data about UNHCR's populations of concern from the year 1951 up to 2014 and you can use it to investigate different aspects of these populations: their general composition by location of residence or origin, their status (refugees, asylum seekers, internally displaced persons, etc.), their evolution over time, and so on.</Content>
 
-            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://missingmigrants.iom.int/'>Missing Migrants Project</a></em> tracks deaths of migrants, including refugees and asylum-seekers, who have died or gone missing in the process of migration towards an international destination.</Content>
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://missingmigrants.iom.int/downloads'>Missing Migrants Project</a></em> tracks deaths of migrants, including refugees and asylum-seekers, who have died or gone missing in the process of migration towards an international destination.</Content>
 
             <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='http://www.themigrantsfiles.com/'>The Migrants Files</a></em> is a consortium of journalists from over 10 EU countries. It is coordinated by Journalism++.</Content>
 
-            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://frontex.europa.eu/'>Frontex</a></em>, the European Border and Coast Guard Agency, promotes, coordinates and develops European border management in line with the EU fundamental rights charter and the concept of Integrated Border Management. To help identify migratory patterns as well as trends in cross-border criminal activities, Frontex analyses data related to the situation at and beyond EU’s external borders.</Content>
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://frontex.europa.eu/along-eu-borders/migratory-map/'>Frontex</a></em>, the European Border and Coast Guard Agency, promotes, coordinates and develops European border management in line with the EU fundamental rights charter and the concept of Integrated Border Management. To help identify migratory patterns as well as trends in cross-border criminal activities, Frontex analyses data related to the situation at and beyond EU’s external borders.</Content>
 
-            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='http://www.unhcr.org/en-us/data.html'>UNHCR Population Statistics Database</a></em> currently contains data about UNHCR's populations of concern from the year 1951 up to 2014 and you can use it to investigate different aspects of these populations: their general composition by location of residence or origin, their status (refugees, asylum seekers, internally displaced persons, etc.), their evolution over time, and so on.</Content>
-
+            <Content DataSourcesOn={this.state.DataSourcesOn} animate={this.state.animate}>•	<em><a target="_blank" href='https://www.acleddata.com/data/'>ACLED</a></em> (Armed Conflict Location & Event Data) is a disaggregated conflict analysis and crisis mapping project. ACLED is the highest quality, most widely used, realtime data and analysis source on political violence and protest in the developing world. Practitioners, researchers and governments depend on ACLED for the latest reliable information on current conflict and disorder patterns.</Content>
 
           </DataSources>
 

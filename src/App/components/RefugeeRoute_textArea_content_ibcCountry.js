@@ -431,7 +431,7 @@ export default class RefugeeRoute_textArea_content_ibcCountry extends React.Comp
       <Wrapper className='route-map-titleGroup__IBC'>
         <IBCTitle currentRouteName = {this.currentRouteName}><p>Illegal Border Crossing Involved Country</p></IBCTitle>
 
-        <DataSource onClick={() => window.open('https://frontex.europa.eu/', '_blank')}>
+        <DataSource onClick={() => window.open('https://frontex.europa.eu/along-eu-borders/migratory-map/', '_blank')}>
           <svg x="0px" y="0px" width="18.014px" height="19.304px" viewBox="0 0 18.014 19.304">
           <defs>
           </defs>

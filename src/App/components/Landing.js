@@ -98,13 +98,14 @@ const Intro = styled.div`
   }
 `
 const IntroPage = styled.div`
-  width: ${props => props.wikiOn ? '100%' : '0%'};
+  width: 100%;
+  transform: ${props => props.wikiOn ? 'translateX(0%)' : 'translateX(100%)'};
   height: 100%;
   bottom: 0;
   right: 0;
   z-index: 998;
   opacity: ${props => props.wikiOn ? '0.98' : '0'};
-  transition: width cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms, opacity 400ms, background 1600ms;
+  transition: transform cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms, opacity 400ms, background 1600ms;
   position: absolute;
   background: rgba(30, 30, 47, 0.98);
 `
