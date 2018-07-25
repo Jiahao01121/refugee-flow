@@ -117,7 +117,7 @@ const Event = styled.p`
   width: 95%;
 
   &:after{
-    content: 'Click for more..';
+    content: ${props => !props.expendornot ? "'Click to expand'" : '""'};
     text-decoration: underline;
     color: #b6b7ca;
     font-size: 9px;
@@ -140,7 +140,8 @@ const ExpandNotes = styled.p`
 const ExpandSource = styled.p`
   font-family: 'Roboto';
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
+  color: #d3d3e6;
   position: absolute;
   bottom: 0;
   right: 10px;
@@ -238,7 +239,7 @@ class GlobeTooltips extends React.Component {
         <ExitButton onClick={() => this.props.tooltips_onexit() }>x</ExitButton>
         <Country region = { this.cot[1]}> {this.cot[0]} </Country>
         <Fatality> {this.fat} </Fatality>
-        <Event> {this.toUpper(warDict.eventDict[this.evt])} </Event>
+        <Event expendornot = {this.tooltips_clicked}> {this.toUpper(warDict.eventDict[this.evt])} </Event>
         <ExpandNotes> {expandNoteText} </ExpandNotes>
         <ExpandSource hideText = {this.tooltips_clicked}>{expend_source_text}</ExpandSource>
       </TooltipWarpper>
