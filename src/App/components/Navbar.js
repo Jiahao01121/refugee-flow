@@ -37,7 +37,7 @@ const NavbarContainer = styled.div`
   }
 
   > a:first-child:after{
-    content: 'A Comparitive Study on Conflicts and Refugee Movement';
+    content: 'A Comparitive Study on Conflicts and Human Movement';
     font-family: 'Ubuntu';
     font-weight: 100;
     color: white;

@@ -1,4 +1,4 @@
-## Refugee-Flow: A comparative study of armed conflict and refugee flows
+## Refugee-Flow: A comparative study of armed conflict and human movement
 
 
 
@@ -13,7 +13,7 @@ In a world where nearly 20 people are forcibly displaced every minute as a resul
 ## Features
 - Visualization of armed conflict data
 - Visualization of asylum application data
-- Comparison of contemporary armed conflict and asylum application 
+- Comparison of contemporary armed conflict and asylum application
 
 ## Literature Review
 1. Herdeg, Walter. *Graphis diagrams: the graphic visualization of abstract data = die graphische Visualisierung abstrakter Gegebenheiten = la visualisation graphique de données abstraites.* Zürich: Graphis Press, 1983.
