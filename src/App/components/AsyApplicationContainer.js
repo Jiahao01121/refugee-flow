@@ -27,13 +27,17 @@ const Background = styled.div`
 const Title = styled.p`
   font-family: 'Roboto';
   font-size: 20px;
-  font-weight: 100;
+  font-weight: 300;
   color: white;
   margin-top: 15px;
   margin-left: 5%;
   display: inherit;
   cursor: pointer;
   z-index: 5;
+  transition: all 400ms;
+  &:hover{
+    color: #d7d7ead4;
+  }
 
   @media (max-width: 1245px) {
     font-size: 16px;
@@ -51,11 +55,12 @@ const Title = styled.p`
 
   &:before{
     content: 'Asylum application submissions over time';
-    font-weight: 300;
+    font-weight: 100;
     color: white;
-    font-size: 12px;
+    font-size: 11px;
+    letter-spacing: 0.7px;
     position: absolute;
-    top: 45px;
+    top: 43px;
   }
 `
 const ButtonWrapper = styled.div`
@@ -81,25 +86,36 @@ const ButtonWrapper = styled.div`
 const CurrentYearButton = styled.button`
   display: inherit;
   width: 50%;
+  height: 30px;
   cursor: pointer;
-  font-family: 'Tajawal';
-  font-weight: 300;
-  font-size: 13px;
-  color: #ffffff66;
-  background: none;
-  border: none;
-  margin: 0px;
-  text-decoration : ${props => props.selected == 1 ? 'underline' : 'none'};
-  padding: 0;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 12px;
+  padding: 0px 0px 0px 20px;
+  background: #3f415845;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: #3f41581c;
+  transition: background 400ms,border-color 1000ms;
+  color: white;
+  margin-right: 5%;
 
+  &:hover{
+    background: #2b2c3c;
+    border-color: #2e9493cc;
+  }
+  ${props => props.selected == 1 && css`
+    background: #3f415894;
+    border-color: #555875cf;
+  `};
   &::after{
-    content: ${ props => "'" + props.currentYear + "'" };
+    content: ${ props => "'(" + props.currentYear + ")'" };
     color: white;
     font-weight: 700;
     font-size: 9px;
     margin-left: 7px;
     text-decoration: underline;
-    text-decoration-color: #0f1015f7;
+    text-decoration-color: #9ca6d6f7;
   }
 
   @media (max-width: 1210px) {
@@ -108,17 +124,27 @@ const CurrentYearButton = styled.button`
 `
 const AllYearButton = styled.button`
   display: inherit;
-  width: 50%;
+  width: 40%;
+  height: 30px;
   cursor: pointer;
-  font-family: 'Tajawal';
-  font-weight: 300;
-  font-size: 13px;
-  color: #ffffff66;
-  background: none;
-  border: none;
-  margin: 0px;
-  text-decoration : ${props => props.selected == 2 ? 'underline' : 'none'};
-  padding: 0;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 12px;
+  padding: 0px 0px 0px 27px;
+  background: #3f415845;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: #3f41581c;
+  transition: background 400ms,border-color 1000ms;
+  color: white;
+  &:hover{
+    background: #2b2c3c;
+    border-color: #2e9493cc;
+  }
+  ${props => props.selected == 2 && css`
+    background: #3f415894;
+    border-color: #555875cf;
+  `};
 `
 
 class AsyApplicationContainer extends React.Component {
@@ -191,7 +217,7 @@ class AsyApplicationContainer extends React.Component {
 
     return(
       <Background>
-        <Title onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1')}>{'Total Asylum Application - ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
+        <Title onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1')}>{'Total Asylum Application | ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
         <ButtonWrapper>
           <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode} currentYear = {'201'.concat(this.currentYear)}>SHOW CURRENT YEAR</CurrentYearButton>
           <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>

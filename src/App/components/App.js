@@ -24,7 +24,7 @@ class App extends React.Component {
         width: 100%;
         height: 100%;
         margin: 0;
-        background-color: #000000;
+        background-color: #111116;
         font-size: 100%;
         overflow-y: hidden;
         overflow-x: hidden;

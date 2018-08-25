@@ -10,8 +10,8 @@ import RefugeeRoute from './RefugeeRoute'
 const Icon = styled.img`
   position: absolute;
   width: 100px;
-  left: 120px;
-  top: 285px;
+  left: 130px;
+  top: 270px;
   cursor: pointer;
   opacity: .6;
   transition: all 300ms;
@@ -25,8 +25,8 @@ const Icon_text = styled.p`
   color: white;
   font-size: 10px;
   position: absolute;
-  left: 154px;
-  top: 343px;
+  left: 163px;
+  top: 328px;
   -webkit-transition: opacity 500ms,top 300ms;
   transition: opacity 500ms,top 300ms;
   opacity: 0.5;
@@ -35,8 +35,8 @@ const Icon_text = styled.p`
 `
 const Icon_popup = styled.div`
   position: absolute;
-  left: 140px;
-  top: 305px;
+  left: 145px;
+  top: 280px;
   width: 250px;
   height: 200px;
   background-color: #1e1e29e0;

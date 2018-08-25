@@ -27,11 +27,15 @@ const TimelineWrapper = styled.div`
   &::before{
     content: "Timeline";
     position: fixed;
-    font-family: 'Roboto';
-    font-size: 15px;
-    font-weight: 300;
+    font-family: 'Ubuntu';
+    font-size: 12px;
+    font-weight: 700;
     color: white;
-    margin-top: -30px;
+    margin-top: -2px;
+    width: 98px;
+    background: #111116;
+    height: 20px;
+    z-index: 1;
   }
 `
 const IndividualWrapper = styled.div`

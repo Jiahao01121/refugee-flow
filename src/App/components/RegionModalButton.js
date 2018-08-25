@@ -8,52 +8,54 @@ import RegionModalContent from './RegionModalContent';
 
 const SwitchCountryButton = styled.button`
   cursor: pointer;
-  text-decoration: underline;
   color: white;
-  font-family: 'Roboto';
+  font-family: 'Ubuntu';
   font-size: 15px;
-  font-weight: 500;
-  background: none;
-  border: none;
+  font-weight: 700;
+  background: #3f415845;
   position: absolute;
   top: 110px;
-  left: 20px;
-
-  &:after{
-    content: '>';
-    font-weight: 900;
-    color: white;
-    font-size: 15px;
-    position: absolute;
-    right: -8px;
+  padding: 8px 20px 9px 50px;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: #3f41581c;
+  transition: background 400ms, border-color 1000ms;
+  &:hover{
+    background: #3f415894;
+    border-color: #555875cf;
   }
-
   &:before{
     background-image: url(./assets/location_icon.png);
     background-size: 50%;
     background-repeat: no-repeat;
-    display: inline-block;
-    width: 33px;
-    height: 27px;
+    width: 26px;
+    height: 25px;
     content: "";
     bottom: 0px;
-    right: 98px;
+    right: 127px;
     position: absolute;
   }
 `
 const CurrentCountryTag = styled.div`
   background: #3f415891;
   position: absolute;
-  top: 109px;
+  top: 110px;
   color: white;
-  left: 150px;
+  left: 187px;
   padding: ${props => props.currentCountry !='GLOBAL'?'5px 15px 5px 25px':'5px 15px 5px 15px' };
-  border-radius: 100px;
+  border-radius: 4px;
+  border: 1px solid #060610b5;
   font-family: 'Roboto';
   font-size: 10px;
   font-weight: 400;
   cursor: ${props => props.currentCountry !='GLOBAL'?'pointer':'default' };
   transition: all 400ms;
+
+  ${props => props.currentCountry !='GLOBAL'&&css`
+    background: #3f4158;
+    border-color: #8387b185;
+  `};
+
   &:before{
     ${props =>
       props.currentCountry && css`
@@ -66,10 +68,10 @@ const CurrentCountryTag = styled.div`
     left: 10px;
     top: 2px;
     }
-
   &:hover{
     ${props => props.currentCountry !='GLOBAL'&&css`
-      background: #3f4158;
+      background: #2b2c3c;
+      border-color: #2e9493cc;
     `};
   }
 `

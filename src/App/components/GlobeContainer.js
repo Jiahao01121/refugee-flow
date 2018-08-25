@@ -33,12 +33,12 @@ const TitleContainer = styled.div`
 const TitleText = styled.p`
   font-family: 'Roboto';
   font-size: 25px;
-  font-weight: 100;
+  font-weight: 300;
   color: white;
   margin-top: 25px;
   cursor: pointer;
   position: absolute;
-
+  transition: all 400ms;
   &:after{
     background-image: url(./assets/title_icon.png);
     background-size: 14px 14px;
@@ -53,23 +53,28 @@ const TitleText = styled.p`
   }
 
   &:before{
-    content: 'Select & filter regional conflict data';
-    font-weight: 300;
+    content: 'Select, filter and view regional conflict data';
+    font-weight: 100;
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     position: absolute;
     width: 300px;
-    top: 40px;
+    top: 32px;
+    letter-spacing: 0.7px;
+  }
+
+  &:hover{
+    color: #d7d7ead4;
   }
 `
 const DataSource = styled.div`
   fill: white;
   position: absolute;
-  right: 4%;
+  right: 2%;
   cursor: pointer;
   opacity: 0.8;
   transition: all 200ms;
-  top: 81vh;
+  top: 92vh;
   &:hover{
     opacity: 1;
   }
@@ -87,42 +92,43 @@ const DataSource = styled.div`
 `
 const GlobeControllerButton = styled.button`
   cursor: pointer;
-  font-family: 'Roboto';
-  font-weight: 600;
+  color: white;
+  font-family: 'Ubuntu';
   font-size: 15px;
-  color: #ffffff66;
-  left: 30px;
+  font-weight: 700;
   position: absolute;
-  background: none;
+  background: #3f415845;
   border: none;
   top: 160px;
   margin: 0px;
   z-index: 10;
-  transition: all 300ms;
+  transition: background 400ms, border-color 1000ms;
   cursor: pointer;
-
+  padding: 8px 44px 9px 50px;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: #3f41581c;
+  &:hover{
+    background: #3f415894;
+    border-color: #555875cf;
+  }
   &:before{
     background-image: url(./assets/globe_icon.png);
     background-size: 50%;
-    width: 60px;
+    width: 50px;
     height: 40px;
     background-repeat: no-repeat;
-    display: inline-block;
     content: "";
-    bottom: -16px;
-    right: 28px;
+    bottom: -12px;
+    right: 99px;
     position: absolute;
     margin-right: 10px;
-  }
-
-  &:hover{
-    color: #ffffffd1;
   }
 `
 const GlobeControllerItems = styled.div`
   position: absolute;
   top: 160px;
-  left: 20px;
+  left: 98px;
   transition: all 300ms ease-in-out;
   ${props => !props.show
   ? css`
@@ -136,28 +142,44 @@ const GlobeControllerItems = styled.div`
 `
 const AllConflict = styled.button`
   cursor: pointer;
+  background: #3f415891;
+  border-radius: 4px;
+  border: 1px solid #060610b5;
   font-family: 'Roboto';
-  font-weight: 100;
-  font-size: 12px;
+  font-size: 10px;
+  font-weight: 400;
   color: white;
-  background: none;
-  border: none;
-
+  padding: 5px 15px 5px 15px;
   ${props => props.selectornot == 1 && css`
-    font-weight: 600;
+    background: #3f4158;
+    border-color: #8387b185;
   `}
+  margin-right: 17px;
+  transition: all 400ms;
+  &:hover{
+    background: #2b2c3c;
+    border-color: #2e9493cc;
+  }
 `
 const Conflict_Civilians = styled.button`
   cursor: pointer;
+  background: #3f415891;
+  border-radius: 4px;
+  border: 1px solid #060610b5;
   font-family: 'Roboto';
-  font-weight: 100;
-  font-size: 12px;
+  font-size: 10px;
+  font-weight: 400;
   color: white;
-  background: none;
-  border: none;
+  padding: 5px 15px 5px 15px;
   ${props => props.selectornot == 2 && css`
-    font-weight: 600;
+    background: #3f4158;
+    border-color: #8387b185;
   `}
+  transition: all 400ms;
+  &:hover{
+    background: #2b2c3c;
+    border-color: #2e9493cc;
+  }
 `
 const LegendWrapper = styled.div`
   position: absolute;
@@ -868,7 +890,9 @@ class GlobeContainer extends React.Component {
 
       <Wrapper className = 'globe'>
         <TitleContainer>
-          <TitleText onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1') }> {'Armed Conflict - ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) } </TitleText>
+          <TitleText onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1') }>
+            {'Armed Conflict | Region : ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) + " | Year : " + this.state.currentYear + '  '}
+          </TitleText>
           <DataSource onClick={() => window.open('https://www.acleddata.com/data/', '_blank')}>
             <svg x="0px" y="0px" width="18.014px" height="19.304px" viewBox="0 0 18.014 19.304">
             <defs>
@@ -900,7 +924,7 @@ class GlobeContainer extends React.Component {
              removeCountryHandler = {this.removeCountryHandler}
              currentCountry={this.state.currentCountry}
            />
-          <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >GLOBE</GlobeControllerButton>
+          <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >Map Filter</GlobeControllerButton>
 
           <GlobeControllerItems show ={this.state.controllerShow}>
 
