@@ -306,9 +306,6 @@ export default class AboutPage extends Component {
 
             <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/abins'>Abin Abraham - Co-Creator</a></em> is drawn to the intersection of technology, art, and policy. He is pursuing creative ways to understand the complex challenges facing the world today and believes that creativity is the key to effective policymaking. He works as a web developer at the United Nations Global Compact and has worked on <a href="https://www.unglobalcompact.org/interactive">UNGC Interactive</a> and the <a href="http://blueprint.unglobalcompact.org/">SDG Blueprint</a>.</Content>
 
-            <Content bioOn={this.state.bioOn} animate={this.state.animate}><em><a target="_blank" href='https://www.linkedin.com/in/jasperlo/'>Jasper Lo - Copywriter</a></em> is a US Army veteran and writer based in NYC. His creative work focuses on diaspora, violence, and masculinity. Find his articles on <a href="https://www.globalcitizen.org/en/authors/jasper-lo/">Global Citizen</a>, a nonprofit with the mission of ending extreme poverty, and his poems in <a href="https://flapperhouse.com/2015/04/08/the-burning-moon-poetry-by-jasper-lo/">Flapperhouse</a> and <a href="https://morningsidepost.com/articles/2018/3/15/-munchies-master-ng2ea-esztk-787gk-pm5zb-dpdbn">The Morningside Post</a>. Jasper will graduate in 2019 from the dual Master’s Degree Program in International Affairs and Journalism at Columbia University.</Content>
-
-
             <Content bioOn={this.state.bioOn} animate={this.state.animate} style={{fontSize: '17px',fontWeight: '800',margin: 0}}><em>If you have any questions or feedback, please contact </em> <a href="mailto:refugeeflow@gmail.com" style={{fontSize: '17px',fontWeight: '200',margin: 0, 'marginLeft':'8px','fontStyle':'italic'}}>refugeeflow@gmail.com</a></Content>
           </Bio>
 
