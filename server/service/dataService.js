@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const lodash = require('lodash');
 const mongoose = require('mongoose');
 
@@ -13,11 +14,11 @@ const db = mongoose.connection;
 db.on('error', console.log.bind(console,'connectinon error') );
 
 // load data
-const asylumApplicationData = JSON.parse( fs.readFileSync('./data/asy_application_all.json') );
-const route_death  = JSON.parse( fs.readFileSync('./data/route_death.json') );
-const route_IBC_country_list  = JSON.parse( fs.readFileSync('./data/country_route_list.json') );
-const route_IBC = JSON.parse( fs.readFileSync('./data/IBC_all.json') );
-const warDataAll = JSON.parse( fs.readFileSync('./data/war_all.json'), function(key, value){
+const asylumApplicationData = JSON.parse( fs.readFileSync(path.join(__dirname,'../data/asy_application_all.json')) );
+const route_death  = JSON.parse( fs.readFileSync(path.join(__dirname,'../data/route_death.json')) );
+const route_IBC_country_list  = JSON.parse( fs.readFileSync(path.join(__dirname,'../data/country_route_list.json')) );
+const route_IBC = JSON.parse( fs.readFileSync(path.join(__dirname,'../data/IBC_all.json')) );
+const warDataAll = JSON.parse( fs.readFileSync(path.join(__dirname,'../data/war_all.json')), function(key, value){
 
 	if (key == "lat" || key == "lng") return reduceGeoPercision(value, 2);
   else return value;
