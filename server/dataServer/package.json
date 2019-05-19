@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "NODE_ENV=development PORT=2700 nodemon ./server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
