@@ -78,7 +78,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "nodemon": "NODE_ENV=development PORT=2700 nodemon ./server/server.js"
+    "nodemon": "NODE_ENV=development PORT=2700 DB_LOGIN=will nodemon ./server/server.js"
   },
   "jest": {
     "collectCoverageFrom": [

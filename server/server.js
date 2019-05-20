@@ -1,4 +1,4 @@
-const ENV_INFO = require('./envInfo')(); // printenv
+const ENV_INFO = require('./helpers/envInfo')(); // printenv
 const express = require('express');
 const path = require('path');
 const cors = require('cors')
