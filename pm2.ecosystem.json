@@ -1,0 +1,14 @@
+{
+  "apps" : [
+    {
+      "name": "",
+      "script": "server/server.js",
+      "watch": true,
+      env_production: {
+        "PORT": 2700,
+        "NODE_ENV": "production",
+        "DB_LOGIN"="prod"
+      }
+    }
+  ]
+}

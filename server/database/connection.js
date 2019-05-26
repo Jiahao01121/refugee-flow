@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
+const { database } = require('../../config.js');
 
-mongoose.connect(
-  `mongodb://${process.env.DB_LOGIN}:${process.env.DB_LOGIN}@ds145118.mlab.com:45118/refugee-flow`,
-  { useNewUrlParser: true },
-);
+mongoose.connect(database.connection, { useNewUrlParser: true });
 const db = mongoose.connection;
 
 const connection = new Promise((resolve, reject) => {
   db.on('error', (err) => {
-    console.log('err',err);
+    console.warn('err', err);
     reject(err);
   });
 
   db.once('open', () => {
-    console.log('connected w/ db');
+    console.info('connected w/ db');
     resolve();
   });
 });

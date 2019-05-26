@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "jest": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "react-hooks"
+  ],
+  "rules": {
+    "func-style": ["error", "expression"],
+    "import/prefer-default-export": "off",
+    "no-plusplus": "off",
+    "object-curly-newline": "off",
+    "no-console": ["error", { allow: ["warn", "error", "info"] }],
+    "react/no-array-index-key": "off",
+    "react-hooks/rules-of-hooks": "error"
+  }
+}

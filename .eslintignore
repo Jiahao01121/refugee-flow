@@ -1,0 +1,6 @@
+**/*.json
+**/*.html
+**/*.md
+**/*.scss
+dist/
+coverage/
