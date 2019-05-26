@@ -2,7 +2,7 @@
 
 
 
-[![preview](http://refugeeflow.world/assets/project_preview.png)](http://refugeeflow.world/)
+[![preview](preview.gif)](http://refugeeflow.world/)
 
 To date, there were an unprecedented 65.6 million forcibly displaced people worldwide, or in other words, one out of every 113 people on Earth. The number are surpassing even post-World War II records, when the world was struggling to come to terms with the most devastating event in history. United Nations defined refugee as an individual who has been forced to leave their country due to political or religious reasons, or due to threat of war of violence. Among all the forcibly displaced people around the world, one third of them are categorized as refugees, over half of whom are under the age of 18.
 
