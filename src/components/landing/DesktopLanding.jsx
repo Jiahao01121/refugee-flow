@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import * as d3 from 'd3';
-import * as _ from 'underscore';
 import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -22,8 +21,8 @@ const Wrapper = styled.div`
     position: fixed;
     z-index: 999;
     transition: top 1200ms, opacity 2500ms, filter 200ms;
-    top: ${props => props.animation?'9px':'-300px'}
-    opacity: ${props => props.animation?1:0}
+    top: ${props => (props.animation ? '9px' : '-300px')};
+    opacity: ${props => (props.animation ? 1 : 0)};
     &:hover{
       filter:drop-shadow(0px 2px 8px #bebee4);
     }
@@ -34,16 +33,17 @@ const Wrapper = styled.div`
     font-family: 'Ubuntu';
     font-weight: 100;
     color: white;
-    opacity: ${props => props.animation?0.4:0}
+    opacity: ${props => (props.animation ? 0.4 : 0)};
     transition: 2400ms all;
     font-size: 11px;
     position: relative;
-    left: ${props => props.animation?'20px':'-20px'};
+    left: ${props => (props.animation ? '20px' : '-20px')};
     bottom: 1px;
     width: 300px;
     word-spacing: 3px;
   }
-`
+`;
+
 const Intro = styled.div`
   color: white;
   position: absolute;
@@ -96,7 +96,7 @@ const Intro = styled.div`
     position: absolute;
     width: 20px;
   }
-`
+`;
 const IntroPage = styled.div`
   width: 100%;
   transform: ${props => props.wikiOn ? 'translateX(0%)' : 'translateX(100%)'};
@@ -108,7 +108,7 @@ const IntroPage = styled.div`
   transition: transform cubic-bezier(0.73, 0.02, 0.58, 0.78) 400ms, opacity 400ms, background 1600ms;
   position: absolute;
   background: rgba(30, 30, 47, 0.98);
-`
+`;
 const Exit = styled.div`
   color: white;
   position: absolute;
@@ -123,7 +123,7 @@ const Exit = styled.div`
     transition: filter 200ms, opacity 800ms;
     filter:drop-shadow(0px 2px 8px #bebee4);
   }
-`
+`;
 const IntroWrapper = styled.div`
   position: relative;
   bottom: -120px;
@@ -142,7 +142,7 @@ const IntroWrapper = styled.div`
     box-shadow: 0px 0px 140px 70px rgb(29, 28, 45);
     position: absolute;
   }
-`
+`;
 const IntroParagraph = styled.p`
   color: white;
   font-family: 'Ubuntu';
@@ -151,7 +151,7 @@ const IntroParagraph = styled.p`
   line-height: 2;
   letter-spacing: 0.7px;
   text-align: left;
-`
+`;
 const IntroInnerWrapper = styled.div`
 
   height: calc(80% - 20px);
@@ -164,7 +164,7 @@ const IntroInnerWrapper = styled.div`
     background-color: #35354a;
     -webkit-border-radius: 4px;
   }
-`
+`;
 const Introtitle = styled.p`
   transition: all 1500ms;
   font-family: 'Ubuntu';
@@ -183,7 +183,7 @@ const Introtitle = styled.p`
     left: 0;
     top: 50px;
   }
-`
+`;
 const Copyright = styled.p`
   font-family: 'Roboto';
   font-weight: 480;
@@ -205,7 +205,7 @@ const Copyright = styled.p`
   &>a:hover{
     color: #1e1e2f;
   }
-`
+`;
 const Quote = styled.p`
   position: absolute;
   font-family: 'Playfair Display', serif;
@@ -255,10 +255,10 @@ const Quote = styled.p`
       }
     }};
   }
-`
+`;
 const Section = styled.section`
   height: 100vh;
-`
+`;
 const Video = styled.video.attrs({
   opacity: props => props.animation?1:0,
   filter: props => props.videoLoop ? 'blur('+ Math.abs(d3.randomNormal(0,10)()) +'px'+') hue-rotate(0deg) contrast(1.2) saturate(0.8) brightness(0.5);': 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
@@ -291,13 +291,13 @@ const Video = styled.video.attrs({
     @media (max-width:650px){
       width: 500%;
     };
-`
+`;
 const BoxShadow = styled.div`
   position: absolute;
   width: 100%;
   z-index: 1;
   box-shadow: 1px 10px 950px 230px rgba(1, 14, 23, 0.9);
-`
+`;
 const Launch = styled.a`
   text-align: center;
   text-decoration: none;
@@ -321,96 +321,109 @@ const Launch = styled.a`
     border: 2px #231f419c solid;
     bottom: 72px;
   }
-`
+`;
 
-export default class Landing extends Component {
+export default class DesktopLanding extends Component {
+  state = {
+    animation: false,
+    videoLoop: false,
+    wikiOn: false,
+  };
 
-  constructor(props){
-    super(props);
-    this.state = {
-      animation:false,
-      videoLoop: false,
-      wikiOn: false,
-    }
-  }
-
-  componentDidMount(){
-    d3.select('#nav-show').style('display','none');
-    window.setTimeout(() => this.setState({animation: true}) ,1000);
-    window.setInterval(() => this.setState({videoLoop: !this.state.videoLoop}),1650);
+  componentDidMount() {
+    const { videoLoop } = this.state;
+    d3.select('#nav-show').style('display', 'none');
+    window.setTimeout(() => this.setState({ animation: true }), 1000);
+    window.setInterval(() => this.setState({ videoLoop: !videoLoop }), 1650);
   }
 
   render() {
-    return(
-    <Wrapper animation={this.state.animation}>
-      <Link to='/'>Refugee Flow</Link>
-      <Intro videoLoop={this.state.videoLoop} wikiOn ={this.state.wikiOn} animation={this.state.animation} onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>INFO<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/><g><path d="M80 376h288v48H80z"/></g></svg></Intro>
-      <IntroPage wikiOn ={this.state.wikiOn}>
-        <Exit onClick={() => this.setState({wikiOn: !this.state.wikiOn})}>x</Exit>
+    const { videoLoop, animation, wikiOn } = this.state;
+    return (
+      <Wrapper animation={animation}>
+        <Link to="/">Refugee Flow</Link>
+        <Intro
+          videoLoop={videoLoop}
+          wikiOn ={wikiOn}
+          animation={animation}
+          onClick={() => this.setState({ wikiOn: !wikiOn })}
+        >
+          INFO
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/>
+            <g>
+              <path d="M80 376h288v48H80z" />
+            </g>
+          </svg>
+        </Intro>
+        <IntroPage wikiOn={wikiOn}>
+          <Exit onClick={() => this.setState({ wikiOn: !wikiOn })}>x</Exit>
+          <IntroWrapper wikiOn={wikiOn}>
+            <Introtitle>Introduction</Introtitle>
+            <IntroInnerWrapper>
+              <IntroParagraph>
+                To leave one’s home country, community, and loved ones is a difficult prospect
+                even in times of peace. As violence, persecution, and terror surge the only option for
+                survival and security is to flee one's home.
+              </IntroParagraph>
+              <IntroParagraph>
+                The United Nations High Commissioner for Refugees reports that as of 2017, 68.5 million
+                people were forcibly displaced worldwide due to persecution, conflict, violence, and human
+                rights violations.
+              </IntroParagraph>
+              <IntroParagraph>
+                To become a refugee is to subject a person to the most pervasive form of cruelty by removing
+                their basic need to lead a normal life. All aspects that make human life tolerable and meaningful
+                are lost to the refugee. Refugees are placed in inhospitable host countries that do not want them.
+                They face the brute indifference of the walls that people build between nations and cultures. Yet
+                each refugee surrenders to the hardship of leaving their old lives and the lives they could have
+                lived to find peace and safety elsewhere.
+              </IntroParagraph>
+              <IntroParagraph>
+                Every refugee is an example of a world that failed to use its common strength for the common good.
+              </IntroParagraph>
+            </IntroInnerWrapper>
+          </IntroWrapper>
 
-        <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Introtitle>Introduction</Introtitle>
-          <IntroInnerWrapper>
-            <IntroParagraph>
-              To leave one’s home country, community, and loved ones is a difficult prospect
-              even in times of peace. As violence, persecution, and terror surge the only option for
-              survival and security is to flee one's home.
-            </IntroParagraph>
-            <IntroParagraph>
-              The United Nations High Commissioner for Refugees reports that as of 2017, 68.5 million
-              people were forcibly displaced worldwide due to persecution, conflict, violence, and human
-              rights violations.
-            </IntroParagraph>
-            <IntroParagraph>
-              To become a refugee is to subject a person to the most pervasive form of cruelty by removing
-              their basic need to lead a normal life. All aspects that make human life tolerable and meaningful
-              are lost to the refugee. Refugees are placed in inhospitable host countries that do not want them.
-              They face the brute indifference of the walls that people build between nations and cultures. Yet
-              each refugee surrenders to the hardship of leaving their old lives and the lives they could have
-              lived to find peace and safety elsewhere.
-            </IntroParagraph>
-            <IntroParagraph>
-              Every refugee is an example of a world that failed to use its common strength for the common good.
-            </IntroParagraph>
-          </IntroInnerWrapper>
-        </IntroWrapper>
-
-        <IntroWrapper wikiOn ={this.state.wikiOn}>
-          <Introtitle>The Approach</Introtitle>
-          <IntroInnerWrapper>
-            <IntroParagraph>
-              Refugee Flow gathers data from multiple reliable sources to construct a compelling account
-              on how persons become refugees. This project examines one of the direct fundamental causes
-              of the global refugee crisis, the collapse of order and stability in todays international
-              landscape.
-            </IntroParagraph>
-            <IntroParagraph>
-              This visualization examines the impact conflict, persecution and violence has on the lives of
-              persons in their home countries and communities. The dataset delves into exploring what drives
-              people to flee their homes and bear the burden of a life as a refugee.
-            </IntroParagraph>
-            <IntroParagraph>
-              The project further explores the possible routes taken by refugees. The dataset examines the
-              dangers those forcibly displaced face in their search for safety. Many refugees who depart
-              on their journey never make it to their intended destination. The data collected presents the
-              cause of these deaths along their chosen routes.
-            </IntroParagraph>
-          </IntroInnerWrapper>
-        </IntroWrapper>
+          <IntroWrapper wikiOn={wikiOn}>
+            <Introtitle>The Approach</Introtitle>
+            <IntroInnerWrapper>
+              <IntroParagraph>
+                Refugee Flow gathers data from multiple reliable sources to construct a compelling account
+                on how persons become refugees. This project examines one of the direct fundamental causes
+                of the global refugee crisis, the collapse of order and stability in todays international
+                landscape.
+              </IntroParagraph>
+              <IntroParagraph>
+                This visualization examines the impact conflict, persecution and violence has on the lives of
+                persons in their home countries and communities. The dataset delves into exploring what drives
+                people to flee their homes and bear the burden of a life as a refugee.
+              </IntroParagraph>
+              <IntroParagraph>
+                The project further explores the possible routes taken by refugees. The dataset examines the
+                dangers those forcibly displaced face in their search for safety. Many refugees who depart
+                on their journey never make it to their intended destination. The data collected presents the
+                cause of these deaths along their chosen routes.
+              </IntroParagraph>
+            </IntroInnerWrapper>
+          </IntroWrapper>
 
 
-        <Copyright>Built by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
-      </IntroPage>
-      <div id="video">
-        <BoxShadow/>
-        <Section>
-          <Video animation={this.state.animation} videoLoop={this.state.videoLoop} autoPlay muted loop style={{backgroundVideo: 'url(assets/img/hero.jpg)'}}><source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" /></Video>
-          <Quote videoLoop={this.state.videoLoop} animation={this.state.animation}>"At <i>sea</i>, a frightening number of refugees and migrants are dying each year. On <i>land</i>, people fleeing war are finding their way blocked by closed <i>borders</i>. Closing borders does not solve the problem"</Quote>
-        </Section>
-      </div>
-      <Launch animation={this.state.animation} href="/conflict">Launch Visualization</Launch>
-    </Wrapper>
-    )
+          <Copyright>Built by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
+        </IntroPage>
+        <div id="video">
+          <BoxShadow />
+          <Section>
+            <Video animation={animation} videoLoop={videoLoop} autoPlay muted loop style={{ backgroundVideo: 'url(assets/img/hero.jpg)' }}>
+              <source src="https://player.vimeo.com/external/278983563.hd.mp4?s=df2675a8395d48ad7b455f155ae148361121b298&profile_id=175" />
+            </Video>
+            <Quote videoLoop={videoLoop} animation={animation}>
+              "At <i>sea</i>, a frightening number of refugees and migrants are dying each year. On <i>land</i>, people fleeing war are finding their way blocked by closed <i>borders</i>. Closing borders does not solve the problem"
+            </Quote>
+          </Section>
+        </div>
+        <Launch animation={animation} href="/conflict">Launch Visualization</Launch>
+      </Wrapper>
+    );
   }
-
-}
+};

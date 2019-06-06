@@ -139,7 +139,7 @@ border: 0px;
 }
 `
 
-class MobileWarning extends React.Component {
+class MobileLanding extends React.Component {
 
     state = {
       animation:false,
@@ -169,4 +169,4 @@ class MobileWarning extends React.Component {
   }
 }
 
-export default MobileWarning;
+export default MobileLanding;
