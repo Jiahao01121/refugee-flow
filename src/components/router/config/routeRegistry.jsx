@@ -7,7 +7,7 @@ import DesktopLanding from '../../landing/DesktopLanding';
 import MobileLanding from '../../landing/MobileLanding';
 import Conflict from '../../Conflict';
 import RefugeeRoute from '../../RefugeeRoute';
-import AboutPage from '../../AboutPage';
+import About from '../../about/About';
 
 const routeRegistry = [
   {
@@ -40,7 +40,7 @@ const routeRegistry = [
   },
   {
     isExclusive: true,
-    component: AboutPage,
+    component: About,
     path: '/about',
     exact: true,
   },
