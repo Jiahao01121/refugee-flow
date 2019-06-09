@@ -46,6 +46,6 @@ const Text = styled.p`
 `;
 
 
-const Paragraph = (props) => <Text {...props} />;
+const Paragraph = props => <Text {...props} />;
 
 export default Paragraph;
