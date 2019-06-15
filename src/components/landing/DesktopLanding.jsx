@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import * as d3 from 'd3';
 import { Link } from 'react-router-dom';
+import HamburgerIcon from './icon_hamburger.svg';
+
+/* TODO
+  Remove window.setInterval(),
+  use keyframes instead to achieve animation loop 
+*/
 
 const Wrapper = styled.div`
   & ::selection {
@@ -261,7 +267,10 @@ const Section = styled.section`
 `;
 const Video = styled.video.attrs({
   opacity: props => props.animation?1:0,
-  filter: props => props.videoLoop ? 'blur('+ Math.abs(d3.randomNormal(0,10)()) +'px'+') hue-rotate(0deg) contrast(1.2) saturate(0.8) brightness(0.5);': 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
+  filter: props => props.videoLoop
+    ? 'blur('+ Math.abs(d3.randomNormal(0,10)()) +'px'+') hue-rotate(0deg) contrast(1.2) saturate(0.8) brightness(0.5);'
+
+    : 'blur(' + Math.abs(d3.randomNormal(0,10)()) + 'px'+ ') hue-rotate(0deg) contrast(1.2) saturate('+d3.randomUniform(1, 2.5)()+') brightness('+d3.randomUniform(0.4, 1.2)()+');'
 })`
     position: absolute;
     top: 0;
@@ -349,12 +358,7 @@ export default class DesktopLanding extends Component {
           onClick={() => this.setState({ wikiOn: !wikiOn })}
         >
           INFO
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path d="M80 280h256v48H80zM80 184h320v48H80zM80 88h352v48H80z"/>
-            <g>
-              <path d="M80 376h288v48H80z" />
-            </g>
-          </svg>
+          <HamburgerIcon />
         </Intro>
         <IntroPage wikiOn={wikiOn}>
           <Exit onClick={() => this.setState({ wikiOn: !wikiOn })}>x</Exit>

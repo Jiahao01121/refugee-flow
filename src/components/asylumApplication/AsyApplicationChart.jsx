@@ -1,6 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
-import * as warDict from '../data/warDictionary';
+import * as warDict from '../../data/warDictionary';
 
 class AsyApplicationChart extends React.Component {
   constructor(props){
