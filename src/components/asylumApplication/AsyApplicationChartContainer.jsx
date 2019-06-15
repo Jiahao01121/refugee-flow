@@ -33,7 +33,7 @@ class AsyApplicationChartContainer extends React.Component {
     this.state = {
       margin: {top: 20, right: 20, bottom: 30, left: 30},
       data : this.props.data,
-      currentYear : this.props.currentYear,
+      selectedYear : this.props.selectedYear,
       currentCountry: this.props.currentCountry,
       width : 0,
       height : 0,
@@ -51,12 +51,12 @@ class AsyApplicationChartContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       data: nextProps.data,
-      currentYear: nextProps.currentYear,
+      selectedYear: nextProps.selectedYear,
       currentCountry: nextProps.currentCountry
     })
     this.chartMode = nextProps.chartMode;
     this.loadingManager = nextProps.loadingManager;
-    this.processData(nextProps.data,nextProps.currentYear,this.chartMode);
+    this.processData(nextProps.data,nextProps.selectedYear,this.chartMode);
   }
 
   componentDidMount(){
@@ -66,14 +66,14 @@ class AsyApplicationChartContainer extends React.Component {
       height : $(this.mount).height() - this.state.margin.top - this.state.margin.bottom,
     })
 
-    this.processData(this.state.data,this.state.currentYear,this.chartMode);
+    this.processData(this.state.data,this.state.selectedYear,this.chartMode);
 
   }
 
-  processData(data,currentYear,mode){
+  processData(data,selectedYear,mode){
     console.log('processData Caleed');
     // console.log(this.state.currentCountry);
-    // console.log(currentYear);
+    // console.log(selectedYear);
 
 
     if(data.length >0){ //if receives data is not an empty array
@@ -114,7 +114,7 @@ class AsyApplicationChartContainer extends React.Component {
       if(mode === 1){
         // pass data to state
         const yearList = Object.keys(_data[0]);
-        const currentData = _data[0][yearList[currentYear]];
+        const currentData = _data[0][yearList[selectedYear]];
         this.setState({
           chartData : currentData
         })

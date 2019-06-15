@@ -352,4 +352,4 @@ class Annotation extends React.Component{
   }
 }
 
-export default Annotation
+export default Annotation;

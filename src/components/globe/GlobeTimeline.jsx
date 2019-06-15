@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import styled, { css } from 'styled-components';
 
-import * as warDict from '../data/warDictionary';
+import * as warDict from '../../data/warDictionary';
 
 const TimelineWrapper = styled.div`
   position:absolute;

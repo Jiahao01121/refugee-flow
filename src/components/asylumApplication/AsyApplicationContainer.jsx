@@ -1,10 +1,17 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import { connect } from 'react-redux';
+
 import * as d3 from 'd3';
+import { toLower, startCase } from 'lodash';
+import styled, { css } from 'styled-components';
 import { ScaleLoader } from 'react-spinners';
+
+import { fetchData } from '../utils/fetchers';
+
+import { LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator } from '../LoadingBar';
 import AsyApplicationChartContainer from './AsyApplicationChartContainer';
 
-import { LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator } from './LoadingBar';
+import tooltipIcon from './icon_tooltip.png';
 
 const Background = styled.div`
   width: 25%;
@@ -42,7 +49,7 @@ const Title = styled.p`
     font-size: 16px;
   }
   &:after{
-    background-image: url(./assets/title_icon.png);
+    background-image: ${() => `url(${tooltipIcon})`};
     background-size: 14px 14px;
     display: inline-block;
     width: 14px;
@@ -81,7 +88,7 @@ const ButtonWrapper = styled.div`
   }
 
 
-`
+`;
 const CurrentYearButton = styled.button`
   display: inherit;
   width: 50%;
@@ -108,7 +115,7 @@ const CurrentYearButton = styled.button`
     border-color: #555875cf;
   `};
   &::after{
-    content: ${ props => "'(" + props.currentYear + ")'" };
+    content: ${ props => "'(" + props.selectedYear + ")'" };
     color: white;
     font-weight: 700;
     font-size: 9px;
@@ -144,98 +151,100 @@ const AllYearButton = styled.button`
     background: #3f415894;
     border-color: #555875cf;
   `};
-`
+`;
 
 class AsyApplicationContainer extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-
     this.state = {
       loadingStatus: true,
       loadingText : 'Loading...',
       buttonMode : 1,
-    }
-    this.data = [];
-    this.currentYear = this.props.currentYear;
-    this.currentCountry = this.props.currentCountry;
-    this.loadingManager = this.props.loadingManager;
-    this.renderAsyAppContainer = this.renderAsyAppContainer.bind(this);
+      data: [],
+    };
+
     this.buttonClick = this.buttonClick.bind(this);
+
+    this.setData = this.setData.bind(this);
+    this.setLoadingStatus = this.setLoadingStatus.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const url = `${window.location.protocol}//${window.location.host}/data/asy_application_all`;
-    this.fetchData(url).then(d =>{
-      this.data = d;
-      this.setState({ loadingStatus: false })
-    })
+    fetchData(url, this.setData, this.setLoadingStatus);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.currentYear = nextProps.currentYear;
-    this.currentCountry = nextProps.currentCountry;
-    this.loadingManager = nextProps.loadingManager;
+  setData(data) {
+    this.setState({ data });
   }
 
-  fetchData(url){
-    const request = new Request( url, {
-      method: 'GET',
-      cache: 'force-cache'
-    });
-    return(
-      fetch(request).then(res => res.json()).then(d =>{
-        return d
-      })
-    )
+  setLoadingStatus(loadingStatus) {
+    this.setState({ loadingStatus });
   }
 
-  renderAsyAppContainer(){
-    if( this.data.length > 0 ){
-
-      return (
-        <AsyApplicationChartContainer
-          currentYear={ this.currentYear }
-          currentCountry = { this.currentCountry }
-          data={this.data}
-          loadingManager={this.loadingManager}
-          ref={(ChartContainerMount) => {return this.ChartContainerMount = ChartContainerMount }}
-          chartMode = {this.state.buttonMode}
-        />
-      )
-    }
+  buttonClick(i) {
+    this.setState({ buttonMode: i });
   }
 
-  buttonClick(i){
-    this.setState({
-      buttonMode: i
-    })
-  }
-
-  render(){
-
-    return(
+  render() {
+    const { buttonMode, data, loadingStatus, loadingText } = this.state;
+    const { selectedYear, currentCountry, loadingManager } = this.props;
+    return (
       <Background>
-        <Title onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1')}>{'Total Asylum Application | ' + this.currentCountry.charAt(0).toUpperCase() + this.currentCountry.toLowerCase().slice(1)} </Title>
+        <Title
+          onClick={() => d3.select('.annotation-wrapper')
+            .style('display', 'block')
+            .transition()
+            .delay(10)
+            .style('opacity', '1')
+          }
+        >
+          {`Total Asylum Application | ${startCase(toLower(currentCountry))}`}
+        </Title>
         <ButtonWrapper>
-          <CurrentYearButton onClick ={() => this.buttonClick(1)}     selected = {this.state.buttonMode} currentYear = {'201'.concat(this.currentYear)}>SHOW CURRENT YEAR</CurrentYearButton>
-          <AllYearButton     onClick ={() => this.buttonClick(2)}     selected = {this.state.buttonMode}>SHOW ALL YEARS   </AllYearButton>
+          <CurrentYearButton
+            onClick={() => this.buttonClick(1)}
+            selected={buttonMode}
+            selectedYear={'201'.concat(selectedYear)}
+          >
+          SHOW CURRENT YEAR
+          </CurrentYearButton>
+          <AllYearButton
+            onClick={() => this.buttonClick(2)}
+            selected={buttonMode}
+          >
+          SHOW ALL YEARS
+          </AllYearButton>
         </ButtonWrapper>
 
-        <LoadingDivWrapper loading={this.state.loadingStatus}  leftPercentage='50%' marginTop = '-60'>
+        <LoadingDivWrapper
+          loading={loadingStatus}
+          leftPercentage="50%"
+          marginTop="-60"
+        >
           <LoaderGraphWrapper>
-            <ScaleLoader color= {'#ffffff'} loading={this.state.loadingStatus}/>
+            <ScaleLoader color="#ffffff" loading={loadingStatus} />
           </LoaderGraphWrapper>
           <LoadingIndicator>
-            {this.state.loadingText}
+            {loadingText}
           </LoadingIndicator>
         </LoadingDivWrapper>
-
-        {this.renderAsyAppContainer()}
+        {data.length > 0 && (
+          <AsyApplicationChartContainer
+            selectedYear={selectedYear}
+            currentCountry={currentCountry}
+            data={data}
+            loadingManager={loadingManager}
+            chartMode={buttonMode}
+          />
+        )}
       </Background>
-    )
-
+    );
   }
-
 }
 
-export default AsyApplicationContainer;
+const mapStateToProps = state => ({
+  selectedYear: state.conflictReducer.selectedYear,
+});
+
+export default connect(mapStateToProps)(AsyApplicationContainer);

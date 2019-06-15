@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-import * as warDict from '../data/warDictionary';
+import * as warDict from '../../data/warDictionary';
 
 const ExpandTooltipsAnimation = keyframes`
   100% {

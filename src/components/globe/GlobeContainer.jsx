@@ -1,21 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import styled, { css } from 'styled-components';
 import * as THREE from 'three';
 import * as d3 from 'd3';
 import * as _ from 'underscore';
 import $ from 'jquery';
 
-import { rgbToHsl } from '../utils/color-conversion-algorithms';
-import GlobeVisual from './GlobeVisual'; // child component
-import Timeline from './GlobeTimeline'; // child component
-import GlobeStatsBoard from './GlobeStatsBoard'; // child component
-import { LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator } from './LoadingBar';
-import RegionModalButton from './RegionModalButton';
 import { ScaleLoader } from 'react-spinners';
+import { rgbToHsl } from '../../utils/color-conversion-algorithms';
+import GlobeVisual from './GlobeVisual';
+import Timeline from './GlobeTimeline';
+import GlobeStatsBoard from './GlobeStatsBoard';
+import { LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator } from '../LoadingBar';
+import RegionModalButton from '../RegionModalButton';
 import GlobeRouteButton from './GlobeRouteButton';
 
+import { setSelectedYear } from '../../redux/actions/conflictActions';
+
 const Scroll = require('scroll-js');
-const cot_latLng = require('../data/cot_latLng.json');
+const cot_latLng = require('../../data/cot_latLng.json');
 
 const Wrapper = styled.div`
   & ::selection {
@@ -597,7 +602,7 @@ class GlobeContainer extends React.Component {
           this.state.warData.slice().forEach((d,i) => {
             if(d.year === year ) {
               // inform parent component of changed current year;
-              this.props.changeYearManager(i);
+              this.props.setSelectedYear(i);
               // here only happens once.
               this.drawData( d.value );
               // set scaler.
@@ -618,7 +623,7 @@ class GlobeContainer extends React.Component {
           });
 
         }else{
-          this.props.changeYearManager(+year.charAt(3));
+          this.props.setSelectedYear(+year.charAt(3));
           this.drawData(_.find(this.state.countryData,d => d.year === year)['value']);
           this.gv.scaler = _.find(this.state.warData,d => d.year === year)['scaler'];
           this.gv.octree.update(() =>{
@@ -812,7 +817,7 @@ class GlobeContainer extends React.Component {
 
       this.gv.octree.remove(this.gv.points); //takes ~ 10ms
       this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-      this.props.changeYearManager(+year.charAt(3));
+      this.props.setSelectedYear(+year.charAt(3));
       this.drawData(_.find(data,d => d.year === this.state.currentYear)['value']);
       this.gv.scaler = _.find(this.state.warData,d => d.year === this.state.currentYear)['scaler'];
 
@@ -855,7 +860,7 @@ class GlobeContainer extends React.Component {
         this.state.warData.slice().forEach((d,i) => {
           if(d.year === this.state.currentYear ) {
             // inform parent component of changed current year;
-            this.props.changeYearManager(i);
+            this.props.setSelectedYear(i);
             // here only happens once
             this.drawData( d.value );
             // set scaler
@@ -882,7 +887,6 @@ class GlobeContainer extends React.Component {
   }
 
   render(){
-
     return(
 
       <Wrapper className = 'globe'>
@@ -989,5 +993,8 @@ class GlobeContainer extends React.Component {
     )
   }
 }
+const mapDispatchToProps = dispatch => bindActionCreators({
+  setSelectedYear,
+}, dispatch);
 
-export default GlobeContainer;
+export default connect(null, mapDispatchToProps)(GlobeContainer);
