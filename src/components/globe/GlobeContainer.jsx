@@ -17,7 +17,7 @@ import { LoadingDivWrapper, LoaderGraphWrapper, LoadingIndicator } from '../Load
 import RegionModalButton from '../RegionModalButton';
 import GlobeRouteButton from './GlobeRouteButton';
 
-import { setSelectedYear } from '../../redux/actions/conflictActions';
+import { setSelectedYear, setCurrentCountry } from '../../redux/actions/conflictActions';
 
 const Scroll = require('scroll-js');
 const cot_latLng = require('../../data/cot_latLng.json');
@@ -332,7 +332,6 @@ class GlobeContainer extends React.Component {
       data: [],
       controllerShow: true,
       currentControllerSelection: 1,
-      currentCountry: 'GLOBAL',
       countryData:[],
       country_totalFatality : [],
       country_civilianFatality : [],
@@ -597,7 +596,7 @@ class GlobeContainer extends React.Component {
         //update visualization
         this.gv.octree.remove(this.gv.points); //takes ~ 10ms
         this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-        if(this.state.currentCountry === 'GLOBAL'){
+        if(this.props.currentCountry === 'GLOBAL'){
 
           this.state.warData.slice().forEach((d,i) => {
             if(d.year === year ) {
@@ -656,7 +655,7 @@ class GlobeContainer extends React.Component {
         this.gv.transition(5,() => {
           this.gv.octree.remove(this.gv.points); //takes ~ 10ms
           this.gv.scene.remove(this.gv.points); //takes ~ 10ms
-          if(this.state.currentCountry === 'GLOBAL'){
+          if(this.props.currentCountry === 'GLOBAL'){
             this.state.warData.slice().forEach((d,i) => {
               if(d.year == this.state.currentYear) {
                 this.drawData( d.value );
@@ -702,7 +701,7 @@ class GlobeContainer extends React.Component {
 
         this.gv.transition(5,() => {
           // filter out violance not against civilians
-          if(this.state.currentCountry === 'GLOBAL'){
+          if(this.props.currentCountry === 'GLOBAL'){
             this.state.warData.forEach((d,i) =>{
               if(d.year === this.state.currentYear){
                 this.gv.octree.remove(this.gv.points); //takes ~ 10ms
@@ -745,14 +744,12 @@ class GlobeContainer extends React.Component {
   }
 
   countryChangeHandler(country,year){
-    this.setState({currentCountry: country});
+    this.props.setCurrentCountry(country);
     this.changeCountryData(country,year);
   }
 
   changeCountryData(country,year){
-
-    // inform parent component currentCountry
-    this.props.changeCountryManager(country);
+    this.props.setCurrentCountry(country);
 
     if(year === null){year = '2010'}else{year = '201'+ year}
 
@@ -842,15 +839,13 @@ class GlobeContainer extends React.Component {
   }
 
   removeCountryHandler(){
-    if(this.state.currentCountry != 'GLOBAL'){
+    if(this.props.currentCountry != 'GLOBAL'){
 
       this.setState({
         loadingStatus : true,
         loadingText : 'Returning to Global View...',
-        currentCountry: 'GLOBAL',
       })
-      // inform parent component currentCountry
-      this.props.changeCountryManager('GLOBAL');
+      this.props.setCurrentCountry('GLOBAL');
 
       this.gv.transition(5,() => {
 
@@ -892,7 +887,7 @@ class GlobeContainer extends React.Component {
       <Wrapper className = 'globe'>
         <TitleContainer>
           <TitleText onClick={() => d3.select('.annotation-wrapper').style('display','block').transition().delay(10).style('opacity','1') }>
-            {'Armed Conflict | Region : ' + this.state.currentCountry.charAt(0).toUpperCase() + this.state.currentCountry.toLowerCase().slice(1) + " | Year : " + this.state.currentYear + '  '}
+            {'Armed Conflict | Region : ' + this.props.currentCountry.charAt(0).toUpperCase() + this.props.currentCountry.toLowerCase().slice(1) + " | Year : " + this.state.currentYear + '  '}
           </TitleText>
           <DataSource onClick={() => window.open('https://www.acleddata.com/data/', '_blank')}>
             <svg x="0px" y="0px" width="18.014px" height="19.304px" viewBox="0 0 18.014 19.304">
@@ -923,7 +918,7 @@ class GlobeContainer extends React.Component {
              data={this.state.warData}
              countryChangeHandler = {this.countryChangeHandler}
              removeCountryHandler = {this.removeCountryHandler}
-             currentCountry={this.state.currentCountry}
+             currentCountry={this.props.currentCountry}
            />
           <GlobeControllerButton onClick ={() => this.setState({controllerShow : !this.state.controllerShow})} >Map Filter</GlobeControllerButton>
 
@@ -940,18 +935,10 @@ class GlobeContainer extends React.Component {
               onClick = {() => this.globeControllerClick(2)}
               >Conflict Against Civilians
             </Conflict_Civilians>
-
-            {/* TODO: heat map implimentation */}
-            {/* <Heat_map
-              selectornot = {this.state.currentControllerSelection}
-              onClick = {() => this.globeControllerClick(3)}
-              >Heat Map
-            </Heat_map> */}
-
           </GlobeControllerItems>
         </TitleContainer>
           {this.renderGlobeTimeline()}
-          <GlobeRouteButton history = {this.history} country = {this.state.currentCountry} />
+          <GlobeRouteButton history = {this.history} country = {this.props.currentCountry} />
           {this.renderGlobeVisual()}
         <GlobeNavPanel>
           <Compass src='./assets/compass_icon.png' onClick={() => this.gv.setTarget([-11.874010, 44.605859],945)}></Compass>
@@ -966,21 +953,21 @@ class GlobeContainer extends React.Component {
         <GlobeStatsBoard data = {
           this.state.warData && {
             'Total Fatality': (()=>{
-              if(this.state.currentCountry === 'GLOBAL'){
+              if(this.props.currentCountry === 'GLOBAL'){
                 return _.find(this.state.warData,d => d.year === this.state.currentYear)['totalFatality']
               }else{
                 return this.state.country_totalFatality.length>0 && _.find(this.state.country_totalFatality,d => d.year === this.state.currentYear)['totalFatality']
               }
             })(),
             'Civilian Fatality': (()=>{
-              if(this.state.currentCountry === 'GLOBAL'){
+              if(this.props.currentCountry === 'GLOBAL'){
                 return _.find(this.state.warData,d => d.year === this.state.currentYear)['civilianFatality']
               }else{
                 return this.state.country_civilianFatality.length>0 && _.find(this.state.country_civilianFatality,d => d.year === this.state.currentYear)['civilianFatality']
               }
             })(),
             'Armed Conflict Count': (()=>{
-              if(this.state.currentCountry === 'GLOBAL'){
+              if(this.props.currentCountry === 'GLOBAL'){
                 return _.find(this.state.warData,d => d.year === this.state.currentYear)['totalConflictCount']
               }else{
                 return this.state.country_totalConflictCount.length>0 && _.find(this.state.country_totalConflictCount,d => d.year === this.state.currentYear)['totalConflictCount']
@@ -995,6 +982,11 @@ class GlobeContainer extends React.Component {
 }
 const mapDispatchToProps = dispatch => bindActionCreators({
   setSelectedYear,
+  setCurrentCountry,
 }, dispatch);
 
-export default connect(null, mapDispatchToProps)(GlobeContainer);
+const mapStateToProps = state => ({
+  currentCountry: state.conflictReducer.currentCountry,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GlobeContainer);

@@ -8,6 +8,11 @@ const conflictReducer = (state = conflict, action) => {
         ...state,
         selectedYear: action.selectedYearIndex,
       };
+    case constants.SET_CURRENT_COUNTRY:
+      return {
+        ...state,
+        currentCountry: action.currentCountry,
+      };
 
     default:
       return state;

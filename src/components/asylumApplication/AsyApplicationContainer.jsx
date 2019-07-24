@@ -245,6 +245,7 @@ class AsyApplicationContainer extends React.Component {
 
 const mapStateToProps = state => ({
   selectedYear: state.conflictReducer.selectedYear,
+  currentCountry: state.conflictReducer.currentCountry,
 });
 
 export default connect(mapStateToProps)(AsyApplicationContainer);

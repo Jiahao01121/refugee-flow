@@ -9,13 +9,9 @@ import Annotation from './Annotation';
 export default class Conflict extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      stillLoading: true,
-      currentCountry: 'GLOBAL',
-    };
+    this.state = { stillLoading: true };
 
     this.loadingManager = this.loadingManager.bind(this);
-    this.changeCountryManager = this.changeCountryManager.bind(this);
   }
 
   evokePrompt = _.once(() => {
@@ -28,10 +24,6 @@ export default class Conflict extends React.Component {
     this.setState({ stillLoading: boolean});
   }
 
-  changeCountryManager(country){
-    this.setState({currentCountry: country});
-  }
-
   render() {
 
     return (
@@ -40,11 +32,9 @@ export default class Conflict extends React.Component {
         <Annotation />
         <GlobeContainer
           loadingManager={this.loadingManager}
-          changeCountryManager={this.changeCountryManager}
           history={this.props.history}
         />
         <AsyApplicationContainer
-          currentCountry={this.state.currentCountry}
           loadingManager={this.state.stillLoading}
         />
       </div>
