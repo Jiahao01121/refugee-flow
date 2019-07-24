@@ -6,12 +6,10 @@ import * as mapboxgl from 'mapbox-gl';
 import * as d3 from 'd3';
 import * as d3CanvasTransition from 'd3-canvas-transition';
 import { color_map } from '../data/routeDictionary';
-
-const dataDict = require('../data/IBC_crossingCountByCountry.json');
-
+import { mapboxToken } from '../../config.js';
 import '../stylesheets/RefugeeRoute_map.css';
 
-console.log(d3CanvasTransition);
+const dataDict = require('../data/IBC_crossingCountByCountry.json');
 
 export default class RefugeeRoute_map extends React.Component {
 
@@ -45,7 +43,7 @@ export default class RefugeeRoute_map extends React.Component {
   }
 
   componentDidMount() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiamlhaGFvMDExMjEiLCJhIjoiY2l6bjI5ZHI1MDJkYzJxbzg1NXJmYWxvMSJ9.AhMpv-yiSAvqlo7bi2UBig';
+    mapboxgl.accessToken = mapboxToken;
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/jiahao01121/cji9iqnff6xl52so1ienqz75o',
