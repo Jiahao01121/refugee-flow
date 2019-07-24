@@ -171,8 +171,6 @@ class Navbar extends React.Component {
             <Link to='/conflict' onClick={() => this.setState({currentPage: 'conflict'})}>Conflict</Link>
             <Link to='/route/EasternMediterranean' onClick={() => this.setState({currentPage: 'route'})}>Route</Link>
             <Link to='/about' onClick={() => this.setState({currentPage: 'about'})}>About</Link>
-
-            <a onClick={() => window.open('https://donate.unhcr.org/us-en/redirect')}>Donate</a>
           </Nav>
         </NavbarContainer>
     )

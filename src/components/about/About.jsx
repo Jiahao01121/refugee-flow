@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import DownloadLink from './downloadLink/DownloadLink';
+
 import Accordion from './accordion/Accordion';
 import Paragraph from './paragraph/Paragraph';
 
@@ -43,7 +43,6 @@ export default class About extends React.Component {
     const { animate, AccordionsVisibility } = this.state;
     return (
       <Wrapper animate={animate}>
-        <DownloadLink />
 
         {accordions.map(({ name, contents }) => (
           <Accordion

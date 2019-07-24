@@ -204,11 +204,11 @@ const Copyright = styled.p`
   right: 15px;
   padding-right: 30px;
 
-  &>a{
+  &>span{
     transition: all 400ms;
     color: #abb1d0;
   }
-  &>a:hover{
+  &>span:hover{
     color: #1e1e2f;
   }
 `;
@@ -413,7 +413,7 @@ export default class DesktopLanding extends Component {
           </IntroWrapper>
 
 
-          <Copyright>Built by: <a href='https://willsu.io'>Will Su</a>, <a href="https://github.com/abinofbrooklyn">Abin Abraham</a></Copyright>
+          <Copyright>Built by: <span>Will Su</span>, <span >Abin Abraham</span></Copyright>
         </IntroPage>
         <div id="video">
           <BoxShadow />

@@ -31,32 +31,32 @@ export const accordions = [
         children: (
           <>
             <em>
-              <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/will-su">Will Su - Co-Creator</a>
+              <span>Will Su - Co-Creator</span>
             </em>
             &nbsp;
             rides the line between design and technology.
             His work focuses on presenting data efficiently and beautifully with fluid interactivity.
             He has received awards from
             &nbsp;
-            <a target="_blank" rel="noopener noreferrer" href="https://www.informationisbeautifulawards.com/showcase/2348-nyc-foodiverse">Information is Beautiful</a>
+            <span>Information is Beautiful</span>
             ,
             &nbsp;
-            <a target="_blank" rel="noopener noreferrer" href="https://www.awwwards.com/sites/nyc-foodiverse">Awwwards</a>
+            <span>Awwwards</span>
             &nbsp;
             and placed first at the
             &nbsp;
-            <a target="_blank" rel="noopener noreferrer" href="https://medium.com/@nycmedialab/prototyping-teams-win-12-000-in-prizes-at-mlbam-hackathon-organized-by-nyc-media-lab-d9fee4c7ccaf">MLB Advanced Media Hackathon</a>
+            <span>MLB Advanced Media Hackathon</span>
             . He was featured at
             &nbsp;
-            <a target="_blank" rel="noopener noreferrer" href="https://www.nypl.org/events/exhibitions/nyc-foodiverse">New York Public Library</a>
+            <span>New York Public Library</span>
             &nbsp;
             and NYC Media Lab 2017 conf. He speaks regularly at
             &nbsp;
-            <a target="_blank" rel="noopener noreferrer" href="https://www.meetup.com/UX-Support-Group/events/248956066/">Meetups</a>
+            <span>Meetups</span>
             &nbsp;
             and
             &nbsp;
-            <a target="_blank" rel="noopener noreferrer" href="https://dnnsociety.org/2018/01/01/from-graphic-designer-to-data-visualisation-specialist-a-sharing-from-will-su/">universities</a>
+            <span>universities</span>
             &nbsp;
             about his learning path and perspective on data visualization.
           </>
@@ -66,7 +66,7 @@ export const accordions = [
         children: (
           <>
             <em>
-              <a target="_blank" rel="noopener noreferrer" href='https://www.linkedin.com/in/abins'>Abin Abraham - Co-Creator</a>
+              <span>Abin Abraham - Co-Creator</span>
             </em>
             &nbsp;
             is drawn to the intersection of technology, art, and policy.
@@ -74,11 +74,11 @@ export const accordions = [
             today and believes that creativity is the key to effective policymaking.
             He works as a web developer at the United Nations Global Compact and has worked on
             &nbsp;
-            <a href="https://www.unglobalcompact.org/interactive">UNGC Interactive</a>
+            <span>UNGC Interactive</span>
             &nbsp;
             and the
             &nbsp;
-            <a href="http://blueprint.unglobalcompact.org/">SDG Blueprint</a>
+            <span>SDG Blueprint</span>
             .
           </>
         ),
@@ -89,14 +89,11 @@ export const accordions = [
           <>
             <em>If you have any questions or feedback, please contact</em>
             &nbsp;
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="mailto:refugeeflow@gmail.com"
+            <span
               style={{ fontSize: '17px', fontWeight: '200', margin: 0, marginLeft: '8px', fontStyle: 'italic' }}
             >
               refugeeflow@gmail.com
-            </a>
+            </span>
           </>
         ),
       },
@@ -153,7 +150,7 @@ export const accordions = [
             &#8226;
             &nbsp;
             <em>
-              <a target="_blank" rel="noopener noreferrer" href="http://popstats.unhcr.org/en/asylum_seekers_monthly">UNHCR Population Statistics Database</a>
+              <span>UNHCR Population Statistics Database</span>
             </em>
             &nbsp;
             currently contains data about UNHCR's populations of concern from the year 1951 up to 2014 and you can use it to investigate different aspects of these populations: their general composition by location of residence or origin, their status (refugees, asylum seekers, internally displaced persons, etc.), their evolution over time, and so on.
@@ -166,7 +163,7 @@ export const accordions = [
             &#8226;
             &nbsp;
             <em>
-              <a target="_blank" rel="noopener noreferrer" href='https://missingmigrants.iom.int/downloads'>Missing Migrants Project</a>
+              <span>Missing Migrants Project</span>
             </em>
             &nbsp;
             tracks deaths of migrants, including refugees and asylum-seekers, who have died or gone missing in the process of migration towards an international destination.
@@ -179,7 +176,7 @@ export const accordions = [
             &#8226;
             &nbsp;
             <em>
-              <a target="_blank" rel="noopener noreferrer" href='http://www.themigrantsfiles.com/'>The Migrants Files</a>
+              <span>The Migrants Files</span>
             </em>
             &nbsp;
             is a consortium of journalists from over 10 EU countries. It is coordinated by Journalism++.
@@ -192,7 +189,7 @@ export const accordions = [
             &#8226;
             &nbsp;
             <em>
-              <a target="_blank" rel="noopener noreferrer" href='https://frontex.europa.eu/along-eu-borders/migratory-map/'>Frontex</a>
+              <span>Frontex</span>
             </em>
             &nbsp;
             the European Border and Coast Guard Agency, promotes, coordinates and develops European border management in line with the EU fundamental rights charter and the concept of Integrated Border Management. To help identify migratory patterns as well as trends in cross-border criminal activities, Frontex analyses data related to the situation at and beyond EU’s external borders.
@@ -205,7 +202,7 @@ export const accordions = [
             &#8226;
             &nbsp;
             <em>
-              <a target="_blank" rel="noopener noreferrer" href='https://www.acleddata.com/data/'>ACLED</a>
+              <span>ACLED</span>
             </em>
             &nbsp;
             (Armed Conflict Location & Event Data) is a disaggregated conflict analysis and crisis mapping project. ACLED is the highest quality, most widely used, realtime data and analysis source on political violence and protest in the developing world. Practitioners, researchers and governments depend on ACLED for the latest reliable information on current conflict and disorder patterns.
