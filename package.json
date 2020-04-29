@@ -27,7 +27,7 @@
     "express": "^4.17.0",
     "fuse.js": "^3.4.4",
     "helmet": "^3.18.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.11",
     "mapbox-gl": "^0.45.0",
     "mobile-detect": "^1.4.3",
